@@ -1,0 +1,498 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8C72FC6520DF004800795257 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC6420DF004800795257 /* AppDelegate.swift */; };
+		8C72FC8020DF011700795257 /* DefaultDecks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC7820DF011600795257 /* DefaultDecks.swift */; };
+		8C72FC9120DF058100795257 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC9020DF058100795257 /* Level.swift */; };
+		8C72FC9420DF05D900795257 /* UIColor+custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC9220DF05D900795257 /* UIColor+custom.swift */; };
+		8C72FC9520DF05D900795257 /* Array+random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC9320DF05D900795257 /* Array+random.swift */; };
+		8C72FCA120DF06A200795257 /* DeckManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCA020DF06A200795257 /* DeckManager.swift */; };
+		8C72FCA920DF070600795257 /* DeckCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCA720DF070600795257 /* DeckCollectionViewCell.swift */; };
+		8C72FCAA20DF070600795257 /* DeckCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C72FCA820DF070600795257 /* DeckCollectionViewCell.xib */; };
+		8C72FCB520DF074400795257 /* StartCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C72FCAD20DF074400795257 /* StartCollectionViewController.xib */; };
+		8C72FCB620DF074400795257 /* StartCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCAE20DF074400795257 /* StartCollectionViewController.swift */; };
+		8C72FCB720DF074400795257 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCB020DF074400795257 /* ViewController.swift */; };
+		8C72FCB820DF074400795257 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C72FCB120DF074400795257 /* ViewController.xib */; };
+		8C72FCB920DF074400795257 /* ViewDeckController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCB320DF074400795257 /* ViewDeckController.swift */; };
+		8C72FCBA20DF074400795257 /* ViewDeckController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C72FCB420DF074400795257 /* ViewDeckController.xib */; };
+		8C72FCC020DF077100795257 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCBD20DF077100795257 /* Card.swift */; };
+		8C72FCC120DF077100795257 /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCBF20DF077100795257 /* Deck.swift */; };
+		8C72FCC820DF07D800795257 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C72FCC320DF07D800795257 /* Assets.xcassets */; };
+		8C72FCC920DF07D800795257 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C72FCC520DF07D800795257 /* LaunchScreen.storyboard */; };
+		8C72FCCA20DF07D800795257 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C72FCC720DF07D800795257 /* Info.plist */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		8C72FC6120DF004800795257 /* quick-cards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "quick-cards.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C72FC6420DF004800795257 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8C72FC7820DF011600795257 /* DefaultDecks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultDecks.swift; sourceTree = "<group>"; };
+		8C72FC9020DF058100795257 /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Level.swift; path = "quick-cards/Enumerations/Level.swift"; sourceTree = SOURCE_ROOT; };
+		8C72FC9220DF05D900795257 /* UIColor+custom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIColor+custom.swift"; path = "quick-cards/Extensions/UIColor+custom.swift"; sourceTree = SOURCE_ROOT; };
+		8C72FC9320DF05D900795257 /* Array+random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Array+random.swift"; path = "quick-cards/Extensions/Array+random.swift"; sourceTree = SOURCE_ROOT; };
+		8C72FCA020DF06A200795257 /* DeckManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeckManager.swift; path = "quick-cards/Classes/DeckManager.swift"; sourceTree = SOURCE_ROOT; };
+		8C72FCA720DF070600795257 /* DeckCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeckCollectionViewCell.swift; sourceTree = "<group>"; };
+		8C72FCA820DF070600795257 /* DeckCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeckCollectionViewCell.xib; sourceTree = "<group>"; };
+		8C72FCAD20DF074400795257 /* StartCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StartCollectionViewController.xib; sourceTree = "<group>"; };
+		8C72FCAE20DF074400795257 /* StartCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartCollectionViewController.swift; sourceTree = "<group>"; };
+		8C72FCB020DF074400795257 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		8C72FCB120DF074400795257 /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
+		8C72FCB320DF074400795257 /* ViewDeckController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewDeckController.swift; sourceTree = "<group>"; };
+		8C72FCB420DF074400795257 /* ViewDeckController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewDeckController.xib; sourceTree = "<group>"; };
+		8C72FCBD20DF077100795257 /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		8C72FCBF20DF077100795257 /* Deck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
+		8C72FCC320DF07D800795257 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8C72FCC620DF07D800795257 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8C72FCC720DF07D800795257 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8C72FC5E20DF004800795257 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8C72FC5820DF004800795257 = {
+			isa = PBXGroup;
+			children = (
+				8C72FC6320DF004800795257 /* quick-cards */,
+				8C72FC6220DF004800795257 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8C72FC6220DF004800795257 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8C72FC6120DF004800795257 /* quick-cards.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8C72FC6320DF004800795257 /* quick-cards */ = {
+			isa = PBXGroup;
+			children = (
+				8C72FC6420DF004800795257 /* AppDelegate.swift */,
+				8C72FC7820DF011600795257 /* DefaultDecks.swift */,
+				8C72FC8820DF04F800795257 /* Extensions */,
+				8C72FC8F20DF056E00795257 /* Enumerations */,
+				8C72FCBB20DF074F00795257 /* Models */,
+				8C72FC9620DF05FB00795257 /* Classes */,
+				8C72FCA220DF06C400795257 /* Views */,
+				8C72FCAB20DF071500795257 /* Controllers */,
+				8C72FCC220DF079D00795257 /* Supporting Files */,
+			);
+			path = "quick-cards";
+			sourceTree = "<group>";
+		};
+		8C72FC8820DF04F800795257 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8C72FC9320DF05D900795257 /* Array+random.swift */,
+				8C72FC9220DF05D900795257 /* UIColor+custom.swift */,
+			);
+			name = Extensions;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		8C72FC8F20DF056E00795257 /* Enumerations */ = {
+			isa = PBXGroup;
+			children = (
+				8C72FC9020DF058100795257 /* Level.swift */,
+			);
+			name = Enumerations;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		8C72FC9620DF05FB00795257 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				8C72FC9820DF063600795257 /* DeckManager */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		8C72FC9820DF063600795257 /* DeckManager */ = {
+			isa = PBXGroup;
+			children = (
+				8C72FCA020DF06A200795257 /* DeckManager.swift */,
+			);
+			name = DeckManager;
+			path = "quick-cards/Classes1/DeckManager";
+			sourceTree = SOURCE_ROOT;
+		};
+		8C72FCA220DF06C400795257 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8C72FCA720DF070600795257 /* DeckCollectionViewCell.swift */,
+				8C72FCA820DF070600795257 /* DeckCollectionViewCell.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		8C72FCAB20DF071500795257 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				8C72FCAC20DF074400795257 /* Start */,
+				8C72FCAF20DF074400795257 /* Start Deck */,
+				8C72FCB220DF074400795257 /* View Deck */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		8C72FCAC20DF074400795257 /* Start */ = {
+			isa = PBXGroup;
+			children = (
+				8C72FCAD20DF074400795257 /* StartCollectionViewController.xib */,
+				8C72FCAE20DF074400795257 /* StartCollectionViewController.swift */,
+			);
+			path = Start;
+			sourceTree = "<group>";
+		};
+		8C72FCAF20DF074400795257 /* Start Deck */ = {
+			isa = PBXGroup;
+			children = (
+				8C72FCB020DF074400795257 /* ViewController.swift */,
+				8C72FCB120DF074400795257 /* ViewController.xib */,
+			);
+			path = "Start Deck";
+			sourceTree = "<group>";
+		};
+		8C72FCB220DF074400795257 /* View Deck */ = {
+			isa = PBXGroup;
+			children = (
+				8C72FCB320DF074400795257 /* ViewDeckController.swift */,
+				8C72FCB420DF074400795257 /* ViewDeckController.xib */,
+			);
+			path = "View Deck";
+			sourceTree = "<group>";
+		};
+		8C72FCBB20DF074F00795257 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8C72FCBC20DF077100795257 /* Card */,
+				8C72FCBE20DF077100795257 /* Deck */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		8C72FCBC20DF077100795257 /* Card */ = {
+			isa = PBXGroup;
+			children = (
+				8C72FCBD20DF077100795257 /* Card.swift */,
+			);
+			path = Card;
+			sourceTree = "<group>";
+		};
+		8C72FCBE20DF077100795257 /* Deck */ = {
+			isa = PBXGroup;
+			children = (
+				8C72FCBF20DF077100795257 /* Deck.swift */,
+			);
+			path = Deck;
+			sourceTree = "<group>";
+		};
+		8C72FCC220DF079D00795257 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8C72FCC320DF07D800795257 /* Assets.xcassets */,
+				8C72FCC420DF07D800795257 /* Base.lproj */,
+				8C72FCC720DF07D800795257 /* Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8C72FCC420DF07D800795257 /* Base.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				8C72FCC520DF07D800795257 /* LaunchScreen.storyboard */,
+			);
+			path = Base.lproj;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8C72FC6020DF004800795257 /* quick-cards */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C72FC7320DF004900795257 /* Build configuration list for PBXNativeTarget "quick-cards" */;
+			buildPhases = (
+				8C72FC5D20DF004800795257 /* Sources */,
+				8C72FC5E20DF004800795257 /* Frameworks */,
+				8C72FC5F20DF004800795257 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "quick-cards";
+			productName = "quick-cards";
+			productReference = 8C72FC6120DF004800795257 /* quick-cards.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8C72FC5920DF004800795257 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0940;
+				LastUpgradeCheck = 0940;
+				ORGANIZATIONNAME = "Abby Smith";
+				TargetAttributes = {
+					8C72FC6020DF004800795257 = {
+						CreatedOnToolsVersion = 9.4;
+					};
+				};
+			};
+			buildConfigurationList = 8C72FC5C20DF004800795257 /* Build configuration list for PBXProject "Quick Cards" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8C72FC5820DF004800795257;
+			productRefGroup = 8C72FC6220DF004800795257 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8C72FC6020DF004800795257 /* quick-cards */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8C72FC5F20DF004800795257 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C72FCB520DF074400795257 /* StartCollectionViewController.xib in Resources */,
+				8C72FCAA20DF070600795257 /* DeckCollectionViewCell.xib in Resources */,
+				8C72FCB820DF074400795257 /* ViewController.xib in Resources */,
+				8C72FCC920DF07D800795257 /* LaunchScreen.storyboard in Resources */,
+				8C72FCBA20DF074400795257 /* ViewDeckController.xib in Resources */,
+				8C72FCC820DF07D800795257 /* Assets.xcassets in Resources */,
+				8C72FCCA20DF07D800795257 /* Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8C72FC5D20DF004800795257 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C72FCB720DF074400795257 /* ViewController.swift in Sources */,
+				8C72FC9120DF058100795257 /* Level.swift in Sources */,
+				8C72FCB620DF074400795257 /* StartCollectionViewController.swift in Sources */,
+				8C72FC9520DF05D900795257 /* Array+random.swift in Sources */,
+				8C72FC9420DF05D900795257 /* UIColor+custom.swift in Sources */,
+				8C72FC6520DF004800795257 /* AppDelegate.swift in Sources */,
+				8C72FCC020DF077100795257 /* Card.swift in Sources */,
+				8C72FCA920DF070600795257 /* DeckCollectionViewCell.swift in Sources */,
+				8C72FCC120DF077100795257 /* Deck.swift in Sources */,
+				8C72FCA120DF06A200795257 /* DeckManager.swift in Sources */,
+				8C72FC8020DF011700795257 /* DefaultDecks.swift in Sources */,
+				8C72FCB920DF074400795257 /* ViewDeckController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		8C72FCC520DF07D800795257 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C72FCC620DF07D800795257 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8C72FC7120DF004900795257 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		8C72FC7220DF004900795257 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8C72FC7420DF004900795257 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "quick-cards/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.AbbySmith.quick-cards";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8C72FC7520DF004900795257 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "quick-cards/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.AbbySmith.quick-cards";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8C72FC5C20DF004800795257 /* Build configuration list for PBXProject "Quick Cards" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C72FC7120DF004900795257 /* Debug */,
+				8C72FC7220DF004900795257 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8C72FC7320DF004900795257 /* Build configuration list for PBXNativeTarget "quick-cards" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C72FC7420DF004900795257 /* Debug */,
+				8C72FC7520DF004900795257 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8C72FC5920DF004800795257 /* Project object */;
+}
