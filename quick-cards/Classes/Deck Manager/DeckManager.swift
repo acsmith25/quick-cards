@@ -20,7 +20,7 @@ class DeckManager {
     var levels: [[Card]] = []
     var currentCard: Card?
     
-    var getNextCard: () -> Card
+    var getNextCard: (() -> Card)?
     
     init(deck: Deck) {
         self.deck = deck
@@ -42,7 +42,9 @@ class DeckManager {
     }
     
     func next() {
-        currentCard = getNextCard()
+        if let getNextCard = getNextCard {
+            currentCard = getNextCard()
+        }
         delegate?.askQuestion(question: "\(currentCard!.question)")
     }
     
