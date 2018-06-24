@@ -14,8 +14,8 @@ protocol ViewDeckControllerDelegate {
 
 class ViewDeckController: UIViewController {
 
-    @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var continueButton: UIButton!
+    @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var answerTextField: UITextField!
     @IBOutlet weak var startDeckTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var startDeckCenterConstraint: NSLayoutConstraint!
@@ -55,7 +55,7 @@ class ViewDeckController: UIViewController {
     
     // MARK: - Actions
     
-    @IBAction func startButtonAction(_ sender: Any) {
+    @IBAction func continueButtonAction(_ sender: Any) {
         switch viewState {
         case .initial:
             // Start deck
