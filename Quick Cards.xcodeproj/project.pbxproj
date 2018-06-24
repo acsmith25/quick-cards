@@ -12,7 +12,7 @@
 		8C72FC9120DF058100795257 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC9020DF058100795257 /* Level.swift */; };
 		8C72FC9420DF05D900795257 /* UIColor+custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC9220DF05D900795257 /* UIColor+custom.swift */; };
 		8C72FC9520DF05D900795257 /* Array+random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC9320DF05D900795257 /* Array+random.swift */; };
-		8C72FCA120DF06A200795257 /* DeckManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCA020DF06A200795257 /* DeckManager.swift */; };
+		8C72FCA120DF06A200795257 /* Deck Manager in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCA020DF06A200795257 /* Deck Manager */; };
 		8C72FCA920DF070600795257 /* DeckCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCA720DF070600795257 /* DeckCollectionViewCell.swift */; };
 		8C72FCAA20DF070600795257 /* DeckCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C72FCA820DF070600795257 /* DeckCollectionViewCell.xib */; };
 		8C72FCB520DF074400795257 /* StartCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C72FCAD20DF074400795257 /* StartCollectionViewController.xib */; };
@@ -35,7 +35,7 @@
 		8C72FC9020DF058100795257 /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Level.swift; path = "quick-cards/Enumerations/Level.swift"; sourceTree = SOURCE_ROOT; };
 		8C72FC9220DF05D900795257 /* UIColor+custom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIColor+custom.swift"; path = "quick-cards/Extensions/UIColor+custom.swift"; sourceTree = SOURCE_ROOT; };
 		8C72FC9320DF05D900795257 /* Array+random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Array+random.swift"; path = "quick-cards/Extensions/Array+random.swift"; sourceTree = SOURCE_ROOT; };
-		8C72FCA020DF06A200795257 /* DeckManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeckManager.swift; path = "quick-cards/Classes/DeckManager.swift"; sourceTree = SOURCE_ROOT; };
+		8C72FCA020DF06A200795257 /* Deck Manager */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = folder; name = "Deck Manager"; path = "quick-cards/Classes/Deck Manager"; sourceTree = SOURCE_ROOT; };
 		8C72FCA720DF070600795257 /* DeckCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeckCollectionViewCell.swift; sourceTree = "<group>"; };
 		8C72FCA820DF070600795257 /* DeckCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeckCollectionViewCell.xib; sourceTree = "<group>"; };
 		8C72FCAD20DF074400795257 /* StartCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StartCollectionViewController.xib; sourceTree = "<group>"; };
@@ -101,8 +101,8 @@
 				8C72FC9220DF05D900795257 /* UIColor+custom.swift */,
 			);
 			name = Extensions;
-			path = "New Group";
-			sourceTree = "<group>";
+			path = "quick-cards/Extensions";
+			sourceTree = SOURCE_ROOT;
 		};
 		8C72FC8F20DF056E00795257 /* Enumerations */ = {
 			isa = PBXGroup;
@@ -110,8 +110,8 @@
 				8C72FC9020DF058100795257 /* Level.swift */,
 			);
 			name = Enumerations;
-			path = "New Group";
-			sourceTree = "<group>";
+			path = "quick-cards/Enumerations";
+			sourceTree = SOURCE_ROOT;
 		};
 		8C72FC9620DF05FB00795257 /* Classes */ = {
 			isa = PBXGroup;
@@ -124,10 +124,10 @@
 		8C72FC9820DF063600795257 /* DeckManager */ = {
 			isa = PBXGroup;
 			children = (
-				8C72FCA020DF06A200795257 /* DeckManager.swift */,
+				8C72FCA020DF06A200795257 /* Deck Manager */,
 			);
 			name = DeckManager;
-			path = "quick-cards/Classes1/DeckManager";
+			path = "quick-cards/Classes/Deck Manager";
 			sourceTree = SOURCE_ROOT;
 		};
 		8C72FCA220DF06C400795257 /* Views */ = {
@@ -303,7 +303,7 @@
 				8C72FCC020DF077100795257 /* Card.swift in Sources */,
 				8C72FCA920DF070600795257 /* DeckCollectionViewCell.swift in Sources */,
 				8C72FCC120DF077100795257 /* Deck.swift in Sources */,
-				8C72FCA120DF06A200795257 /* DeckManager.swift in Sources */,
+				8C72FCA120DF06A200795257 /* Deck Manager in Sources */,
 				8C72FC8020DF011700795257 /* DefaultDecks.swift in Sources */,
 				8C72FCB920DF074400795257 /* ViewDeckController.swift in Sources */,
 			);
