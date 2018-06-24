@@ -12,13 +12,10 @@
 		8C72FC9120DF058100795257 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC9020DF058100795257 /* Level.swift */; };
 		8C72FC9420DF05D900795257 /* UIColor+custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC9220DF05D900795257 /* UIColor+custom.swift */; };
 		8C72FC9520DF05D900795257 /* Array+random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC9320DF05D900795257 /* Array+random.swift */; };
-		8C72FCA120DF06A200795257 /* Deck Manager in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCA020DF06A200795257 /* Deck Manager */; };
 		8C72FCA920DF070600795257 /* DeckCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCA720DF070600795257 /* DeckCollectionViewCell.swift */; };
 		8C72FCAA20DF070600795257 /* DeckCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C72FCA820DF070600795257 /* DeckCollectionViewCell.xib */; };
 		8C72FCB520DF074400795257 /* StartCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C72FCAD20DF074400795257 /* StartCollectionViewController.xib */; };
 		8C72FCB620DF074400795257 /* StartCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCAE20DF074400795257 /* StartCollectionViewController.swift */; };
-		8C72FCB720DF074400795257 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCB020DF074400795257 /* ViewController.swift */; };
-		8C72FCB820DF074400795257 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C72FCB120DF074400795257 /* ViewController.xib */; };
 		8C72FCB920DF074400795257 /* ViewDeckController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCB320DF074400795257 /* ViewDeckController.swift */; };
 		8C72FCBA20DF074400795257 /* ViewDeckController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C72FCB420DF074400795257 /* ViewDeckController.xib */; };
 		8C72FCC020DF077100795257 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCBD20DF077100795257 /* Card.swift */; };
@@ -26,6 +23,7 @@
 		8C72FCC820DF07D800795257 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C72FCC320DF07D800795257 /* Assets.xcassets */; };
 		8C72FCC920DF07D800795257 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C72FCC520DF07D800795257 /* LaunchScreen.storyboard */; };
 		8C72FCCA20DF07D800795257 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C72FCC720DF07D800795257 /* Info.plist */; };
+		8C72FCCC20DFF8BF00795257 /* DeckManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCCB20DFF8BF00795257 /* DeckManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,13 +33,10 @@
 		8C72FC9020DF058100795257 /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Level.swift; path = "quick-cards/Enumerations/Level.swift"; sourceTree = SOURCE_ROOT; };
 		8C72FC9220DF05D900795257 /* UIColor+custom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIColor+custom.swift"; path = "quick-cards/Extensions/UIColor+custom.swift"; sourceTree = SOURCE_ROOT; };
 		8C72FC9320DF05D900795257 /* Array+random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Array+random.swift"; path = "quick-cards/Extensions/Array+random.swift"; sourceTree = SOURCE_ROOT; };
-		8C72FCA020DF06A200795257 /* Deck Manager */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = folder; name = "Deck Manager"; path = "quick-cards/Classes/Deck Manager"; sourceTree = SOURCE_ROOT; };
 		8C72FCA720DF070600795257 /* DeckCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeckCollectionViewCell.swift; sourceTree = "<group>"; };
 		8C72FCA820DF070600795257 /* DeckCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeckCollectionViewCell.xib; sourceTree = "<group>"; };
 		8C72FCAD20DF074400795257 /* StartCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StartCollectionViewController.xib; sourceTree = "<group>"; };
 		8C72FCAE20DF074400795257 /* StartCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartCollectionViewController.swift; sourceTree = "<group>"; };
-		8C72FCB020DF074400795257 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		8C72FCB120DF074400795257 /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		8C72FCB320DF074400795257 /* ViewDeckController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewDeckController.swift; sourceTree = "<group>"; };
 		8C72FCB420DF074400795257 /* ViewDeckController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewDeckController.xib; sourceTree = "<group>"; };
 		8C72FCBD20DF077100795257 /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
@@ -49,6 +44,7 @@
 		8C72FCC320DF07D800795257 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8C72FCC620DF07D800795257 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8C72FCC720DF07D800795257 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8C72FCCB20DFF8BF00795257 /* DeckManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeckManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,7 +120,7 @@
 		8C72FC9820DF063600795257 /* DeckManager */ = {
 			isa = PBXGroup;
 			children = (
-				8C72FCA020DF06A200795257 /* Deck Manager */,
+				8C72FCCB20DFF8BF00795257 /* DeckManager.swift */,
 			);
 			name = DeckManager;
 			path = "quick-cards/Classes/Deck Manager";
@@ -143,7 +139,6 @@
 			isa = PBXGroup;
 			children = (
 				8C72FCAC20DF074400795257 /* Start */,
-				8C72FCAF20DF074400795257 /* Start Deck */,
 				8C72FCB220DF074400795257 /* View Deck */,
 			);
 			path = Controllers;
@@ -152,19 +147,10 @@
 		8C72FCAC20DF074400795257 /* Start */ = {
 			isa = PBXGroup;
 			children = (
-				8C72FCAD20DF074400795257 /* StartCollectionViewController.xib */,
 				8C72FCAE20DF074400795257 /* StartCollectionViewController.swift */,
+				8C72FCAD20DF074400795257 /* StartCollectionViewController.xib */,
 			);
 			path = Start;
-			sourceTree = "<group>";
-		};
-		8C72FCAF20DF074400795257 /* Start Deck */ = {
-			isa = PBXGroup;
-			children = (
-				8C72FCB020DF074400795257 /* ViewController.swift */,
-				8C72FCB120DF074400795257 /* ViewController.xib */,
-			);
-			path = "Start Deck";
 			sourceTree = "<group>";
 		};
 		8C72FCB220DF074400795257 /* View Deck */ = {
@@ -279,7 +265,6 @@
 			files = (
 				8C72FCB520DF074400795257 /* StartCollectionViewController.xib in Resources */,
 				8C72FCAA20DF070600795257 /* DeckCollectionViewCell.xib in Resources */,
-				8C72FCB820DF074400795257 /* ViewController.xib in Resources */,
 				8C72FCC920DF07D800795257 /* LaunchScreen.storyboard in Resources */,
 				8C72FCBA20DF074400795257 /* ViewDeckController.xib in Resources */,
 				8C72FCC820DF07D800795257 /* Assets.xcassets in Resources */,
@@ -294,7 +279,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C72FCB720DF074400795257 /* ViewController.swift in Sources */,
 				8C72FC9120DF058100795257 /* Level.swift in Sources */,
 				8C72FCB620DF074400795257 /* StartCollectionViewController.swift in Sources */,
 				8C72FC9520DF05D900795257 /* Array+random.swift in Sources */,
@@ -303,8 +287,8 @@
 				8C72FCC020DF077100795257 /* Card.swift in Sources */,
 				8C72FCA920DF070600795257 /* DeckCollectionViewCell.swift in Sources */,
 				8C72FCC120DF077100795257 /* Deck.swift in Sources */,
-				8C72FCA120DF06A200795257 /* Deck Manager in Sources */,
 				8C72FC8020DF011700795257 /* DefaultDecks.swift in Sources */,
+				8C72FCCC20DFF8BF00795257 /* DeckManager.swift in Sources */,
 				8C72FCB920DF074400795257 /* ViewDeckController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -442,7 +426,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = "quick-cards/Info.plist";
+				INFOPLIST_FILE = "quick-cards/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -459,7 +443,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = "quick-cards/Info.plist";
+				INFOPLIST_FILE = "quick-cards/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
