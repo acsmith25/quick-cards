@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		490AF5D720E13E1D003C312E /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490AF5D520E13E1D003C312E /* HomeTableViewController.swift */; };
+		490AF5D820E13E1D003C312E /* HomeTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 490AF5D620E13E1D003C312E /* HomeTableViewController.xib */; };
+		490AF5DC20E13F20003C312E /* CollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490AF5DA20E13F20003C312E /* CollectionTableViewCell.swift */; };
+		490AF5DD20E13F20003C312E /* CollectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 490AF5DB20E13F20003C312E /* CollectionTableViewCell.xib */; };
+		49D83CB620E133DD008084F8 /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D83CB420E133DD008084F8 /* ButtonTableViewCell.swift */; };
+		49D83CB720E133DD008084F8 /* ButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49D83CB520E133DD008084F8 /* ButtonTableViewCell.xib */; };
 		8C72FC6520DF004800795257 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC6420DF004800795257 /* AppDelegate.swift */; };
 		8C72FC8020DF011700795257 /* DefaultDecks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC7820DF011600795257 /* DefaultDecks.swift */; };
 		8C72FC9120DF058100795257 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC9020DF058100795257 /* Level.swift */; };
@@ -27,6 +33,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		490AF5D520E13E1D003C312E /* HomeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
+		490AF5D620E13E1D003C312E /* HomeTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeTableViewController.xib; sourceTree = "<group>"; };
+		490AF5DA20E13F20003C312E /* CollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionTableViewCell.swift; sourceTree = "<group>"; };
+		490AF5DB20E13F20003C312E /* CollectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionTableViewCell.xib; sourceTree = "<group>"; };
+		49D83CB420E133DD008084F8 /* ButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTableViewCell.swift; sourceTree = "<group>"; };
+		49D83CB520E133DD008084F8 /* ButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonTableViewCell.xib; sourceTree = "<group>"; };
 		8C72FC6120DF004800795257 /* quick-cards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "quick-cards.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C72FC6420DF004800795257 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8C72FC7820DF011600795257 /* DefaultDecks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultDecks.swift; sourceTree = "<group>"; };
@@ -58,6 +70,51 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		490AF5D920E13F08003C312E /* Collection */ = {
+			isa = PBXGroup;
+			children = (
+				490AF5DA20E13F20003C312E /* CollectionTableViewCell.swift */,
+				490AF5DB20E13F20003C312E /* CollectionTableViewCell.xib */,
+			);
+			path = Collection;
+			sourceTree = "<group>";
+		};
+		49D83CAC20E132FA008084F8 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				490AF5D520E13E1D003C312E /* HomeTableViewController.swift */,
+				490AF5D620E13E1D003C312E /* HomeTableViewController.xib */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		49D83CB120E1336E008084F8 /* Collection View Cells */ = {
+			isa = PBXGroup;
+			children = (
+				8C72FCA720DF070600795257 /* DeckCollectionViewCell.swift */,
+				8C72FCA820DF070600795257 /* DeckCollectionViewCell.xib */,
+			);
+			path = "Collection View Cells";
+			sourceTree = "<group>";
+		};
+		49D83CB220E1337C008084F8 /* Table View Cells */ = {
+			isa = PBXGroup;
+			children = (
+				490AF5D920E13F08003C312E /* Collection */,
+				49D83CB320E133A9008084F8 /* Button */,
+			);
+			path = "Table View Cells";
+			sourceTree = "<group>";
+		};
+		49D83CB320E133A9008084F8 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				49D83CB420E133DD008084F8 /* ButtonTableViewCell.swift */,
+				49D83CB520E133DD008084F8 /* ButtonTableViewCell.xib */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
 		8C72FC5820DF004800795257 = {
 			isa = PBXGroup;
 			children = (
@@ -129,8 +186,8 @@
 		8C72FCA220DF06C400795257 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				8C72FCA720DF070600795257 /* DeckCollectionViewCell.swift */,
-				8C72FCA820DF070600795257 /* DeckCollectionViewCell.xib */,
+				49D83CB220E1337C008084F8 /* Table View Cells */,
+				49D83CB120E1336E008084F8 /* Collection View Cells */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -138,6 +195,7 @@
 		8C72FCAB20DF071500795257 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				49D83CAC20E132FA008084F8 /* Home */,
 				8C72FCAC20DF074400795257 /* Start */,
 				8C72FCB220DF074400795257 /* View Deck */,
 			);
@@ -267,8 +325,11 @@
 				8C72FCAA20DF070600795257 /* DeckCollectionViewCell.xib in Resources */,
 				8C72FCC920DF07D800795257 /* LaunchScreen.storyboard in Resources */,
 				8C72FCBA20DF074400795257 /* ViewDeckController.xib in Resources */,
+				490AF5D820E13E1D003C312E /* HomeTableViewController.xib in Resources */,
 				8C72FCC820DF07D800795257 /* Assets.xcassets in Resources */,
 				8C72FCCA20DF07D800795257 /* Info.plist in Resources */,
+				490AF5DD20E13F20003C312E /* CollectionTableViewCell.xib in Resources */,
+				49D83CB720E133DD008084F8 /* ButtonTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,12 +341,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C72FC9120DF058100795257 /* Level.swift in Sources */,
+				49D83CB620E133DD008084F8 /* ButtonTableViewCell.swift in Sources */,
 				8C72FCB620DF074400795257 /* StartCollectionViewController.swift in Sources */,
+				490AF5DC20E13F20003C312E /* CollectionTableViewCell.swift in Sources */,
 				8C72FC9520DF05D900795257 /* Array+random.swift in Sources */,
 				8C72FC9420DF05D900795257 /* UIColor+custom.swift in Sources */,
 				8C72FC6520DF004800795257 /* AppDelegate.swift in Sources */,
 				8C72FCC020DF077100795257 /* Card.swift in Sources */,
 				8C72FCA920DF070600795257 /* DeckCollectionViewCell.swift in Sources */,
+				490AF5D720E13E1D003C312E /* HomeTableViewController.swift in Sources */,
 				8C72FCC120DF077100795257 /* Deck.swift in Sources */,
 				8C72FC8020DF011700795257 /* DefaultDecks.swift in Sources */,
 				8C72FCCC20DFF8BF00795257 /* DeckManager.swift in Sources */,

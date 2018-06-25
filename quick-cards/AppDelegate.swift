@@ -52,15 +52,10 @@ extension AppDelegate {
         if window == nil {
             window = UIWindow(frame: UIScreen.main.bounds)
         }
-        let navController = UINavigationController(rootViewController: StartCollectionViewController(nibName: String(describing: StartCollectionViewController.self), bundle: nil))
+        let navController = UINavigationController(rootViewController: HomeTableViewController(style: .grouped))
         navController.navigationBar.prefersLargeTitles = true
-//        navController.isNavigationBarHidden = true
         navController.navigationBar.isTranslucent = true
         navController.navigationBar.tintColor = .black
-//        navController.view.backgroundColor = .white
-//        navController.navigationBar.barTintColor = .black
-//        navController.navigationBar.barStyle = .default
-//        navController.title = "Quick Cards"
         
         window?.rootViewController = navController
         window?.makeKeyAndVisible()

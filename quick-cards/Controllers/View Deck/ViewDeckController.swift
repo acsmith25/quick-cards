@@ -14,17 +14,20 @@ protocol ViewDeckControllerDelegate {
 
 class ViewDeckController: UIViewController {
 
+    @IBOutlet weak var giveUpButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var answerTextField: UITextField!
     @IBOutlet weak var startDeckTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var startDeckCenterConstraint: NSLayoutConstraint!
+    @IBOutlet weak var cardView: UIView!
     
     enum ViewState {
         case initial
         case asking(String)
         case correct
         case incorrect(String)
+        case mastered
     }
     
     var viewState: ViewState = .initial
@@ -43,10 +46,13 @@ class ViewDeckController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.isHidden = true
         
         deckManager.delegate = self
         setViewState(.initial)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -66,6 +72,9 @@ class ViewDeckController: UIViewController {
         case .correct, .incorrect(_):
             // Go to next card
             deckManager.next()
+        case .mastered:
+            // Exit
+            delegate?.dismissViewController()
         }
     }
     
@@ -90,8 +99,10 @@ extension ViewDeckController {
         switch viewState {
         case .initial:
             continueButton.isHidden = false
+            giveUpButton.isHidden = true
             questionLabel.isHidden = true
             answerTextField.isHidden = true
+            cardView.isHidden = true
         case .asking(let question):
             NSLayoutConstraint.deactivate([startDeckCenterConstraint])
             NSLayoutConstraint.activate([startDeckTopConstraint])
@@ -102,6 +113,8 @@ extension ViewDeckController {
                 self.answerTextField.isHidden = false
                 self.continueButton.isHidden = false
                 self.continueButton.setTitle("Submit", for: .normal)
+                self.giveUpButton.isHidden = false
+                self.cardView.isHidden = false
             }
         case .correct:
             UIView.animate(withDuration: 0.3) {
@@ -112,6 +125,8 @@ extension ViewDeckController {
                 self.answerTextField.isHidden = true
                 self.continueButton.isHidden = false
                 self.continueButton.setTitle("Next Question", for: .normal)
+                self.giveUpButton.isHidden = true
+                self.cardView.isHidden = false
             }
         case .incorrect(let correctAnswer):
             UIView.animate(withDuration: 0.3) {
@@ -122,6 +137,20 @@ extension ViewDeckController {
                 self.answerTextField.isHidden = true
                 self.continueButton.isHidden = false
                 self.continueButton.setTitle("Next Question", for: .normal)
+                self.giveUpButton.isHidden = true
+                self.cardView.isHidden = false
+            }
+        case .mastered:
+            UIView.animate(withDuration: 0.3) {
+                self.questionLabel.text = "Mastery Level 100%"
+                self.questionLabel.isHidden = false
+                self.answerTextField.text = ""
+                self.answerTextField.endEditing(false)
+                self.answerTextField.isHidden = true
+                self.continueButton.isHidden = false
+                self.continueButton.setTitle("Done", for: .normal)
+                self.giveUpButton.isHidden = true
+                self.cardView.isHidden = false
             }
         }
     }
@@ -129,6 +158,10 @@ extension ViewDeckController {
 
 // MARK: - Card Deck Delegate
 extension ViewDeckController: DeckManagerDelegate {
+    
+    func masteredDeck() {
+        setViewState(.mastered)
+    }
     
     func showAnswer(correctAnswer: String? = nil) {
         guard let correctAnswer = correctAnswer else {

@@ -11,9 +11,13 @@ import Foundation
 protocol DeckManagerDelegate {
     func askQuestion(question: String)
     func showAnswer(correctAnswer: String?)
+    func masteredDeck()
 }
 
 class DeckManager {
+    
+    // MARK: - Public
+    
     var delegate: DeckManagerDelegate?
     
     var deck: Deck
@@ -33,11 +37,19 @@ class DeckManager {
         levels[Level.average.rawValue] = deck.cards
         
         // Calculate the sum of all level weights
-        Level.allCases.forEach { totalWeight += $0.weight }
+        Level.allCases.forEach { levelWeightsSum += $0.weight }
+        
+        // The sum for when all levels are mastered
+        totalMastery = deck.cards.count * Level.mastered.rawValue
+        
+        // Set current mastery level
+        // All cards at average
+        currentMastery = deck.cards.count * Level.average.rawValue
         
         // Initiailize next card function to use first pass function
         getNextCard = getNextCardFromFirstPass
         
+        // Get first card
         next()
     }
     
@@ -45,57 +57,66 @@ class DeckManager {
         if let getNextCard = getNextCard {
             currentCard = getNextCard()
         }
-        delegate?.askQuestion(question: "\(currentCard!.question)")
+        guard let currentCard = currentCard else { return }
+        delegate?.askQuestion(question: "\(currentCard.question)")
     }
     
     func validate(userAnswer: String?) {
         let didAnswerCorrectly = userAnswer == currentCard?.answer ? true : false
         if didAnswerCorrectly {
             increaseLevel()
+            if currentMastery == totalMastery {
+                // Deck is mastered
+                delegate?.masteredDeck()
+            } else {
+                // Continue
+                delegate?.showAnswer(correctAnswer: nil)
+            }
         } else {
+            // Continue
             decreaseLevel()
+            delegate?.showAnswer(correctAnswer: currentCard?.answer)
         }
-        delegate?.showAnswer(correctAnswer: currentCard?.answer)
+        print("Current mastery: \(calculateMastery())")
     }
     
     func calculateMastery() -> Double {
-        let total = deck.cards.count * 4
-        var current = 0
-        levels.enumerated().forEach {
-            current += $0.element.count * $0.offset
-        }
-        print(levels)
-        return Double(current) / Double(total) * 100
+        return Double(currentMastery) / Double(totalMastery) * 100
     }
     
     // MARK: - Private
     
-    private var totalWeight: Int = 0
+    private var levelWeightsSum: Int = 0
+    private var totalMastery: Int = 0
+    private var currentMastery: Int = 0
     
     private func getNextCardFromFirstPass() -> Card {
         var defaultLevel = levels[Level.average.rawValue]
-        guard let randomCard = defaultLevel.removeElementAtRandomIndex() else {
+        guard let randomIndex = getRandomIndex(defaultLevel) else {
             // First pass complete
             // Update get next card function to use random function
             self.getNextCard = getRandomCard
             return getRandomCard()
         }
-        return randomCard
+        // Extract card at random index
+        let card = defaultLevel.remove(at: randomIndex)
+        levels[Level.average.rawValue] = defaultLevel
+        return card
     }
     
     private func getRandomCard() -> Card {
         guard let randomLevel = getRandomWeightedLevel() else {
             fatalError("Error getting random level.")
         }
-        guard let randomCard = levels[randomLevel.rawValue].removeElementAtRandomIndex() else {
+        guard let randomIndex = getRandomIndex(levels[randomLevel.rawValue]) else {
             return getRandomCard()
         }
-        return randomCard
+        return levels[randomLevel.rawValue].remove(at: randomIndex)
     }
     
     private func getRandomWeightedLevel() -> Level? {
         // Get random weight from the summ of all level weights
-        var randomWeight = Int(arc4random_uniform(UInt32(totalWeight + 1)))
+        var randomWeight = Int(arc4random_uniform(UInt32(levelWeightsSum + 1)))
         
         // Get level of random weight by subtracting weight of current level until <= 0
         for level in Level.allCases.reversed() {
@@ -107,11 +128,18 @@ class DeckManager {
         return nil
     }
     
+    private func getRandomIndex(_ array: Array<Any>) -> Int? {
+        guard !array.isEmpty else {
+            return nil
+        }
+        return Int(arc4random_uniform(UInt32(array.count)))
+    }
+    
     private func increaseLevel() {
         guard var currentCard = currentCard else { return }
         let newLevel = currentCard.level.rawValue + 1
         guard newLevel < Level.allCases.count else {
-            // Already at heighest level, add card back to top level
+            // Already at heighest level, insert card back into top level
             levels[newLevel - 1].append(currentCard)
             return
         }
@@ -119,6 +147,8 @@ class DeckManager {
         guard let level = Level(rawValue: newLevel) else {
             fatalError("Error increasing card's level")
         }
+        // Reinsert card at new level and update mastery
+        currentMastery += 1
         currentCard.level = level
         levels[newLevel].append(currentCard)
     }
@@ -127,7 +157,7 @@ class DeckManager {
         guard var currentCard = currentCard else { return }
         let newLevel = currentCard.level.rawValue - 1
         guard newLevel >= 0 else {
-            // Already at lowest level, add card back to bottom level
+            // Already at lowest level, insert card back into bottom level
             levels[newLevel + 1].append(currentCard)
             return
         }
@@ -135,6 +165,8 @@ class DeckManager {
         guard let level = Level(rawValue: newLevel) else {
             fatalError("Error decreasing card's level")
         }
+        // Reinsert card at new level and update mastery
+        currentMastery -= 1
         currentCard.level = level
         levels[newLevel].append(currentCard)
     }

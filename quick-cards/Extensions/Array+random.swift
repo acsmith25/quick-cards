@@ -16,20 +16,5 @@ extension Array {
         }
         return self[randomIndex]
     }
-    
-    mutating func removeElementAtRandomIndex() -> Element? {
-        guard let randomIndex = getRandomIndex(self) else {
-            return nil
-        }
-        let randomElement = self.remove(at: randomIndex)
-        return randomElement
-    }
-    
-    private func getRandomIndex(_ array: Array<Any>) -> Int? {
-        guard !array.isEmpty else {
-            return nil
-        }
-        return Int(arc4random_uniform(UInt32(array.count)))
-    }
 }
 
