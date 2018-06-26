@@ -37,6 +37,7 @@ class HomeTableViewController: UITableViewController {
         tableView.register(UINib(nibName: String(describing: ImageTableViewCell.self), bundle: nil), forCellReuseIdentifier: ImageTableViewCell.identifier)
         tableView.register(UINib(nibName: String(describing: ButtonTableViewCell.self), bundle: nil), forCellReuseIdentifier: ButtonTableViewCell.identifier)
         tableView.register(UINib(nibName: String(describing: CollectionTableViewCell.self), bundle: nil), forCellReuseIdentifier: CollectionTableViewCell.identifier)
+        tableView.register(UINib(nibName: String(describing: TableTableViewCell.self), bundle: nil), forCellReuseIdentifier: TableTableViewCell.identifier)
     }
 }
 
@@ -54,13 +55,25 @@ extension HomeTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = sections[indexPath.section].1
         switch section {
-        case .newDeck, .startDeck:
+        case .newDeck:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ImageTableViewCell.identifier, for: indexPath) as? ImageTableViewCell else {
                 fatalError("Could not dequeue cell.")
             }
             cell.configure(with: section.rawValue, image: section.icon, color: section.color)
             return cell
+        case .startDeck:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ImageTableViewCell.identifier, for: indexPath) as? ImageTableViewCell else {
+                fatalError("Could not dequeue cell.")
+            }
+            cell.configure(with: section.rawValue, image: section.icon, color: section.color) {
+                let controller = StartCollectionViewController(nibName: String(describing: StartCollectionViewController.self), bundle: nil)
+                self.navigationController?.pushViewController(controller, animated: true)
+            }
+            return cell
         case .allDecks:
+//            guard let cell = tableView.dequeueReusableCell(withIdentifier: TableTableViewCell.identifier, for: indexPath) as? TableTableViewCell else {
+//                fatalError("Could not dequeue cell.")
+//            }
             guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionTableViewCell.identifier, for: indexPath) as? CollectionTableViewCell else {
                 fatalError("Could not dequeue cell.")
             }
@@ -73,6 +86,14 @@ extension HomeTableViewController {
         }
     }
     
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sections[section].0
+    }
+    
+//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return UITableViewAutomaticDimension
+//    }
+    
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if sections[section].0 != "" {
             // Section has a title
@@ -80,10 +101,6 @@ extension HomeTableViewController {
         } else {
             return 20
         }
-    }
-    
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section].0
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

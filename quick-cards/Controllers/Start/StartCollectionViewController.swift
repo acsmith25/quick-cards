@@ -44,14 +44,14 @@ extension StartCollectionViewController {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DeckCollectionViewCell.identifier, for: indexPath) as? DeckCollectionViewCell else {
             fatalError("Could not dequeue cell.")
         }
-        let deck = allDecks[indexPath.row]
+        let deck = allDecks[indexPath.row].deck
         cell.configure(with: deck)
         
         return cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let deck = allDecks[indexPath.row]
+        let deck = allDecks[indexPath.row].deck
         let controller = ViewDeckController(deck: deck)
         controller.delegate = self
         navigationController?.pushViewController(controller, animated: true)
