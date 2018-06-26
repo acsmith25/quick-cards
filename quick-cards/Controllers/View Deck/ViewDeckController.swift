@@ -18,9 +18,13 @@ class ViewDeckController: UIViewController {
     @IBOutlet weak var continueButton: UIButton!
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var answerTextField: UITextField!
-    @IBOutlet weak var startDeckTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var startDeckCenterConstraint: NSLayoutConstraint!
     @IBOutlet weak var cardView: UIView!
+    
+    @IBOutlet weak var continueButtonCenter: NSLayoutConstraint!
+    @IBOutlet weak var cardViewCenter: NSLayoutConstraint!
+    @IBOutlet weak var answerFieldCenter: NSLayoutConstraint!
+    @IBOutlet weak var giveUpButtonCenter: NSLayoutConstraint!
+    
     
     enum ViewState {
         case initial
@@ -47,12 +51,16 @@ class ViewDeckController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.navigationBar.prefersLargeTitles = false
+        
         deckManager.delegate = self
         setViewState(.initial)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.navigationBar.isHidden = true
+        cardViewCenter.constant += view.bounds.width
+//        answerFieldCenter.constant += view.bounds.width
+//        giveUpButtonCenter.constant += view.bounds.width
     }
 
     override func didReceiveMemoryWarning() {
@@ -65,6 +73,9 @@ class ViewDeckController: UIViewController {
         switch viewState {
         case .initial:
             // Start deck
+            self.cardViewCenter.constant -= self.view.bounds.width
+//            self.answerFieldCenter.constant -= self.view.bounds.width
+//            self.giveUpButtonCenter.constant -= self.view.bounds.width
             deckManager.startDeck()
         case .asking(_):
             // Submit
@@ -98,59 +109,47 @@ extension ViewDeckController {
         
         switch viewState {
         case .initial:
-            continueButton.isHidden = false
-            giveUpButton.isHidden = true
-            questionLabel.isHidden = true
-            answerTextField.isHidden = true
-            cardView.isHidden = true
+            giveUpButton.alpha = 0.0
+            answerTextField.alpha = 0.0
         case .asking(let question):
-            NSLayoutConstraint.deactivate([startDeckCenterConstraint])
-            NSLayoutConstraint.activate([startDeckTopConstraint])
-            UIView.animate(withDuration: 0.3) {
-                self.view.layoutIfNeeded()
-                self.questionLabel.isHidden = false
-                self.questionLabel.text = question
-                self.answerTextField.isHidden = false
-                self.continueButton.isHidden = false
+            UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: {
                 self.continueButton.setTitle("Submit", for: .normal)
-                self.giveUpButton.isHidden = false
-                self.cardView.isHidden = false
-            }
+                self.questionLabel.text = question
+                
+                self.view.layoutIfNeeded()
+                
+                self.answerTextField.alpha = 1.0
+                self.giveUpButton.alpha = 1.0
+            }, completion: nil)
         case .correct:
-            UIView.animate(withDuration: 0.3) {
-                self.questionLabel.text = "Correct!"
-                self.questionLabel.isHidden = false
-                self.answerTextField.text = ""
-                self.answerTextField.endEditing(false)
-                self.answerTextField.isHidden = true
-                self.continueButton.isHidden = false
+            self.answerTextField.endEditing(false)
+            UIView.animate(withDuration: 0.2) {
                 self.continueButton.setTitle("Next Question", for: .normal)
-                self.giveUpButton.isHidden = true
-                self.cardView.isHidden = false
+                self.questionLabel.text = "Correct!"
+                self.answerTextField.text = ""
+                
+                self.answerTextField.alpha = 0.0
+                self.giveUpButton.alpha = 0.0
             }
         case .incorrect(let correctAnswer):
-            UIView.animate(withDuration: 0.3) {
-                self.questionLabel.text = "Wrong: \(correctAnswer)"
-                self.questionLabel.isHidden = false
-                self.answerTextField.text = ""
-                self.answerTextField.endEditing(false)
-                self.answerTextField.isHidden = true
-                self.continueButton.isHidden = false
+            self.answerTextField.endEditing(false)
+            UIView.animate(withDuration: 0.2) {
                 self.continueButton.setTitle("Next Question", for: .normal)
-                self.giveUpButton.isHidden = true
-                self.cardView.isHidden = false
+                self.questionLabel.text = "Wrong: \(correctAnswer)"
+                self.answerTextField.text = ""
+                
+                self.answerTextField.alpha = 0.0
+                self.giveUpButton.alpha = 0.0
             }
         case .mastered:
-            UIView.animate(withDuration: 0.3) {
-                self.questionLabel.text = "Mastery Level 100%"
-                self.questionLabel.isHidden = false
-                self.answerTextField.text = ""
-                self.answerTextField.endEditing(false)
-                self.answerTextField.isHidden = true
-                self.continueButton.isHidden = false
+            self.answerTextField.endEditing(false)
+            UIView.animate(withDuration: 0.2) {
                 self.continueButton.setTitle("Done", for: .normal)
-                self.giveUpButton.isHidden = true
-                self.cardView.isHidden = false
+                self.questionLabel.text = "Congratulations!\nYou have mastered this deck."
+                self.answerTextField.text = ""
+                
+                self.answerTextField.alpha = 0.0
+                self.giveUpButton.alpha = 0.0
             }
         }
     }

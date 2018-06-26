@@ -6,8 +6,6 @@
 //  Copyright © 2018 Abby Smith. All rights reserved.
 //
 
-// TESTING IF THIS COMMITS
-
 import UIKit
 
 @UIApplicationMain
@@ -55,8 +53,7 @@ extension AppDelegate {
         let navController = UINavigationController(rootViewController: HomeTableViewController(style: .grouped))
         navController.navigationBar.prefersLargeTitles = true
         navController.navigationBar.isTranslucent = true
-        navController.navigationBar.tintColor = .black
-        
+        navController.navigationBar.tintColor = GenericCell.allDecks.color        
         
         window?.rootViewController = navController
         window?.makeKeyAndVisible()

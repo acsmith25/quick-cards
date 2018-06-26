@@ -54,22 +54,11 @@ extension HomeTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = sections[indexPath.section].1
         switch section {
-        case .newDeck:
+        case .newDeck, .startDeck:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ImageTableViewCell.identifier, for: indexPath) as? ImageTableViewCell else {
                 fatalError("Could not dequeue cell.")
             }
-            let color = UIColor(red: 255.0/255.0, green: 191.0/255.0, blue: 0, alpha: 1)
-            cell.configure(with: section.rawValue, image: UIImage(named: "pencilPaperIcon"), color: color)
-            return cell
-        case .startDeck:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ImageTableViewCell.identifier, for: indexPath) as? ImageTableViewCell else {
-                fatalError("Could not dequeue cell.")
-            }
-            let color = UIColor(red: 254.0/255.0, green: 74.0/255.0, blue: 73.0/255.0, alpha: 1)
-            cell.configure(with: section.rawValue, image: UIImage(named: "bookshelfIcon"), color: color) {
-                let controller = StartCollectionViewController(nibName: String(describing: StartCollectionViewController.self), bundle: nil)
-                self.navigationController?.pushViewController(controller, animated: true)
-            }
+            cell.configure(with: section.rawValue, image: section.icon, color: section.color)
             return cell
         case .allDecks:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionTableViewCell.identifier, for: indexPath) as? CollectionTableViewCell else {

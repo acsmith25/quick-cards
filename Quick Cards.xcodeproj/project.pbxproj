@@ -85,6 +85,13 @@
 			path = Collection;
 			sourceTree = "<group>";
 		};
+		4978CF6B20E284EA008E0AA5 /* New */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = New;
+			sourceTree = "<group>";
+		};
 		49D83CAC20E132FA008084F8 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -203,6 +210,7 @@
 		8C72FCAB20DF071500795257 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4978CF6B20E284EA008E0AA5 /* New */,
 				49D83CAC20E132FA008084F8 /* Home */,
 				8C72FCAC20DF074400795257 /* Start */,
 				8C72FCB220DF074400795257 /* View Deck */,

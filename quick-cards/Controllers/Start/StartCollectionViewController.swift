@@ -10,8 +10,6 @@ import UIKit
 
 class StartCollectionViewController: UICollectionViewController {
     
-    var allDecks = [ones, twos, threes, fours, fives, sixes, sevens, eights, nines, tens, elevens, twelves]
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         

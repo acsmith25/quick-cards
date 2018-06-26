@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "quick-cards/Controllers/Home/HomeTableViewController.swift"
-            timestampString = "551652254.076183"
+            timestampString = "551737246.103762"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "74"
-            endingLineNumber = "74"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,59 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "quick-cards/Controllers/Home/HomeTableViewController.swift"
-            timestampString = "551652254.076265"
+            timestampString = "551737246.104141"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
-            landmarkName = "tableView(_:cellForRowAt:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "quick_cards.HomeTableViewController.tableView(__ObjC.UITableView, cellForRowAt: Foundation.IndexPath) -&gt; __ObjC.UITableViewCell"
-                  moduleName = "quick-cards"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/asmith/Documents/Projects/Quick%20Cards/quick-cards/Controllers/Home/HomeTableViewController.swift"
-                  timestampString = "551636977.5238661"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "72"
-                  endingLineNumber = "72"
-                  offsetFromSymbolStart = "1605">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in quick_cards.HomeTableViewController.tableView(__ObjC.UITableView, cellForRowAt: Foundation.IndexPath) -&gt; __ObjC.UITableViewCell"
-                  moduleName = "quick-cards"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/asmith/Documents/Projects/Quick%20Cards/quick-cards/Controllers/Home/HomeTableViewController.swift"
-                  timestampString = "551636977.526576"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "73"
-                  endingLineNumber = "73"
-                  offsetFromSymbolStart = "14">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "quick-cards/Controllers/Home/HomeTableViewController.swift"
-            timestampString = "551652254.076332"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "99"
-            endingLineNumber = "99"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
             landmarkName = "HomeTableViewController"
             landmarkType = "21">
          </BreakpointContent>
@@ -90,12 +42,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "quick-cards/Classes/Deck Manager/DeckManager.swift"
-            timestampString = "551652254.076391"
+            timestampString = "551737246.104424"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "59"
             endingLineNumber = "59"
-            landmarkName = "validate(userAnswer:)"
+            landmarkName = "next()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -106,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "quick-cards/Controllers/View Deck/ViewDeckController.swift"
-            timestampString = "551652254.077036"
+            timestampString = "551737246.104486"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
             landmarkName = "ViewDeckController"
             landmarkType = "21">
          </BreakpointContent>
@@ -122,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "quick-cards/Controllers/View Deck/ViewDeckController.swift"
-            timestampString = "551652254.077095"
+            timestampString = "551737246.104866"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
+            startingLineNumber = "161"
+            endingLineNumber = "161"
             landmarkName = "masteredDeck()"
             landmarkType = "7">
          </BreakpointContent>
@@ -138,7 +90,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "quick-cards/Classes/Deck Manager/DeckManager.swift"
-            timestampString = "551652254.077152"
+            timestampString = "551737246.105188"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "72"
@@ -154,11 +106,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "quick-cards/Classes/Deck Manager/DeckManager.swift"
-            timestampString = "551652254.077674"
+            timestampString = "551737246.105237"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "105"
             endingLineNumber = "105"
+            landmarkName = "getNextCardFromFirstPass()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "quick-cards/Classes/Deck Manager/DeckManager.swift"
+            timestampString = "551737246.105285"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "110"
+            endingLineNumber = "110"
             landmarkName = "getRandomCard()"
             landmarkType = "7">
          </BreakpointContent>
@@ -170,29 +138,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "quick-cards/Classes/Deck Manager/DeckManager.swift"
-            timestampString = "551652745.633472"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "110"
-            endingLineNumber = "110"
-            landmarkName = "getRandomWeightedLevel()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "quick-cards/Classes/Deck Manager/DeckManager.swift"
-            timestampString = "551652799.139176"
+            timestampString = "551737246.105332"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "116"
             endingLineNumber = "116"
-            landmarkName = "getRandomWeightedLevel()"
-            landmarkType = "7">
+            landmarkName = "DeckManager"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -202,12 +154,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "quick-cards/Classes/Deck Manager/DeckManager.swift"
-            timestampString = "551652825.081784"
+            timestampString = "551737246.105379"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "113"
             endingLineNumber = "113"
-            landmarkName = "getRandomWeightedLevel()"
+            landmarkName = "getRandomCard()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
