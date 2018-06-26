@@ -30,6 +30,9 @@
 		8C72FCC920DF07D800795257 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C72FCC520DF07D800795257 /* LaunchScreen.storyboard */; };
 		8C72FCCA20DF07D800795257 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C72FCC720DF07D800795257 /* Info.plist */; };
 		8C72FCCC20DFF8BF00795257 /* DeckManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCCB20DFF8BF00795257 /* DeckManager.swift */; };
+		8C72FCD020E1B2BE00795257 /* ImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCCE20E1B2BE00795257 /* ImageTableViewCell.swift */; };
+		8C72FCD120E1B2BE00795257 /* ImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C72FCCF20E1B2BE00795257 /* ImageTableViewCell.xib */; };
+		8C72FCD320E1CD9100795257 /* GenericCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FCD220E1CD9100795257 /* GenericCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +60,9 @@
 		8C72FCC620DF07D800795257 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8C72FCC720DF07D800795257 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8C72FCCB20DFF8BF00795257 /* DeckManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeckManager.swift; sourceTree = "<group>"; };
+		8C72FCCE20E1B2BE00795257 /* ImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTableViewCell.swift; sourceTree = "<group>"; };
+		8C72FCCF20E1B2BE00795257 /* ImageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageTableViewCell.xib; sourceTree = "<group>"; };
+		8C72FCD220E1CD9100795257 /* GenericCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +106,7 @@
 		49D83CB220E1337C008084F8 /* Table View Cells */ = {
 			isa = PBXGroup;
 			children = (
+				8C72FCCD20E1B2A400795257 /* Image */,
 				490AF5D920E13F08003C312E /* Collection */,
 				49D83CB320E133A9008084F8 /* Button */,
 			);
@@ -161,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				8C72FC9020DF058100795257 /* Level.swift */,
+				8C72FCD220E1CD9100795257 /* GenericCell.swift */,
 			);
 			name = Enumerations;
 			path = "quick-cards/Enumerations";
@@ -263,6 +271,15 @@
 			path = Base.lproj;
 			sourceTree = "<group>";
 		};
+		8C72FCCD20E1B2A400795257 /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				8C72FCCE20E1B2BE00795257 /* ImageTableViewCell.swift */,
+				8C72FCCF20E1B2BE00795257 /* ImageTableViewCell.xib */,
+			);
+			path = Image;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -326,6 +343,7 @@
 				8C72FCC920DF07D800795257 /* LaunchScreen.storyboard in Resources */,
 				8C72FCBA20DF074400795257 /* ViewDeckController.xib in Resources */,
 				490AF5D820E13E1D003C312E /* HomeTableViewController.xib in Resources */,
+				8C72FCD120E1B2BE00795257 /* ImageTableViewCell.xib in Resources */,
 				8C72FCC820DF07D800795257 /* Assets.xcassets in Resources */,
 				8C72FCCA20DF07D800795257 /* Info.plist in Resources */,
 				490AF5DD20E13F20003C312E /* CollectionTableViewCell.xib in Resources */,
@@ -349,9 +367,11 @@
 				8C72FC6520DF004800795257 /* AppDelegate.swift in Sources */,
 				8C72FCC020DF077100795257 /* Card.swift in Sources */,
 				8C72FCA920DF070600795257 /* DeckCollectionViewCell.swift in Sources */,
+				8C72FCD320E1CD9100795257 /* GenericCell.swift in Sources */,
 				490AF5D720E13E1D003C312E /* HomeTableViewController.swift in Sources */,
 				8C72FCC120DF077100795257 /* Deck.swift in Sources */,
 				8C72FC8020DF011700795257 /* DefaultDecks.swift in Sources */,
+				8C72FCD020E1B2BE00795257 /* ImageTableViewCell.swift in Sources */,
 				8C72FCCC20DFF8BF00795257 /* DeckManager.swift in Sources */,
 				8C72FCB920DF074400795257 /* ViewDeckController.swift in Sources */,
 			);

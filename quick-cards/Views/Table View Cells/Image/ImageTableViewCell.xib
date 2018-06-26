@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="108" id="KGk-i7-Jjw" customClass="ImageTableViewCell" customModule="quick_cards" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="350" height="108"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="350" height="107.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FYu-TO-xwG">
+                        <rect key="frame" x="16" y="11" width="318" height="86"/>
+                        <color key="backgroundColor" red="1" green="0.74901960779999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="86" id="Qsh-n1-4BQ"/>
+                        </constraints>
+                        <state key="normal">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="didTapButtonActionWithSender:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="tB2-Aa-ubx"/>
+                        </connections>
+                    </button>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pencilPaperIcon" translatesAutoresizingMaskIntoConstraints="NO" id="kwa-l1-YkO">
+                        <rect key="frame" x="252" y="20" width="66" height="66"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="66" id="fRa-Ie-hFJ"/>
+                            <constraint firstAttribute="height" constant="66" id="vcP-X4-lUH"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ehr-LR-UXK">
+                        <rect key="frame" x="32" y="44" width="44" height="21"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17.5"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Ehr-LR-UXK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="16" id="4nj-zv-xYX"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="FYu-TO-xwG" secondAttribute="bottom" id="Ewc-Ma-czx"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="FYu-TO-xwG" secondAttribute="trailing" id="IeM-lZ-zSZ"/>
+                    <constraint firstItem="FYu-TO-xwG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="NTR-O4-isI"/>
+                    <constraint firstItem="Ehr-LR-UXK" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="gDy-2D-vmM"/>
+                    <constraint firstItem="FYu-TO-xwG" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="jNh-0u-sdi"/>
+                    <constraint firstAttribute="trailing" secondItem="kwa-l1-YkO" secondAttribute="trailing" constant="32" id="tCx-ev-DyL"/>
+                    <constraint firstItem="kwa-l1-YkO" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="tOn-HP-fbE"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="button" destination="FYu-TO-xwG" id="z0I-nC-1Sj"/>
+                <outlet property="iconImageView" destination="kwa-l1-YkO" id="vO4-ZE-TXf"/>
+                <outlet property="titleLabel" destination="Ehr-LR-UXK" id="uC5-HU-Oz7"/>
+            </connections>
+            <point key="canvasLocation" x="40" y="84"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="pencilPaperIcon" width="66" height="66"/>
+    </resources>
+</document>

@@ -8,12 +8,6 @@
 
 import UIKit
 
-enum GenericCell: String {
-    case newDeck = "New Deck"
-    case startDeck = "Start a Deck"
-    case allDecks = "All Decks"
-}
-
 class HomeTableViewController: UITableViewController {
     
     // Each section represented as a tuple
@@ -40,6 +34,7 @@ class HomeTableViewController: UITableViewController {
     }
     
     func registerCells() {
+        tableView.register(UINib(nibName: String(describing: ImageTableViewCell.self), bundle: nil), forCellReuseIdentifier: ImageTableViewCell.identifier)
         tableView.register(UINib(nibName: String(describing: ButtonTableViewCell.self), bundle: nil), forCellReuseIdentifier: ButtonTableViewCell.identifier)
         tableView.register(UINib(nibName: String(describing: CollectionTableViewCell.self), bundle: nil), forCellReuseIdentifier: CollectionTableViewCell.identifier)
     }
@@ -60,16 +55,18 @@ extension HomeTableViewController {
         let section = sections[indexPath.section].1
         switch section {
         case .newDeck:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.identifier, for: indexPath) as? ButtonTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ImageTableViewCell.identifier, for: indexPath) as? ImageTableViewCell else {
                 fatalError("Could not dequeue cell.")
             }
-            cell.configure(with: section.rawValue)
+            let color = UIColor(red: 255.0/255.0, green: 191.0/255.0, blue: 0, alpha: 1)
+            cell.configure(with: section.rawValue, image: UIImage(named: "pencilPaperIcon"), color: color)
             return cell
         case .startDeck:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.identifier, for: indexPath) as? ButtonTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ImageTableViewCell.identifier, for: indexPath) as? ImageTableViewCell else {
                 fatalError("Could not dequeue cell.")
             }
-            cell.configure(with: section.rawValue) {
+            let color = UIColor(red: 254.0/255.0, green: 74.0/255.0, blue: 73.0/255.0, alpha: 1)
+            cell.configure(with: section.rawValue, image: UIImage(named: "bookshelfIcon"), color: color) {
                 let controller = StartCollectionViewController(nibName: String(describing: StartCollectionViewController.self), bundle: nil)
                 self.navigationController?.pushViewController(controller, animated: true)
             }

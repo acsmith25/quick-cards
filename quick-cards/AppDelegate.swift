@@ -57,6 +57,7 @@ extension AppDelegate {
         navController.navigationBar.isTranslucent = true
         navController.navigationBar.tintColor = .black
         
+        
         window?.rootViewController = navController
         window?.makeKeyAndVisible()
     }

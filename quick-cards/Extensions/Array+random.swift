@@ -16,5 +16,12 @@ extension Array {
         }
         return self[randomIndex]
     }
+    
+    private func getRandomIndex(_ array: Array<Any>) -> Int? {
+        guard !array.isEmpty else {
+            return nil
+        }
+        return Int(arc4random_uniform(UInt32(array.count)))
+    }
 }
 
