@@ -61,7 +61,7 @@ extension AppDelegate {
         let navController = UINavigationController(rootViewController: HomeTableViewController(style: .grouped))
         navController.navigationBar.prefersLargeTitles = true
         navController.navigationBar.isTranslucent = true
-        navController.navigationBar.tintColor = GenericCell.allDecks.color        
+        navController.navigationBar.tintColor = GenericSection.allDecks.color        
         
         window?.rootViewController = navController
         window?.makeKeyAndVisible()

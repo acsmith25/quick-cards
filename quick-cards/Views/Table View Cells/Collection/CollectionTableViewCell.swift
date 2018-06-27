@@ -13,7 +13,7 @@ class CollectionTableViewCell: UITableViewCell {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var decks: [DeckManager] = []
+    var decks: [Deck] = []
     var action: ((Deck) -> Void)?
     
     override func awakeFromNib() {
@@ -25,7 +25,7 @@ class CollectionTableViewCell: UITableViewCell {
         collectionView.register(UINib(nibName: (String(describing: DeckCollectionViewCell.self)), bundle: nil), forCellWithReuseIdentifier: DeckCollectionViewCell.identifier)
     }
     
-    func configure(with decks: [DeckManager], action: ((Deck) -> Void)? = nil) {
+    func configure(with decks: [Deck], action: ((Deck) -> Void)? = nil) {
         self.decks = decks
         self.action = action
     }
@@ -37,7 +37,7 @@ extension CollectionTableViewCell: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let action = action {
-            action(decks[indexPath.row].deck)
+            action(decks[indexPath.row])
         }
     }
 
@@ -58,7 +58,7 @@ extension CollectionTableViewCell: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DeckCollectionViewCell.identifier, for: indexPath) as? DeckCollectionViewCell else {
             fatalError("Could not dequeue deck collection cell.")
         }
-        cell.configure(with: decks[indexPath.row].deck)
+        cell.configure(with: decks[indexPath.row])
         return cell
     }
     

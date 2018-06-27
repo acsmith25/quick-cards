@@ -12,7 +12,7 @@ class HomeTableViewController: UITableViewController {
     
     // Each section represented as a tuple
     // ("Section title", Section content)
-    var sections: [(String, GenericCell)] = [("", .newDeck), ("", .startDeck), ("All Decks", .allDecks)]
+    var sections: [(String, GenericSection)] = [("", .newDeck), ("", .startDeck), ("Progress", .allDecks)]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +38,7 @@ class HomeTableViewController: UITableViewController {
         tableView.register(UINib(nibName: String(describing: ButtonTableViewCell.self), bundle: nil), forCellReuseIdentifier: ButtonTableViewCell.identifier)
         tableView.register(UINib(nibName: String(describing: CollectionTableViewCell.self), bundle: nil), forCellReuseIdentifier: CollectionTableViewCell.identifier)
         tableView.register(UINib(nibName: String(describing: TableTableViewCell.self), bundle: nil), forCellReuseIdentifier: TableTableViewCell.identifier)
+        tableView.register(UINib(nibName: String(describing: DeckTableViewCell.self), bundle: nil), forCellReuseIdentifier: DeckTableViewCell.identifier)
     }
 }
 
@@ -49,7 +50,7 @@ extension HomeTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return sections[section].1.rows
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -59,40 +60,56 @@ extension HomeTableViewController {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ImageTableViewCell.identifier, for: indexPath) as? ImageTableViewCell else {
                 fatalError("Could not dequeue cell.")
             }
-            cell.configure(with: section.rawValue, image: section.icon, color: section.color)
+            cell.selectionStyle = .none
+            cell.configure(with: section.rawValue, image: section.icon, color: section.color) {
+                let controller = NewDeckViewController(nibName: String(describing: NewDeckViewController.self), bundle: nil)
+                controller.delegate = self
+                self.navigationController?.pushViewController(controller, animated: true)
+            }
             return cell
         case .startDeck:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ImageTableViewCell.identifier, for: indexPath) as? ImageTableViewCell else {
                 fatalError("Could not dequeue cell.")
             }
+            cell.selectionStyle = .none
             cell.configure(with: section.rawValue, image: section.icon, color: section.color) {
                 let controller = StartCollectionViewController(nibName: String(describing: StartCollectionViewController.self), bundle: nil)
                 self.navigationController?.pushViewController(controller, animated: true)
             }
             return cell
         case .allDecks:
-//            guard let cell = tableView.dequeueReusableCell(withIdentifier: TableTableViewCell.identifier, for: indexPath) as? TableTableViewCell else {
-//                fatalError("Could not dequeue cell.")
-//            }
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionTableViewCell.identifier, for: indexPath) as? CollectionTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DeckTableViewCell.identifier, for: indexPath) as? DeckTableViewCell else {
                 fatalError("Could not dequeue cell.")
             }
-            cell.configure(with: allDecks) { (deck) in
-                let controller = ViewDeckController(deck: deck)
-                controller.delegate = self
-                self.navigationController?.pushViewController(controller, animated: true)
-            }
+            let deck = userDecks[indexPath.row]
+            let title = deck.title
+            let subtitle = "\(deck.mastery)% Mastered"
+            cell.configure(with: title, subtitle: subtitle)
             return cell
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let section = sections[indexPath.section].1
+        switch section {
+        case .allDecks:
+            let deck = userDecks[indexPath.row]
+            let controller = ViewDeckController(deck: deck)
+            controller.delegate = self
+            self.navigationController?.pushViewController(controller, animated: true)
+        default:
+            return
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section].0
     }
     
-//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return UITableViewAutomaticDimension
-//    }
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if sections[section].0 != "" {
@@ -106,7 +123,6 @@ extension HomeTableViewController {
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.001
     }
-    
 }
 
 // MARK: - View Deck Controller Delegate

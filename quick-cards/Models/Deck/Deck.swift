@@ -9,12 +9,18 @@
 import Foundation
 
 struct Deck {
-    var title: String
     var cards: [Card]
+    var title: String
+    var mastery: Double
     
-    init(title: String, cards: [Card]) {
+    init(title: String, cards: [Card], mastery: Double = 50.0) {
         self.title = title
         self.cards = cards
+        self.mastery = mastery
+    }
+    
+    mutating func addCard(card: Card) {
+        cards.append(card)
     }
 }
 

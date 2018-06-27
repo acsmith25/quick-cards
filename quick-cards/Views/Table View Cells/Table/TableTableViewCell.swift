@@ -13,7 +13,7 @@ class TableTableViewCell: UITableViewCell {
     
     @IBOutlet weak var tableView: UITableView!
     
-    var decks: [DeckManager] = []
+    var decks: [Deck] = []
     var action: ((Deck) -> Void)?
     
     override func awakeFromNib() {
@@ -25,7 +25,7 @@ class TableTableViewCell: UITableViewCell {
         tableView.register(UINib(nibName: String(describing: DeckTableViewCell.self), bundle: nil), forCellReuseIdentifier: DeckTableViewCell.identifier)
     }
 
-    func configure(with decks: [DeckManager], action: ((Deck) -> Void)? = nil) {
+    func configure(with decks: [Deck], action: ((Deck) -> Void)? = nil) {
         self.decks = decks
         self.action = action
     }
@@ -37,7 +37,7 @@ extension TableTableViewCell: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let action = action {
-            action(decks[indexPath.row].deck)
+            action(decks[indexPath.row])
         }
     }
     
@@ -58,9 +58,13 @@ extension TableTableViewCell: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: DeckTableViewCell.identifier, for: indexPath) as? DeckTableViewCell else {
             fatalError("Could not dequeue cell.")
         }
-        let title = decks[indexPath.row].deck.title
-        let subtitle = "\(decks[indexPath.row].calculateMastery())% Mastered"
+        let title = decks[indexPath.row].title
+        let subtitle = "\(decks[indexPath.row].mastery)% Mastered"
         cell.configure(with: title, subtitle: subtitle)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 40
     }
 }

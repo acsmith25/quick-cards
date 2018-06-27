@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum GenericCell: String {
+enum GenericSection: String {
     case newDeck = "New Deck"
     case startDeck = "Start a Deck"
     case allDecks = "All Decks"
@@ -19,7 +19,7 @@ enum GenericCell: String {
             return UIImage(named: "pencilPaperIcon")
         case .startDeck:
             return UIImage(named: "bookshelfIcon")
-        case .allDecks:
+        default:
             return UIImage()
         }
     }
@@ -34,6 +34,15 @@ enum GenericCell: String {
 //            return UIColor(red: 0/255.0, green: 159.0/255.0, blue: 183.0/255.0, alpha: 1)
         default:
             return UIColor(red: 0/255.0, green: 159.0/255.0, blue: 183.0/255.0, alpha: 1)
+        }
+    }
+    
+    var rows: Int {
+        switch self {
+        case .allDecks:
+            return userDecks.count
+        default:
+            return 1
         }
     }
 }

@@ -77,11 +77,12 @@ class DeckManager {
             decreaseLevel()
             delegate?.showAnswer(correctAnswer: currentCard?.answer)
         }
-        print("Current mastery: \(calculateMastery())")
+        saveMastery()
+        print("Current mastery: \(deck.mastery)")
     }
     
-    func calculateMastery() -> Double {
-        return Double(currentMastery) / Double(totalMastery) * 100
+    func saveMastery() {
+        deck.mastery = Double(currentMastery) / Double(totalMastery) * 100
     }
     
     // MARK: - Private
@@ -171,11 +172,5 @@ class DeckManager {
         levels[newLevel].append(currentCard)
     }
 
-}
-
-// MARK: - Saving
-extension DeckManager {
-    
-    
 }
 

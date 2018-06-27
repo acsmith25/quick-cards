@@ -18,6 +18,9 @@
 		4978CF7720E2DCE8008E0AA5 /* DeckTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4978CF7520E2DCE8008E0AA5 /* DeckTableViewCell.xib */; };
 		49D83CB620E133DD008084F8 /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D83CB420E133DD008084F8 /* ButtonTableViewCell.swift */; };
 		49D83CB720E133DD008084F8 /* ButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49D83CB520E133DD008084F8 /* ButtonTableViewCell.xib */; };
+		49FF655320E3F6EB00BB0868 /* DeckSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FF655220E3F6EB00BB0868 /* DeckSaver.swift */; };
+		49FF655620E40EF800BB0868 /* NewDeckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FF655420E40EF800BB0868 /* NewDeckViewController.swift */; };
+		49FF655720E40EF800BB0868 /* NewDeckViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49FF655520E40EF800BB0868 /* NewDeckViewController.xib */; };
 		8C72FC6520DF004800795257 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC6420DF004800795257 /* AppDelegate.swift */; };
 		8C72FC8020DF011700795257 /* DefaultDecks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC7820DF011600795257 /* DefaultDecks.swift */; };
 		8C72FC9120DF058100795257 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC9020DF058100795257 /* Level.swift */; };
@@ -52,6 +55,9 @@
 		4978CF7520E2DCE8008E0AA5 /* DeckTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeckTableViewCell.xib; sourceTree = "<group>"; };
 		49D83CB420E133DD008084F8 /* ButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTableViewCell.swift; sourceTree = "<group>"; };
 		49D83CB520E133DD008084F8 /* ButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonTableViewCell.xib; sourceTree = "<group>"; };
+		49FF655220E3F6EB00BB0868 /* DeckSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckSaver.swift; sourceTree = "<group>"; };
+		49FF655420E40EF800BB0868 /* NewDeckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDeckViewController.swift; sourceTree = "<group>"; };
+		49FF655520E40EF800BB0868 /* NewDeckViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewDeckViewController.xib; sourceTree = "<group>"; };
 		8C72FC6120DF004800795257 /* quick-cards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "quick-cards.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C72FC6420DF004800795257 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8C72FC7820DF011600795257 /* DefaultDecks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultDecks.swift; sourceTree = "<group>"; };
@@ -98,6 +104,8 @@
 		4978CF6B20E284EA008E0AA5 /* New */ = {
 			isa = PBXGroup;
 			children = (
+				49FF655420E40EF800BB0868 /* NewDeckViewController.swift */,
+				49FF655520E40EF800BB0868 /* NewDeckViewController.xib */,
 			);
 			path = New;
 			sourceTree = "<group>";
@@ -159,6 +167,14 @@
 			path = Button;
 			sourceTree = "<group>";
 		};
+		49FF655120E3F6A900BB0868 /* Deck Saver */ = {
+			isa = PBXGroup;
+			children = (
+				49FF655220E3F6EB00BB0868 /* DeckSaver.swift */,
+			);
+			path = "Deck Saver";
+			sourceTree = "<group>";
+		};
 		8C72FC5820DF004800795257 = {
 			isa = PBXGroup;
 			children = (
@@ -215,17 +231,18 @@
 		8C72FC9620DF05FB00795257 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				8C72FC9820DF063600795257 /* DeckManager */,
+				49FF655120E3F6A900BB0868 /* Deck Saver */,
+				8C72FC9820DF063600795257 /* Deck Manager */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		8C72FC9820DF063600795257 /* DeckManager */ = {
+		8C72FC9820DF063600795257 /* Deck Manager */ = {
 			isa = PBXGroup;
 			children = (
 				8C72FCCB20DFF8BF00795257 /* DeckManager.swift */,
 			);
-			name = DeckManager;
+			name = "Deck Manager";
 			path = "quick-cards/Classes/Deck Manager";
 			sourceTree = SOURCE_ROOT;
 		};
@@ -385,6 +402,7 @@
 				8C72FCBA20DF074400795257 /* ViewDeckController.xib in Resources */,
 				490AF5D820E13E1D003C312E /* HomeTableViewController.xib in Resources */,
 				8C72FCD120E1B2BE00795257 /* ImageTableViewCell.xib in Resources */,
+				49FF655720E40EF800BB0868 /* NewDeckViewController.xib in Resources */,
 				8C72FCC820DF07D800795257 /* Assets.xcassets in Resources */,
 				8C72FCCA20DF07D800795257 /* Info.plist in Resources */,
 				490AF5DD20E13F20003C312E /* CollectionTableViewCell.xib in Resources */,
@@ -400,6 +418,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C72FC9120DF058100795257 /* Level.swift in Sources */,
+				49FF655620E40EF800BB0868 /* NewDeckViewController.swift in Sources */,
 				4978CF6D20E2DA2D008E0AA5 /* Keys.swift in Sources */,
 				49D83CB620E133DD008084F8 /* ButtonTableViewCell.swift in Sources */,
 				8C72FCB620DF074400795257 /* StartCollectionViewController.swift in Sources */,
@@ -409,6 +428,7 @@
 				8C72FC6520DF004800795257 /* AppDelegate.swift in Sources */,
 				4978CF7120E2DB09008E0AA5 /* TableTableViewCell.swift in Sources */,
 				8C72FCC020DF077100795257 /* Card.swift in Sources */,
+				49FF655320E3F6EB00BB0868 /* DeckSaver.swift in Sources */,
 				8C72FCA920DF070600795257 /* DeckCollectionViewCell.swift in Sources */,
 				8C72FCD320E1CD9100795257 /* GenericCell.swift in Sources */,
 				490AF5D720E13E1D003C312E /* HomeTableViewController.swift in Sources */,

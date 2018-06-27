@@ -26,7 +26,7 @@ class ViewDeckController: UIViewController {
     @IBOutlet weak var giveUpButtonCenter: NSLayoutConstraint!
     
     
-    enum ViewState {
+    private enum ViewState {
         case initial
         case asking(String)
         case correct
@@ -34,7 +34,7 @@ class ViewDeckController: UIViewController {
         case mastered
     }
     
-    var viewState: ViewState = .initial
+    private var viewState: ViewState = .initial
     
     var deckManager: DeckManager
     var delegate: ViewDeckControllerDelegate?
@@ -90,8 +90,8 @@ class ViewDeckController: UIViewController {
     }
     
     @IBAction func quitDeckAction(_ sender: Any) {
-        let mastery = deckManager.calculateMastery()
-        print("Current deck mastery: \(mastery)%")
+        deckManager.saveMastery()
+        print("Current deck mastery: \(deckManager.deck.mastery)%")
         delegate?.dismissViewController()
     }
     
@@ -104,7 +104,7 @@ class ViewDeckController: UIViewController {
 // MARK: - View State
 extension ViewDeckController {
     
-    func setViewState(_ viewState: ViewState) {
+    private func setViewState(_ viewState: ViewState) {
         self.viewState = viewState
         
         switch viewState {
