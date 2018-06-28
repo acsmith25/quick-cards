@@ -59,10 +59,11 @@ extension StartCollectionViewController {
 }
 
 // MARK: - Deck Collection View Delegate
-extension StartCollectionViewController: ViewDeckControllerDelegate {
+extension StartCollectionViewController: NavigationDelegate {
     
     func dismissViewController() {
         navigationController?.popViewController(animated: true)
+        collectionView?.reloadData()
     }
     
 }

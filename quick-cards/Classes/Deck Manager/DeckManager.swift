@@ -31,20 +31,19 @@ class DeckManager {
     }
     
     func startDeck() {
-        // Creates an empty array for each level with all cards in average initially
+        // Creates an empty array for each level with all cards in their respective level (average for new decks)
         // [ [], [], [deck], [], [] ]
         levels = Array(repeating: [], count: Level.allCases.count)
-        levels[Level.average.rawValue] = deck.cards
+        deck.cards.forEach { (card) in
+            levels[card.level.rawValue].append(card)
+            currentMastery += card.level.rawValue
+        }
         
         // Calculate the sum of all level weights
         Level.allCases.forEach { levelWeightsSum += $0.weight }
         
         // The sum for when all levels are mastered
         totalMastery = deck.cards.count * Level.mastered.rawValue
-        
-        // Set current mastery level
-        // All cards at average
-        currentMastery = deck.cards.count * Level.average.rawValue
         
         // Initiailize next card function to use first pass function
         getNextCard = getNextCardFromFirstPass
@@ -82,7 +81,7 @@ class DeckManager {
     }
     
     func saveMastery() {
-        deck.mastery = Double(currentMastery) / Double(totalMastery) * 100
+        deck.mastery = round(Double(currentMastery) / Double(totalMastery) * 10000) / 100
     }
     
     // MARK: - Private
@@ -137,7 +136,7 @@ class DeckManager {
     }
     
     private func increaseLevel() {
-        guard var currentCard = currentCard else { return }
+        guard let currentCard = currentCard else { return }
         let newLevel = currentCard.level.rawValue + 1
         guard newLevel < Level.allCases.count else {
             // Already at heighest level, insert card back into top level
@@ -155,7 +154,7 @@ class DeckManager {
     }
     
     private func decreaseLevel() {
-        guard var currentCard = currentCard else { return }
+        guard let currentCard = currentCard else { return }
         let newLevel = currentCard.level.rawValue - 1
         guard newLevel >= 0 else {
             // Already at lowest level, insert card back into bottom level

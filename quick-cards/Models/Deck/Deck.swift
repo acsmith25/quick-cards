@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Deck {
+class Deck: Codable {
     var cards: [Card]
     var title: String
     var mastery: Double
@@ -19,7 +19,7 @@ struct Deck {
         self.mastery = mastery
     }
     
-    mutating func addCard(card: Card) {
+    func addCard(card: Card) {
         cards.append(card)
     }
 }

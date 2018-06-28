@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ViewDeckControllerDelegate {
+protocol NavigationDelegate {
     func dismissViewController()
 }
 
@@ -37,7 +37,7 @@ class ViewDeckController: UIViewController {
     private var viewState: ViewState = .initial
     
     var deckManager: DeckManager
-    var delegate: ViewDeckControllerDelegate?
+    var delegate: NavigationDelegate?
     
     init(deck: Deck) {
         self.deckManager = DeckManager(deck: deck)
@@ -79,6 +79,7 @@ class ViewDeckController: UIViewController {
             deckManager.startDeck()
         case .asking(_):
             // Submit
+            self.answerTextField.endEditing(true)
             deckManager.validate(userAnswer: answerTextField.text)
         case .correct, .incorrect(_):
             // Go to next card
@@ -92,6 +93,7 @@ class ViewDeckController: UIViewController {
     @IBAction func quitDeckAction(_ sender: Any) {
         deckManager.saveMastery()
         print("Current deck mastery: \(deckManager.deck.mastery)%")
+        DeckSaver.saveDecks()
         delegate?.dismissViewController()
     }
     
@@ -109,7 +111,7 @@ extension ViewDeckController {
         
         switch viewState {
         case .initial:
-            giveUpButton.alpha = 0.0
+            giveUpButton.alpha = 1.0
             answerTextField.alpha = 0.0
         case .asking(let question):
             UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: {
@@ -122,7 +124,6 @@ extension ViewDeckController {
                 self.giveUpButton.alpha = 1.0
             }, completion: nil)
         case .correct:
-            self.answerTextField.endEditing(false)
             UIView.animate(withDuration: 0.2) {
                 self.continueButton.setTitle("Next Question", for: .normal)
                 self.questionLabel.text = "Correct!"
@@ -132,7 +133,6 @@ extension ViewDeckController {
                 self.giveUpButton.alpha = 0.0
             }
         case .incorrect(let correctAnswer):
-            self.answerTextField.endEditing(false)
             UIView.animate(withDuration: 0.2) {
                 self.continueButton.setTitle("Next Question", for: .normal)
                 self.questionLabel.text = "Wrong: \(correctAnswer)"
@@ -142,7 +142,6 @@ extension ViewDeckController {
                 self.giveUpButton.alpha = 0.0
             }
         case .mastered:
-            self.answerTextField.endEditing(false)
             UIView.animate(withDuration: 0.2) {
                 self.continueButton.setTitle("Done", for: .normal)
                 self.questionLabel.text = "Congratulations!\nYou have mastered this deck."

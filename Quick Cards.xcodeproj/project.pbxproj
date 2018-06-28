@@ -170,6 +170,7 @@
 		49FF655120E3F6A900BB0868 /* Deck Saver */ = {
 			isa = PBXGroup;
 			children = (
+				8C72FC7820DF011600795257 /* DefaultDecks.swift */,
 				49FF655220E3F6EB00BB0868 /* DeckSaver.swift */,
 			);
 			path = "Deck Saver";
@@ -195,7 +196,6 @@
 			isa = PBXGroup;
 			children = (
 				8C72FC6420DF004800795257 /* AppDelegate.swift */,
-				8C72FC7820DF011600795257 /* DefaultDecks.swift */,
 				4978CF6C20E2DA2D008E0AA5 /* Keys.swift */,
 				8C72FC8820DF04F800795257 /* Extensions */,
 				8C72FC8F20DF056E00795257 /* Enumerations */,

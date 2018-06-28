@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Card {
+class Card: Codable {
     var question: String
     var answer: String
     var level: Level

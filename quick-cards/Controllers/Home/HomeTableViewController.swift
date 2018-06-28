@@ -21,12 +21,13 @@ class HomeTableViewController: UITableViewController {
         
         registerCells()
         
-        self.tableView.estimatedRowHeight = 70
+        self.tableView.estimatedRowHeight = 50
         self.tableView.rowHeight = UITableViewAutomaticDimension
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = false
+        tableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -116,7 +117,7 @@ extension HomeTableViewController {
             // Section has a title
             return 40
         } else {
-            return 20
+            return 16
         }
     }
     
@@ -126,8 +127,9 @@ extension HomeTableViewController {
 }
 
 // MARK: - View Deck Controller Delegate
-extension HomeTableViewController: ViewDeckControllerDelegate {
+extension HomeTableViewController: NavigationDelegate {
     func dismissViewController() {
         navigationController?.popViewController(animated: true)
+        tableView.reloadData()
     }
 }

@@ -26,12 +26,13 @@ class NewDeckViewController: UIViewController {
     private var viewState: ViewState = .initial
     
     var deck: Deck?
-    var delegate: ViewDeckControllerDelegate?
+    var delegate: NavigationDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         deck = Deck(title: "New Deck", cards: [])
+        setViewState(.initial)
     }
     
     override func didReceiveMemoryWarning() {
@@ -42,32 +43,28 @@ class NewDeckViewController: UIViewController {
     @IBAction func didTapNextButton(_ sender: Any) {
         switch viewState {
         case .initial:
-            let title = questionTextField.text ?? ""
-            
-            self.questionTextField.text = ""
             self.questionTextField.endEditing(true)
-            
+            let title = questionTextField.text ?? ""
             deck?.title = title
-            set(.enterCard)
+            setViewState(.enterCard)
         case .enterCard:
-            let question = questionTextField.text ?? ""
-            let answer = answerTextField.text ?? ""
-            
-            self.answerTextField.text = ""
-            self.questionTextField.text = ""
             self.answerTextField.endEditing(true)
             self.questionTextField.endEditing(true)
-            
+            let question = questionTextField.text ?? ""
+            let answer = answerTextField.text ?? ""
             let card = Card(question: question, answer: answer)
             deck?.addCard(card: card)
-            set(.submitted)
+            setViewState(.submitted)
         case .submitted:
-            set(.enterCard)
+            setViewState(.enterCard)
         }
-
     }
     
     @IBAction func didTapDoneButton(_ sender: Any) {
+        if let deck = deck {
+            userDecks.append(deck)
+            DeckSaver.saveDecks()
+        }
         delegate?.dismissViewController()
     }
 }
@@ -75,28 +72,40 @@ class NewDeckViewController: UIViewController {
 // MARK: - View State
 extension NewDeckViewController {
     
-    private func set(_ viewState: ViewState) {
+    private func setViewState(_ viewState: ViewState) {
         self.viewState = viewState
         switch viewState {
         case .initial:
-            self.questionLabel.text = "Title:"
             self.continueButton.setTitle("Save Title", for: .normal)
+            self.questionLabel.text = "Title:"
+            
             self.doneButton.alpha = 0
             self.answerTextField.alpha = 0
             self.answerLabel.alpha = 0
         case .enterCard:
-            self.questionLabel.text = "Question:"
-            self.continueButton.setTitle("Save", for: .normal)
-            self.doneButton.alpha = 0
-            self.answerTextField.alpha = 1
-            self.answerLabel.alpha = 1
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: {
+                self.continueButton.setTitle("Save", for: .normal)
+                self.questionLabel.text = "Question:"
+                self.questionTextField.text = ""
+                
+                self.questionTextField.alpha = 1
+                self.questionLabel.alpha = 1
+                self.answerTextField.alpha = 1
+                self.answerLabel.alpha = 1
+                self.doneButton.alpha = 0
+            }, completion: nil)
         case .submitted:
-            self.continueButton.setTitle("Add Another", for: .normal)
-            self.answerTextField.alpha = 0
-            self.answerLabel.alpha = 0
-            self.questionTextField.alpha = 0
-            self.questionLabel.alpha = 0
-            self.doneButton.alpha = 1
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: {
+                self.continueButton.setTitle("Add Another", for: .normal)
+                self.answerTextField.text = ""
+                self.questionTextField.text = ""
+                
+                self.doneButton.alpha = 1
+                self.answerTextField.alpha = 0
+                self.answerLabel.alpha = 0
+                self.questionTextField.alpha = 0
+                self.questionLabel.alpha = 0
+            }, completion: nil)
         }
     }
 

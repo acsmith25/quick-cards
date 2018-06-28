@@ -8,7 +8,8 @@
 
 import Foundation
 
-let userDecks = [ones, twos, threes, fours, fives, sixes, sevens, eights, nines, tens, elevens, twelves]
+var userDecks: [Deck] = []
+let defaultDecks = [ones, twos, threes, fours, fives, sixes, sevens, eights, nines, tens, elevens, twelves]
 
 let ones = Deck(title: "Ones", cards: [ Card(question: "1 x 1", answer: "1"),
                      Card(question: "1 x 2", answer: "2"),

@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum Level: Int {
+enum Level: Int, Codable {
     case failed = 0
     case belowAverage = 1
     case average = 2
