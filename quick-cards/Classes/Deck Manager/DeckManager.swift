@@ -32,6 +32,7 @@ class DeckManager {
     func startFromBeginning() {
         getNextQuestion = getNextQuestionFromFirstPass
         deck.reset()
+        startDeck()
     }
     
     func startDeck() {

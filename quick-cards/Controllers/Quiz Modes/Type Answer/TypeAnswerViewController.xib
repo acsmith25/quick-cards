@@ -23,6 +23,7 @@
                 <outlet property="giveUpButton" destination="lig-Fq-oV8" id="4dh-GE-AWe"/>
                 <outlet property="giveUpButtonCenter" destination="9nE-vE-nv8" id="jvf-YA-vl1"/>
                 <outlet property="questionLabel" destination="7Xr-bx-kX3" id="fur-kC-ES8"/>
+                <outlet property="view" destination="fML-fd-D3l" id="06C-qe-dki"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -55,6 +56,9 @@
                             <integer key="value" value="10"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="continueButtonAction:" destination="-1" eventType="touchUpInside" id="Lw2-JO-r3E"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lig-Fq-oV8">
                     <rect key="frame" x="38" y="530" width="299" height="50"/>
@@ -70,6 +74,9 @@
                             <integer key="value" value="10"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="giveUpAction:" destination="-1" eventType="touchUpInside" id="RNC-cl-HFT"/>
+                    </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KI6-hV-Obq">
                     <rect key="frame" x="16" y="69" width="343" height="293.5"/>
@@ -120,6 +127,9 @@
                     <state key="normal" title="Back" image="leftArrowIcon">
                         <color key="titleColor" red="0.0" green="0.62352941179999999" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
+                    <connections>
+                        <action selector="backButtonAction:" destination="-1" eventType="touchUpInside" id="JCk-1F-Rt5"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>

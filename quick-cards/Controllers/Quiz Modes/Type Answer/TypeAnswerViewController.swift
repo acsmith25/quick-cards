@@ -28,21 +28,22 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
     
     
     private enum ViewState {
-        case initial
-        case asking(String)
+        case asking(String?)
         case correct
         case incorrect(String)
         case mastered
     }
     
-    private var viewState: ViewState = .initial
+    private var viewState: ViewState = .asking(nil)
     
     var deckManager: DeckManager
+    var shouldResume: Bool
     var delegate: NavigationDelegate?
     
-    init(deck: Deck) {
+    init(deck: Deck, shouldResume: Bool) {
         self.deckManager = DeckManager(deck: deck)
-        super.init(nibName: String(describing: ViewDeckController.self), bundle: nil)
+        self.shouldResume = shouldResume
+        super.init(nibName: String(describing: TypeAnswerViewController.self), bundle: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -57,11 +58,12 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
         //        navigationController?.navigationBar.prefersLargeTitles = false
         
         deckManager.delegate = self
-        setViewState(.initial)
+        if shouldResume { deckManager.startDeck() }
+        else { deckManager.startFromBeginning() }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        cardViewCenter.constant += view.bounds.width
+//        cardViewCenter.constant += view.bounds.width
         //        answerFieldCenter.constant += view.bounds.width
         //        giveUpButtonCenter.constant += view.bounds.width
     }
@@ -74,12 +76,6 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
     
     @IBAction func continueButtonAction(_ sender: Any) {
         switch viewState {
-        case .initial:
-            // Resume deck
-            self.cardViewCenter.constant -= self.view.bounds.width
-            //            self.answerFieldCenter.constant -= self.view.bounds.width
-            //            self.giveUpButtonCenter.constant -= self.view.bounds.width
-            deckManager.startDeck()
         case .asking(_):
             // Submit
             self.answerTextField.endEditing(true)
@@ -101,16 +97,8 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
     }
     
     @IBAction func giveUpAction(_ sender: Any) {
-        switch viewState {
-        case .initial:
-            // Restart Deck
-            self.cardViewCenter.constant -= self.view.bounds.width
-            deckManager.startFromBeginning()
-            deckManager.startDeck()
-        default:
-            // Give Up
-            deckManager.validate(userAnswer: nil)
-        }
+        // Give Up
+        deckManager.validate(userAnswer: nil)
     }
 }
 
@@ -122,18 +110,10 @@ extension TypeAnswerViewController {
         self.viewState = viewState
         
         switch viewState {
-        case .initial:
-            self.continueButton.setTitle("Resume Deck", for: .normal)
-            self.giveUpButton.setTitle("Restart Deck", for: .normal)
-            giveUpButton.alpha = 1.0
-            answerTextField.alpha = 0.0
         case .asking(let question):
             UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: {
                 self.continueButton.setTitle("Submit", for: .normal)
-                self.giveUpButton.setTitle("Give Up", for: .normal)
                 self.questionLabel.text = question
-                
-                self.view.layoutIfNeeded()
                 
                 self.answerTextField.alpha = 1.0
                 self.giveUpButton.alpha = 1.0

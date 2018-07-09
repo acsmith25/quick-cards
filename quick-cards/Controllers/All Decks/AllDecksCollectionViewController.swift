@@ -8,12 +8,13 @@
 
 import UIKit
 
-class StartCollectionViewController: UICollectionViewController {
+class AllDecksCollectionViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.title = "My Decks"
+        //self.modalPresentationStyle = .
         
         // Register cell classes
         guard let collectionView = collectionView else { return }
@@ -30,7 +31,7 @@ class StartCollectionViewController: UICollectionViewController {
 }
 
 // MARK: - Collection View Data Source
-extension StartCollectionViewController {
+extension AllDecksCollectionViewController {
         
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -52,28 +53,26 @@ extension StartCollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let deck = allDecks[indexPath.row]
+        let startController = StartDeckViewController(deck: deck)
         
-        let actionSheet = UIAlertController(title: "Quiz Mode", message: "Choose how you would like your flashcards to be presented.", preferredStyle: .actionSheet)
-        actionSheet.view.tintColor = GenericSection.quickResume.color
+//        let width = UIScreen.main.bounds.width / 2
+//        let height = UIScreen.main.bounds.height / 2
+//        let containerView = UIView(frame: CGRect(x: 0, y: 100, width: width, height: height))
+//        containerView.addSubview(startController.view)
+//        startController.view.backgroundColor = .blue
         
-        QuizMode.allModes.forEach { (mode) in
-            let action = UIAlertAction(title: mode.title, style: .default, handler: { (action) in
-                var controller = mode.getController(with: deck)
-                controller.delegate = self
-                guard let viewController = controller as? UIViewController else { return }
-                self.navigationController?.pushViewController(viewController, animated: true)
-            })
-            actionSheet.addAction(action)
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        actionSheet.addAction(cancelAction)
+//        self.view.addSubview(containerView)
         
-        present(actionSheet, animated: true, completion: nil)
+//        addChildViewController(startController)
+//        startController.view.alpha = 0.0
+//        startController.view.frame = CGRect(x: 150, y: 150, width: 100, height: 100)
+//        startController.view.alpha = 1.0
+        self.navigationController?.pushViewController(startController, animated: true)
     }
 }
 
 // MARK: - Deck Collection View Delegate
-extension StartCollectionViewController: NavigationDelegate {
+extension AllDecksCollectionViewController: NavigationDelegate {
     
     func dismissViewController() {
         navigationController?.popViewController(animated: true)

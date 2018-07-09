@@ -29,10 +29,10 @@ enum QuizMode {
         }
     }
     
-    func getController(with deck: Deck) -> QuizModeController {
+    func getController(with deck: Deck, shouldResume: Bool) -> QuizModeController {
         switch self {
         default:
-            return TypeAnswerViewController(deck: deck)
+            return TypeAnswerViewController(deck: deck, shouldResume: shouldResume)
         }
     }
 }

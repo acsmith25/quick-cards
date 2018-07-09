@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol NavigationDelegate {
+    func dismissViewController()
+}
+
 class HomeTableViewController: UITableViewController {
     
     // Each section represented as a tuple
@@ -83,7 +87,7 @@ extension HomeTableViewController {
             }
             cell.selectionStyle = .none
             cell.configure(with: section.rawValue, image: section.icon, color: section.color) {
-                let controller = StartCollectionViewController(nibName: String(describing: StartCollectionViewController.self), bundle: nil)
+                let controller = AllDecksCollectionViewController(nibName: String(describing: AllDecksCollectionViewController.self), bundle: nil)
                 self.navigationController?.pushViewController(controller, animated: true)
             }
             return cell
@@ -104,7 +108,7 @@ extension HomeTableViewController {
         switch section {
         case .quickResume:
             let deck = decksInProgress[indexPath.row]
-            let controller = ViewDeckController(deck: deck)
+            let controller = TypeAnswerViewController(deck: deck, shouldResume: true)
             controller.delegate = self
             self.navigationController?.pushViewController(controller, animated: true)
         default:
