@@ -10,9 +10,14 @@ import Foundation
 
 class DeckSaver {
     
-    class func saveDecks() {
+    class func saveAllDecks() {
+        DeckSaver.saveDecks(decks: allDecks, key: allDecksKey)
+        DeckSaver.saveDecks(decks: decksInProgress, key: decksInProgressKey)
+    }
+    
+    class func saveDecks(decks: [Deck], key: String) {
         let encoder = JSONEncoder()
-        let decksData = userDecks.map { (deck) -> String? in
+        let decksData = decks.map { (deck) -> String? in
             do {
                 let data = try encoder.encode(deck)
                 return String(data: data, encoding: .utf8)
@@ -21,12 +26,12 @@ class DeckSaver {
                 return nil
             }
         }
-        UserDefaults.standard.set(decksData, forKey: allDecksKey)
+        UserDefaults.standard.set(decksData, forKey: key)
     }
     
-    class func getDefaultDecks() -> [Deck]? {
+    class func getDecks(for key: String) -> [Deck]? {
         let decoder = JSONDecoder()
-        guard let decksData = UserDefaults.standard.array(forKey: allDecksKey) as? [String] else { return nil }
+        guard let decksData = UserDefaults.standard.array(forKey: key) as? [String] else { return nil }
         let decks = decksData.map({ (json) -> Deck in
             do {
                 guard let data = json.data(using: .utf8) else { fatalError() }

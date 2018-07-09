@@ -23,11 +23,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setupWindow()
         
         // Get decks
-        guard let savedDecks = DeckSaver.getDefaultDecks() else {
-            userDecks = defaultDecks
+        guard let allSavedDecks = DeckSaver.getDecks(for: allDecksKey) else {
+            allDecks = defaultDecks
             return true
         }
-        userDecks = savedDecks
+        guard let progressSavedDecks = DeckSaver.getDecks(for: decksInProgressKey) else {
+            decksInProgress = []
+            return true
+        }
+        allDecks = allSavedDecks
+        decksInProgress = progressSavedDecks
         
         return true
     }
@@ -51,7 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        DeckSaver.saveDecks()
+        DeckSaver.saveAllDecks()
     }
 
 
@@ -66,7 +71,7 @@ extension AppDelegate {
         let navController = UINavigationController(rootViewController: HomeTableViewController(style: .grouped))
         navController.navigationBar.prefersLargeTitles = true
         navController.navigationBar.isTranslucent = true
-        navController.navigationBar.tintColor = GenericSection.allDecks.color        
+        navController.navigationBar.tintColor = GenericSection.quickResume.color        
         
         window?.rootViewController = navController
         window?.makeKeyAndVisible()

@@ -20,36 +20,22 @@
                 <rect key="frame" x="0.0" y="0.0" width="346" height="110.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="goJ-mD-daB">
+                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="zzd-PU-0eB">
                         <rect key="frame" x="16" y="0.0" width="314" height="110.5"/>
-                        <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="zzd-PU-0eB">
-                                <rect key="frame" x="0.0" y="0.0" width="313" height="110.5"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Ql4-uW-ll4">
-                                    <size key="itemSize" width="100" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                            </collectionView>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="zzd-PU-0eB" firstAttribute="centerY" secondItem="goJ-mD-daB" secondAttribute="centerY" id="GSt-gm-kdJ"/>
-                            <constraint firstAttribute="trailing" secondItem="zzd-PU-0eB" secondAttribute="trailing" id="Imb-Wz-x0m"/>
-                            <constraint firstAttribute="bottom" secondItem="zzd-PU-0eB" secondAttribute="bottom" id="lfx-TT-gZg"/>
-                            <constraint firstAttribute="height" constant="110" id="mOx-e9-kAN"/>
-                            <constraint firstItem="zzd-PU-0eB" firstAttribute="top" secondItem="goJ-mD-daB" secondAttribute="top" id="uB7-qc-bm2"/>
-                            <constraint firstItem="zzd-PU-0eB" firstAttribute="leading" secondItem="goJ-mD-daB" secondAttribute="leading" id="yXa-4a-OVb"/>
-                            <constraint firstItem="zzd-PU-0eB" firstAttribute="centerX" secondItem="goJ-mD-daB" secondAttribute="centerX" id="zQ4-9j-Oaf"/>
-                        </constraints>
-                    </scrollView>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Ql4-uW-ll4">
+                            <size key="itemSize" width="100" height="50"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                    </collectionView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="goJ-mD-daB" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="VXp-7R-OVu"/>
-                    <constraint firstAttribute="bottom" secondItem="goJ-mD-daB" secondAttribute="bottom" id="r56-Ib-EL8"/>
-                    <constraint firstItem="goJ-mD-daB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="ypt-B8-SwI"/>
-                    <constraint firstItem="goJ-mD-daB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="ywg-R3-YmH"/>
+                    <constraint firstItem="zzd-PU-0eB" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="3iF-MH-epL"/>
+                    <constraint firstItem="zzd-PU-0eB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="NAE-D9-oHu"/>
+                    <constraint firstAttribute="bottom" secondItem="zzd-PU-0eB" secondAttribute="bottom" id="XwR-tX-WRl"/>
+                    <constraint firstItem="zzd-PU-0eB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="ZPA-rH-nK4"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>

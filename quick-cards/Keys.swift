@@ -9,3 +9,4 @@
 import Foundation
 
 let allDecksKey = "all_user_decks"
+let decksInProgressKey = "in_progress_decks"

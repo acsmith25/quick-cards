@@ -11,7 +11,7 @@ import UIKit
 enum GenericSection: String {
     case newDeck = "New Deck"
     case startDeck = "Start a Deck"
-    case allDecks = "All Decks"
+    case quickResume = "Quick Resume"
     
     var icon: UIImage? {
         switch self {
@@ -39,8 +39,8 @@ enum GenericSection: String {
     
     var rows: Int {
         switch self {
-        case .allDecks:
-            return userDecks.count
+        case .quickResume:
+            return decksInProgress.count
         default:
             return 1
         }

@@ -1,19 +1,19 @@
 //
-//  ViewController.swift
-//  MyApp
+//  TypeAnswerViewController.swift
+//  quick-cards
 //
-//  Created by Abby Smith on 6/20/18.
+//  Created by Abby Smith on 7/6/18.
 //  Copyright © 2018 Abby Smith. All rights reserved.
 //
 
 import UIKit
 
-protocol NavigationDelegate {
-    func dismissViewController()
+protocol QuizModeController {
+    var delegate: NavigationDelegate? { get set }
 }
 
-class ViewDeckController: UIViewController {
-
+class TypeAnswerViewController: UIViewController, QuizModeController {
+    
     @IBOutlet weak var giveUpButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
     @IBOutlet weak var questionLabel: UILabel!
@@ -54,7 +54,7 @@ class ViewDeckController: UIViewController {
         
         backButton.imageView?.tintColor = GenericSection.quickResume.color
         navigationController?.navigationBar.isHidden = true
-//        navigationController?.navigationBar.prefersLargeTitles = false
+        //        navigationController?.navigationBar.prefersLargeTitles = false
         
         deckManager.delegate = self
         setViewState(.initial)
@@ -62,10 +62,10 @@ class ViewDeckController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         cardViewCenter.constant += view.bounds.width
-//        answerFieldCenter.constant += view.bounds.width
-//        giveUpButtonCenter.constant += view.bounds.width
+        //        answerFieldCenter.constant += view.bounds.width
+        //        giveUpButtonCenter.constant += view.bounds.width
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -77,8 +77,8 @@ class ViewDeckController: UIViewController {
         case .initial:
             // Resume deck
             self.cardViewCenter.constant -= self.view.bounds.width
-//            self.answerFieldCenter.constant -= self.view.bounds.width
-//            self.giveUpButtonCenter.constant -= self.view.bounds.width
+            //            self.answerFieldCenter.constant -= self.view.bounds.width
+            //            self.giveUpButtonCenter.constant -= self.view.bounds.width
             deckManager.startDeck()
         case .asking(_):
             // Submit
@@ -95,6 +95,7 @@ class ViewDeckController: UIViewController {
     
     @IBAction func backButtonAction(_ sender: Any) {
         print("Current deck mastery: \(deckManager.deck.mastery)%")
+        decksInProgress.append(deckManager.deck)
         DeckSaver.saveAllDecks()
         delegate?.dismissViewController()
     }
@@ -104,6 +105,7 @@ class ViewDeckController: UIViewController {
         case .initial:
             // Restart Deck
             self.cardViewCenter.constant -= self.view.bounds.width
+            deckManager.startFromBeginning()
             deckManager.startDeck()
         default:
             // Give Up
@@ -114,7 +116,7 @@ class ViewDeckController: UIViewController {
 
 
 // MARK: - View State
-extension ViewDeckController {
+extension TypeAnswerViewController {
     
     private func setViewState(_ viewState: ViewState) {
         self.viewState = viewState
@@ -179,7 +181,7 @@ extension ViewDeckController {
 }
 
 // MARK: - Card Deck Delegate
-extension ViewDeckController: DeckManagerDelegate {
+extension TypeAnswerViewController: DeckManagerDelegate {
     
     func masteredDeck() {
         setViewState(.mastered)

@@ -21,47 +21,55 @@ class DeckManager {
     var delegate: DeckManagerDelegate?
     
     var deck: Deck
-    var levels: [[Card]] = []
-    var currentCard: Card?
+    var currentQuestion: Question?
     
-    var getNextCard: (() -> Card)?
+    var getNextQuestion: (() -> Question?)?
     
     init(deck: Deck) {
         self.deck = deck
     }
     
+    func startFromBeginning() {
+        getNextQuestion = getNextQuestionFromFirstPass
+        deck.reset()
+    }
+    
     func startDeck() {
-        // Creates an empty array for each level with all cards in their respective level (average for new decks)
-        // [ [], [], [deck], [], [] ]
-        levels = Array(repeating: [], count: Level.allCases.count)
-        deck.cards.forEach { (card) in
-            levels[card.level.rawValue].append(card)
-            currentMastery += card.level.rawValue
+        deck.gradeDistribution.forEach { (grade, questions) in
+            currentMastery += grade.masteryValue * questions.count
         }
         
-        // Calculate the sum of all level weights
-        Level.allCases.forEach { levelWeightsSum += $0.weight }
+        // Calculate the sum of all grade weights
+        Grade.allCases.forEach { gradeWeightsSum += $0.distributionWeight }
         
-        // The sum for when all levels are mastered
-        totalMastery = deck.cards.count * Level.mastered.rawValue
+        // The sum for when all grades are mastered
+        totalMastery = deck.cards.count * Grade.mastered.masteryValue
         
         // Initiailize next card function to use first pass function
-        getNextCard = getNextCardFromFirstPass
+        getNextQuestion = deck.hasCompletedFirstPass ? getRandomQuestion : getNextQuestionFromFirstPass
         
         // Get first card
         next()
     }
     
     func next() {
-        if let getNextCard = getNextCard {
-            currentCard = getNextCard()
+        if let getNextQuestion = getNextQuestion {
+            guard let question = getNextQuestion() else {
+                // Deck is empty
+                return
+            }
+            currentQuestion = question
         }
-        guard let currentCard = currentCard else { return }
-        delegate?.askQuestion(question: "\(currentCard.question)")
+        guard let currentQuestion = currentQuestion else { return }
+        delegate?.askQuestion(question: "\(currentQuestion.question)")
     }
     
     func validate(userAnswer: String?) {
-        let didAnswerCorrectly = userAnswer == currentCard?.answer ? true : false
+        guard let currentQuestion = currentQuestion else { return }
+        guard let correctAnswer = deck.cards[currentQuestion] else {
+            fatalError("Question does not exist.")
+        }
+        let didAnswerCorrectly = userAnswer == correctAnswer.answer ? true : false
         if didAnswerCorrectly {
             increaseLevel()
             if currentMastery == totalMastery {
@@ -74,7 +82,7 @@ class DeckManager {
         } else {
             // Continue
             decreaseLevel()
-            delegate?.showAnswer(correctAnswer: currentCard?.answer)
+            delegate?.showAnswer(correctAnswer: correctAnswer.answer)
         }
         saveMastery()
         print("Current mastery: \(deck.mastery)")
@@ -86,41 +94,45 @@ class DeckManager {
     
     // MARK: - Private
     
-    private var levelWeightsSum: Int = 0
+    private var gradeWeightsSum: Int = 0
     private var totalMastery: Int = 0
     private var currentMastery: Int = 0
     
-    private func getNextCardFromFirstPass() -> Card {
-        var defaultLevel = levels[Level.average.rawValue]
-        guard let randomIndex = getRandomIndex(defaultLevel) else {
+    private func getNextQuestionFromFirstPass() -> Question? {
+        guard var defaultGrade = deck.gradeDistribution[.average] else { return nil }
+        guard let randomIndex = getRandomIndex(defaultGrade) else {
             // First pass complete
             // Update get next card function to use random function
-            self.getNextCard = getRandomCard
-            return getRandomCard()
+            deck.hasCompletedFirstPass = true
+            self.getNextQuestion = getRandomQuestion
+            return getRandomQuestion()
         }
         // Extract card at random index
-        let card = defaultLevel.remove(at: randomIndex)
-        levels[Level.average.rawValue] = defaultLevel
-        return card
+        let question = defaultGrade.remove(at: randomIndex)
+        deck.gradeDistribution[.average] = defaultGrade
+        return question
     }
     
-    private func getRandomCard() -> Card {
-        guard let randomLevel = getRandomWeightedLevel() else {
+    private func getRandomQuestion() -> Question? {
+        guard let randomLevel = getRandomWeightedGrade() else {
             fatalError("Error getting random level.")
         }
-        guard let randomIndex = getRandomIndex(levels[randomLevel.rawValue]) else {
-            return getRandomCard()
+        guard var cards = deck.gradeDistribution[randomLevel] else {
+            fatalError("Error getting random level.")
         }
-        return levels[randomLevel.rawValue].remove(at: randomIndex)
+        guard let randomIndex = getRandomIndex(cards) else {
+            return getRandomQuestion()
+        }
+        return cards.remove(at: randomIndex)
     }
     
-    private func getRandomWeightedLevel() -> Level? {
+    private func getRandomWeightedGrade() -> Grade? {
         // Get random weight from the summ of all level weights
-        var randomWeight = Int(arc4random_uniform(UInt32(levelWeightsSum + 1)))
+        var randomWeight = Int(arc4random_uniform(UInt32(gradeWeightsSum + 1)))
         
         // Get level of random weight by subtracting weight of current level until <= 0
-        for level in Level.allCases.reversed() {
-            randomWeight = randomWeight - level.weight
+        for level in Grade.allCases.reversed() {
+            randomWeight = randomWeight - level.distributionWeight
             if randomWeight <= 0 {
                 return level
             }
@@ -136,39 +148,33 @@ class DeckManager {
     }
     
     private func increaseLevel() {
-        guard let currentCard = currentCard else { return }
-        let newLevel = currentCard.level.rawValue + 1
-        guard newLevel < Level.allCases.count else {
+        guard let currentQuestion = currentQuestion else { return }
+        let newGrade = currentQuestion.grade.masteryValue + 1
+        guard newGrade < Grade.allCases.count else {
             // Already at heighest level, insert card back into top level
-            levels[newLevel - 1].append(currentCard)
+            let grade = Grade(masteryValue: newGrade - 1)
+            deck.updateQuestionGrade(question: currentQuestion, grade: grade)
             return
         }
         // Update card's level
-        guard let level = Level(rawValue: newLevel) else {
-            fatalError("Error increasing card's level")
-        }
-        // Reinsert card at new level and update mastery
+        let grade = Grade(masteryValue: newGrade)
+        deck.updateQuestionGrade(question: currentQuestion, grade: grade)
         currentMastery += 1
-        currentCard.level = level
-        levels[newLevel].append(currentCard)
     }
     
     private func decreaseLevel() {
-        guard let currentCard = currentCard else { return }
-        let newLevel = currentCard.level.rawValue - 1
-        guard newLevel >= 0 else {
+        guard let currentQuestion = currentQuestion else { return }
+        let newGrade = currentQuestion.grade.masteryValue - 1
+        guard newGrade >= 0 else {
             // Already at lowest level, insert card back into bottom level
-            levels[newLevel + 1].append(currentCard)
+            let grade = Grade(masteryValue: newGrade + 1)
+            deck.updateQuestionGrade(question: currentQuestion, grade: grade)
             return
         }
         // Update card's level
-        guard let level = Level(rawValue: newLevel) else {
-            fatalError("Error decreasing card's level")
-        }
-        // Reinsert card at new level and update mastery
+        let grade = Grade(masteryValue: newGrade)
+        deck.updateQuestionGrade(question: currentQuestion, grade: grade)
         currentMastery -= 1
-        currentCard.level = level
-        levels[newLevel].append(currentCard)
     }
 
 }

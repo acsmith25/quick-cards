@@ -31,7 +31,7 @@ class NewDeckViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        deck = Deck(title: "New Deck", cards: [])
+        deck = Deck(title: "New Deck", cards: [:])
         setViewState(.initial)
     }
     
@@ -44,16 +44,19 @@ class NewDeckViewController: UIViewController {
         switch viewState {
         case .initial:
             self.questionTextField.endEditing(true)
+            
             let title = questionTextField.text ?? ""
             deck?.title = title
+            
             setViewState(.enterCard)
         case .enterCard:
             self.answerTextField.endEditing(true)
             self.questionTextField.endEditing(true)
+            
             let question = questionTextField.text ?? ""
             let answer = answerTextField.text ?? ""
-            let card = Card(question: question, answer: answer)
-            deck?.addCard(card: card)
+            deck?.addCard(question: question, answer: answer)
+            
             setViewState(.submitted)
         case .submitted:
             setViewState(.enterCard)
@@ -62,8 +65,8 @@ class NewDeckViewController: UIViewController {
     
     @IBAction func didTapDoneButton(_ sender: Any) {
         if let deck = deck {
-            userDecks.append(deck)
-            DeckSaver.saveDecks()
+            allDecks.append(deck)
+            DeckSaver.saveDecks(decks: allDecks, key: allDecksKey)
         }
         delegate?.dismissViewController()
     }

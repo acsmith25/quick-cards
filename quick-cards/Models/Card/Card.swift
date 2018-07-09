@@ -11,9 +11,9 @@ import Foundation
 class Card: Codable {
     var question: String
     var answer: String
-    var level: Level
+    var level: Grade
     
-    init(question: String, answer: String, level: Level = .average) {
+    init(question: String, answer: String, level: Grade = .average) {
         self.question = question
         self.answer = answer
         self.level = level

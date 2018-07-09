@@ -9,18 +9,53 @@
 import Foundation
 
 class Deck: Codable {
-    var cards: [Card]
     var title: String
     var mastery: Double
+    var hasCompletedFirstPass: Bool = false
     
-    init(title: String, cards: [Card], mastery: Double = 50.0) {
+    var cards: [Question: Answer]
+    var questions: [Question]
+    var answers: [Answer]
+    var gradeDistribution: [Grade: [Question]]
+    
+    init(title: String, cards: [Question: Answer], mastery: Double = 50.0) {
         self.title = title
-        self.cards = cards
         self.mastery = mastery
+        
+        self.cards = cards
+        self.questions = Array(cards.keys)
+        self.answers = Array(cards.values)
+        self.gradeDistribution = [.average: questions]
     }
     
-    func addCard(card: Card) {
-        cards.append(card)
+    func reset() {
+        mastery = 50.0
+        hasCompletedFirstPass = false
+        gradeDistribution = [.average: questions]
     }
+    
+    func addCard(question: String, answer: String, grade: Grade = .average) {
+        let question = Question(question)
+        let answer = Answer(answer)
+        cards[question] = answer
+        questions.append(question)
+        answers.append(answer)
+        
+        guard var targetGrade = gradeDistribution[grade] else {
+            gradeDistribution[grade] = [question]
+            return
+        }
+        targetGrade.append(question)
+    }
+    
+    func updateQuestionGrade(question: Question, grade: Grade) {
+        guard var targetGrade = gradeDistribution[grade] else {
+            gradeDistribution[grade] = [question]
+            return
+        }
+        targetGrade.append(question)
+        question.grade = grade
+    }
+
 }
 

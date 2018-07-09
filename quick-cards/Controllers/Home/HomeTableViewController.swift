@@ -12,16 +12,19 @@ class HomeTableViewController: UITableViewController {
     
     // Each section represented as a tuple
     // ("Section title", Section content)
-    var sections: [(String, GenericSection)] = [("", .newDeck), ("", .startDeck), ("Progress", .allDecks)]
+    var sections: [(String, GenericSection)] = [("", .newDeck), ("", .startDeck)]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.navigationBar.isHidden = false
+        
         self.title = "Quick Cards"
         
         registerCells()
+        configureSections()
         
-        self.tableView.estimatedRowHeight = 50
+        self.tableView.estimatedRowHeight = 300
         self.tableView.rowHeight = UITableViewAutomaticDimension
     }
     
@@ -40,6 +43,12 @@ class HomeTableViewController: UITableViewController {
         tableView.register(UINib(nibName: String(describing: CollectionTableViewCell.self), bundle: nil), forCellReuseIdentifier: CollectionTableViewCell.identifier)
         tableView.register(UINib(nibName: String(describing: TableTableViewCell.self), bundle: nil), forCellReuseIdentifier: TableTableViewCell.identifier)
         tableView.register(UINib(nibName: String(describing: DeckTableViewCell.self), bundle: nil), forCellReuseIdentifier: DeckTableViewCell.identifier)
+    }
+    
+    func configureSections() {
+        if !decksInProgress.isEmpty {
+            sections.append(("Quick Resume", .quickResume))
+        }
     }
 }
 
@@ -78,11 +87,11 @@ extension HomeTableViewController {
                 self.navigationController?.pushViewController(controller, animated: true)
             }
             return cell
-        case .allDecks:
+        case .quickResume:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DeckTableViewCell.identifier, for: indexPath) as? DeckTableViewCell else {
                 fatalError("Could not dequeue cell.")
             }
-            let deck = userDecks[indexPath.row]
+            let deck = decksInProgress[indexPath.row]
             let title = deck.title
             let subtitle = "\(deck.mastery)% Mastered"
             cell.configure(with: title, subtitle: subtitle)
@@ -93,8 +102,8 @@ extension HomeTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = sections[indexPath.section].1
         switch section {
-        case .allDecks:
-            let deck = userDecks[indexPath.row]
+        case .quickResume:
+            let deck = decksInProgress[indexPath.row]
             let controller = ViewDeckController(deck: deck)
             controller.delegate = self
             self.navigationController?.pushViewController(controller, animated: true)
