@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DeckCollectionViewCell: UICollectionViewCell {
+class SingleTitleCollectionViewCell: UICollectionViewCell {
     static let identifier: String = "DECK_COLLECTION_CELL"
     
     @IBOutlet weak var titleButton: UIButton!

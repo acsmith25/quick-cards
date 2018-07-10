@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DeckTableViewCell: UITableViewCell {
+class LeftTitleRightSubtitleTableViewCell: UITableViewCell {
     static let identifier = "DECK_TABLE_CELL"
     
     @IBOutlet weak var titleLabel: UILabel!

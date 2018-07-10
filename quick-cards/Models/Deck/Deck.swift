@@ -56,6 +56,9 @@ class Deck: Codable {
         targetGrade.append(question)
         question.grade = grade
     }
-
+    
+    static func == (lhs: Deck, rhs: Deck) -> Bool {
+        return lhs.title == rhs.title
+    }
 }
 

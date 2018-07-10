@@ -27,6 +27,7 @@ class HomeTableViewController: UITableViewController {
         
         registerCells()
         configureSections()
+        addBarButtonItem()
         
         self.tableView.estimatedRowHeight = 300
         self.tableView.rowHeight = UITableViewAutomaticDimension
@@ -42,11 +43,16 @@ class HomeTableViewController: UITableViewController {
     }
     
     func registerCells() {
-        tableView.register(UINib(nibName: String(describing: ImageTableViewCell.self), bundle: nil), forCellReuseIdentifier: ImageTableViewCell.identifier)
+        tableView.register(UINib(nibName: String(describing: RightImageWithTitleTableViewCell.self), bundle: nil), forCellReuseIdentifier: RightImageWithTitleTableViewCell.identifier)
         tableView.register(UINib(nibName: String(describing: ButtonTableViewCell.self), bundle: nil), forCellReuseIdentifier: ButtonTableViewCell.identifier)
         tableView.register(UINib(nibName: String(describing: CollectionTableViewCell.self), bundle: nil), forCellReuseIdentifier: CollectionTableViewCell.identifier)
         tableView.register(UINib(nibName: String(describing: TableTableViewCell.self), bundle: nil), forCellReuseIdentifier: TableTableViewCell.identifier)
-        tableView.register(UINib(nibName: String(describing: DeckTableViewCell.self), bundle: nil), forCellReuseIdentifier: DeckTableViewCell.identifier)
+        tableView.register(UINib(nibName: String(describing: LeftTitleRightSubtitleTableViewCell.self), bundle: nil), forCellReuseIdentifier: LeftTitleRightSubtitleTableViewCell.identifier)
+    }
+    
+    func addBarButtonItem() {
+        let barButtonItem = UIBarButtonItem(image: UIImage(named: "profileIcon"), style: .plain, target: self, action: nil)
+        navigationItem.rightBarButtonItem = barButtonItem
     }
     
     func configureSections() {
@@ -71,7 +77,7 @@ extension HomeTableViewController {
         let section = sections[indexPath.section].1
         switch section {
         case .newDeck:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ImageTableViewCell.identifier, for: indexPath) as? ImageTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: RightImageWithTitleTableViewCell.identifier, for: indexPath) as? RightImageWithTitleTableViewCell else {
                 fatalError("Could not dequeue cell.")
             }
             cell.selectionStyle = .none
@@ -82,7 +88,7 @@ extension HomeTableViewController {
             }
             return cell
         case .startDeck:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ImageTableViewCell.identifier, for: indexPath) as? ImageTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: RightImageWithTitleTableViewCell.identifier, for: indexPath) as? RightImageWithTitleTableViewCell else {
                 fatalError("Could not dequeue cell.")
             }
             cell.selectionStyle = .none
@@ -92,7 +98,7 @@ extension HomeTableViewController {
             }
             return cell
         case .quickResume:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: DeckTableViewCell.identifier, for: indexPath) as? DeckTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: LeftTitleRightSubtitleTableViewCell.identifier, for: indexPath) as? LeftTitleRightSubtitleTableViewCell else {
                 fatalError("Could not dequeue cell.")
             }
             let deck = decksInProgress[indexPath.row]

@@ -9,6 +9,7 @@
 import Foundation
 
 var allDecks: [Deck] = []
+var userDecks: [Deck] = []
 var decksInProgress: [Deck] = []
 let defaultDecks = [ones, twos, threes, fours, fives, sixes, sevens, eights, nines, tens, elevens, twelves]
 

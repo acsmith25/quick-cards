@@ -66,7 +66,9 @@ class NewDeckViewController: UIViewController {
     @IBAction func didTapDoneButton(_ sender: Any) {
         if let deck = deck {
             allDecks.append(deck)
+            userDecks.append(deck)
             DeckSaver.saveDecks(decks: allDecks, key: allDecksKey)
+            DeckSaver.saveDecks(decks: userDecks, key: allDecksKey)
         }
         delegate?.dismissViewController()
     }

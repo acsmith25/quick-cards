@@ -33,13 +33,12 @@ class StartDeckViewController: UIViewController {
     @IBAction func startDeckAction(_ sender: Any) {
         let selectedRow = quizModePickerView.selectedRow(inComponent: 0)
         let quizMode = QuizMode.allModes[selectedRow]
-        
+
         var quizController = quizMode.getController(with: deck, shouldResume: false)
         quizController.delegate = self
-        
+
         guard let controller = quizController as? UIViewController else { return }
         navigationController?.pushViewController(controller, animated: true)
-        //present(controller, animated: true, completion: nil)
     }
     
     @IBAction func resumeDeckAction(_ sender: Any) {
@@ -51,14 +50,12 @@ class StartDeckViewController: UIViewController {
         
         guard let controller = quizController as? UIViewController else { return }
         navigationController?.pushViewController(controller, animated: true)
-        //present(controller, animated: true, completion: nil)
     }
 
 }
 
 extension StartDeckViewController: NavigationDelegate {
     func dismissViewController() {
-//        self.dismiss(animated: true, completion: nil)
         navigationController?.popToRootViewController(animated: true)
     }
 }

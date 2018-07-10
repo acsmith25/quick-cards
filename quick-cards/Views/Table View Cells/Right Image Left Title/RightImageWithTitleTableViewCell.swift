@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ImageTableViewCell: UITableViewCell {
+class RightImageWithTitleTableViewCell: UITableViewCell {
     static let identifier = "IMAGE_CELL"
     
     @IBOutlet weak var titleLabel: UILabel!

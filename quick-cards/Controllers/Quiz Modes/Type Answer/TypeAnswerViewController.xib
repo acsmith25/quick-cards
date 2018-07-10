@@ -104,7 +104,7 @@
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                             <integer key="value" value="10"/>
                         </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="color" keyPath="layer.chadowColor">
+                        <userDefinedRuntimeAttribute type="color" keyPath="layer.shadowColor">
                             <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="size" keyPath="layer.shadowOffset">

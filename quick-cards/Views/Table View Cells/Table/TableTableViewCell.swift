@@ -22,7 +22,7 @@ class TableTableViewCell: UITableViewCell {
         tableView.delegate = self
         tableView.dataSource = self
         
-        tableView.register(UINib(nibName: String(describing: DeckTableViewCell.self), bundle: nil), forCellReuseIdentifier: DeckTableViewCell.identifier)
+        tableView.register(UINib(nibName: String(describing: LeftTitleRightSubtitleTableViewCell.self), bundle: nil), forCellReuseIdentifier: LeftTitleRightSubtitleTableViewCell.identifier)
     }
 
     func configure(with decks: [Deck], action: ((Deck) -> Void)? = nil) {
@@ -55,7 +55,7 @@ extension TableTableViewCell: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: DeckTableViewCell.identifier, for: indexPath) as? DeckTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: LeftTitleRightSubtitleTableViewCell.identifier, for: indexPath) as? LeftTitleRightSubtitleTableViewCell else {
             fatalError("Could not dequeue cell.")
         }
         let title = decks[indexPath.row].title

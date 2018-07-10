@@ -55,7 +55,6 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
         
         backButton.imageView?.tintColor = GenericSection.quickResume.color
         navigationController?.navigationBar.isHidden = true
-        //        navigationController?.navigationBar.prefersLargeTitles = false
         
         deckManager.delegate = self
         if shouldResume { deckManager.startDeck() }
@@ -63,7 +62,7 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-//        cardViewCenter.constant += view.bounds.width
+        //        cardViewCenter.constant += view.bounds.width
         //        answerFieldCenter.constant += view.bounds.width
         //        giveUpButtonCenter.constant += view.bounds.width
     }
@@ -92,6 +91,7 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
     @IBAction func backButtonAction(_ sender: Any) {
         print("Current deck mastery: \(deckManager.deck.mastery)%")
         decksInProgress.append(deckManager.deck)
+        
         DeckSaver.saveAllDecks()
         delegate?.dismissViewController()
     }

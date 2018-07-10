@@ -22,7 +22,7 @@ class CollectionTableViewCell: UITableViewCell {
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        collectionView.register(UINib(nibName: (String(describing: DeckCollectionViewCell.self)), bundle: nil), forCellWithReuseIdentifier: DeckCollectionViewCell.identifier)
+        collectionView.register(UINib(nibName: (String(describing: SingleTitleCollectionViewCell.self)), bundle: nil), forCellWithReuseIdentifier: SingleTitleCollectionViewCell.identifier)
     }
     
     func configure(with decks: [Deck], action: ((Deck) -> Void)? = nil) {
@@ -55,7 +55,7 @@ extension CollectionTableViewCell: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DeckCollectionViewCell.identifier, for: indexPath) as? DeckCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SingleTitleCollectionViewCell.identifier, for: indexPath) as? SingleTitleCollectionViewCell else {
             fatalError("Could not dequeue deck collection cell.")
         }
         cell.configure(with: decks[indexPath.row])
