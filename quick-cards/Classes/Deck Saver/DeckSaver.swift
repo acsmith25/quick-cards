@@ -11,6 +11,7 @@ import Foundation
 class DeckSaver {
     
     class func saveAllDecks() {
+        DeckSaver.saveDecks(decks: userDecks, key: userDecksKey)
         DeckSaver.saveDecks(decks: allDecks, key: allDecksKey)
         DeckSaver.saveDecks(decks: decksInProgress, key: decksInProgressKey)
     }

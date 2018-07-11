@@ -82,7 +82,7 @@ extension HomeTableViewController {
             }
             cell.selectionStyle = .none
             cell.configure(with: section.rawValue, image: section.icon, color: section.color) {
-                let controller = NewDeckViewController(nibName: String(describing: NewDeckViewController.self), bundle: nil)
+                let controller = NewDeckViewController(isEditing: false)
                 controller.delegate = self
                 self.navigationController?.pushViewController(controller, animated: true)
             }

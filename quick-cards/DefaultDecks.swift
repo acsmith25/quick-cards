@@ -11,7 +11,7 @@ import Foundation
 var allDecks: [Deck] = []
 var userDecks: [Deck] = []
 var decksInProgress: [Deck] = []
-let defaultDecks = [ones, twos, threes, fours, fives, sixes, sevens, eights, nines, tens, elevens, twelves]
+var defaultDecks = [ones, twos, threes, fours, fives, sixes, sevens, eights, nines, tens, elevens, twelves]
 
 let ones = Deck(title: "Ones", cards: [Question("1 x 1"): Answer("1"),
                      Question("1 x 2"): Answer("2"),

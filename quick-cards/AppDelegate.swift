@@ -21,18 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         setupWindow()
-        
-        // Get decks
-        guard let allSavedDecks = DeckSaver.getDecks(for: allDecksKey) else {
-            allDecks = defaultDecks
-            return true
-        }
-        guard let progressSavedDecks = DeckSaver.getDecks(for: decksInProgressKey) else {
-            decksInProgress = []
-            return true
-        }
-        allDecks = allSavedDecks
-        decksInProgress = progressSavedDecks
+        getDecks()
         
         return true
     }
@@ -77,4 +66,21 @@ extension AppDelegate {
         window?.makeKeyAndVisible()
     }
     
+    func getDecks() {
+        guard let allSavedDecks = DeckSaver.getDecks(for: allDecksKey) else {
+            allDecks = defaultDecks
+            return
+        }
+        guard let savedProgressDecks = DeckSaver.getDecks(for: decksInProgressKey) else {
+            decksInProgress = []
+            return
+        }
+        guard let savedUserDecks = DeckSaver.getDecks(for: userDecksKey) else {
+            userDecks = []
+            return
+        }
+        allDecks = allSavedDecks
+        decksInProgress = savedProgressDecks
+        userDecks = savedUserDecks
+    }
 }

@@ -9,8 +9,17 @@
 import Foundation
 
 class Deck: Codable {
+    static func == (lhs: Deck, rhs: Deck) -> Bool {
+        return lhs.title == rhs.title
+    }
+    
     var title: String
     var mastery: Double
+    var isInInitialState: Bool {
+        get {
+            return Array(gradeDistribution.keys) == [.average]
+        }
+    }
     var hasCompletedFirstPass: Bool = false
     
     var cards: [Question: Answer]
@@ -55,10 +64,6 @@ class Deck: Codable {
         }
         targetGrade.append(question)
         question.grade = grade
-    }
-    
-    static func == (lhs: Deck, rhs: Deck) -> Bool {
-        return lhs.title == rhs.title
     }
 }
 

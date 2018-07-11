@@ -18,21 +18,30 @@ class NewDeckViewController: UIViewController {
     @IBOutlet weak var answerLabel: UILabel!
     
     private enum ViewState {
-        case initial
+        case new
         case enterCard
         case submitted
     }
     
-    private var viewState: ViewState = .initial
+    private var viewState: ViewState
     
     var deck: Deck?
     var delegate: NavigationDelegate?
+    
+    init(isEditing: Bool) {
+        viewState = isEditing ? .enterCard : .new
+        super.init(nibName: String(describing: NewDeckViewController.self), bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         deck = Deck(title: "New Deck", cards: [:])
-        setViewState(.initial)
+        setViewState(.new)
     }
     
     override func didReceiveMemoryWarning() {
@@ -40,9 +49,11 @@ class NewDeckViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: - Actions
+    
     @IBAction func didTapNextButton(_ sender: Any) {
         switch viewState {
-        case .initial:
+        case .new:
             self.questionTextField.endEditing(true)
             
             let title = questionTextField.text ?? ""
@@ -80,7 +91,7 @@ extension NewDeckViewController {
     private func setViewState(_ viewState: ViewState) {
         self.viewState = viewState
         switch viewState {
-        case .initial:
+        case .new:
             self.continueButton.setTitle("Save Title", for: .normal)
             self.questionLabel.text = "Title:"
             

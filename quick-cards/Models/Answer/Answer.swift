@@ -10,10 +10,8 @@ import Foundation
 
 class Answer: Codable {
     var answer: String
-//    var level: Level
     
     init(_ answer: String, level: Grade = .average) {
         self.answer = answer
-//        self.level = level
     }
 }

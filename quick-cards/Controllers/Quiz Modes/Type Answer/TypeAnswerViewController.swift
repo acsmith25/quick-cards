@@ -90,8 +90,20 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
     
     @IBAction func backButtonAction(_ sender: Any) {
         print("Current deck mastery: \(deckManager.deck.mastery)%")
-        decksInProgress.append(deckManager.deck)
-        
+        let ipIndex = decksInProgress.index { $0 == deckManager.deck }
+        if let index = ipIndex {
+            decksInProgress[index] = deckManager.deck
+        } else {
+            decksInProgress.append(deckManager.deck)
+        }
+        let udIndex = userDecks.index { $0 == deckManager.deck }
+        if let index = udIndex {
+            decksInProgress[index] = deckManager.deck
+        } else {
+            if let ddIndex = defaultDecks.index(where: { $0 == deckManager.deck }) {
+                defaultDecks[ddIndex] = deckManager.deck
+            }
+        }
         DeckSaver.saveAllDecks()
         delegate?.dismissViewController()
     }
