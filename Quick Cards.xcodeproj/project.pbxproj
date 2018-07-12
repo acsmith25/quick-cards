@@ -25,11 +25,14 @@
 		49964D6E20EFE75E0041DD15 /* TypeAnswerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49964D6C20EFE75E0041DD15 /* TypeAnswerViewController.xib */; };
 		49AE4F6B20E677F8006AAAD4 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49AE4F6A20E677F8006AAAD4 /* Question.swift */; };
 		49AE4F6D20E67803006AAAD4 /* Answer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49AE4F6C20E67803006AAAD4 /* Answer.swift */; };
+		49C48A5420F7B993002C2E30 /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C48A5320F7B993002C2E30 /* PopUpViewController.swift */; };
+		49C48A5920F7CC5A002C2E30 /* DeckSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C48A5720F7CC5A002C2E30 /* DeckSettingsViewController.swift */; };
+		49C48A5A20F7CC5A002C2E30 /* DeckSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C48A5820F7CC5A002C2E30 /* DeckSettingsViewController.xib */; };
 		49D83CB620E133DD008084F8 /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D83CB420E133DD008084F8 /* ButtonTableViewCell.swift */; };
 		49D83CB720E133DD008084F8 /* ButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49D83CB520E133DD008084F8 /* ButtonTableViewCell.xib */; };
 		49FF655320E3F6EB00BB0868 /* DeckSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FF655220E3F6EB00BB0868 /* DeckSaver.swift */; };
-		49FF655620E40EF800BB0868 /* NewDeckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FF655420E40EF800BB0868 /* NewDeckViewController.swift */; };
-		49FF655720E40EF800BB0868 /* NewDeckViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49FF655520E40EF800BB0868 /* NewDeckViewController.xib */; };
+		49FF655620E40EF800BB0868 /* EditDeckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FF655420E40EF800BB0868 /* EditDeckViewController.swift */; };
+		49FF655720E40EF800BB0868 /* EditDeckViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49FF655520E40EF800BB0868 /* EditDeckViewController.xib */; };
 		8C72FC6520DF004800795257 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC6420DF004800795257 /* AppDelegate.swift */; };
 		8C72FC8020DF011700795257 /* DefaultDecks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC7820DF011600795257 /* DefaultDecks.swift */; };
 		8C72FC9120DF058100795257 /* Grade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C72FC9020DF058100795257 /* Grade.swift */; };
@@ -69,11 +72,14 @@
 		49964D6C20EFE75E0041DD15 /* TypeAnswerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TypeAnswerViewController.xib; sourceTree = "<group>"; };
 		49AE4F6A20E677F8006AAAD4 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		49AE4F6C20E67803006AAAD4 /* Answer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Answer.swift; sourceTree = "<group>"; };
+		49C48A5320F7B993002C2E30 /* PopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewController.swift; sourceTree = "<group>"; };
+		49C48A5720F7CC5A002C2E30 /* DeckSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckSettingsViewController.swift; sourceTree = "<group>"; };
+		49C48A5820F7CC5A002C2E30 /* DeckSettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeckSettingsViewController.xib; sourceTree = "<group>"; };
 		49D83CB420E133DD008084F8 /* ButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTableViewCell.swift; sourceTree = "<group>"; };
 		49D83CB520E133DD008084F8 /* ButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonTableViewCell.xib; sourceTree = "<group>"; };
 		49FF655220E3F6EB00BB0868 /* DeckSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckSaver.swift; sourceTree = "<group>"; };
-		49FF655420E40EF800BB0868 /* NewDeckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDeckViewController.swift; sourceTree = "<group>"; };
-		49FF655520E40EF800BB0868 /* NewDeckViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewDeckViewController.xib; sourceTree = "<group>"; };
+		49FF655420E40EF800BB0868 /* EditDeckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDeckViewController.swift; sourceTree = "<group>"; };
+		49FF655520E40EF800BB0868 /* EditDeckViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditDeckViewController.xib; sourceTree = "<group>"; };
 		8C72FC6120DF004800795257 /* quick-cards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "quick-cards.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C72FC6420DF004800795257 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8C72FC7820DF011600795257 /* DefaultDecks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultDecks.swift; sourceTree = "<group>"; };
@@ -180,13 +186,13 @@
 			path = "Single Title";
 			sourceTree = "<group>";
 		};
-		4978CF6B20E284EA008E0AA5 /* New */ = {
+		4978CF6B20E284EA008E0AA5 /* Edit */ = {
 			isa = PBXGroup;
 			children = (
-				49FF655420E40EF800BB0868 /* NewDeckViewController.swift */,
-				49FF655520E40EF800BB0868 /* NewDeckViewController.xib */,
+				49FF655420E40EF800BB0868 /* EditDeckViewController.swift */,
+				49FF655520E40EF800BB0868 /* EditDeckViewController.xib */,
 			);
-			path = New;
+			path = Edit;
 			sourceTree = "<group>";
 		};
 		4978CF6E20E2DAE6008E0AA5 /* Table */ = {
@@ -241,6 +247,32 @@
 				49AE4F6C20E67803006AAAD4 /* Answer.swift */,
 			);
 			path = Answer;
+			sourceTree = "<group>";
+		};
+		49C48A5220F7B97B002C2E30 /* Pop Up View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				49C48A5320F7B993002C2E30 /* PopUpViewController.swift */,
+			);
+			path = "Pop Up View Controller";
+			sourceTree = "<group>";
+		};
+		49C48A5520F7CBFF002C2E30 /* Pop Ups */ = {
+			isa = PBXGroup;
+			children = (
+				49C48A5620F7CC1C002C2E30 /* Settings */,
+				490C2D4120F3D41600B2892D /* Start */,
+			);
+			path = "Pop Ups";
+			sourceTree = "<group>";
+		};
+		49C48A5620F7CC1C002C2E30 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				49C48A5720F7CC5A002C2E30 /* DeckSettingsViewController.swift */,
+				49C48A5820F7CC5A002C2E30 /* DeckSettingsViewController.xib */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		49D83CAC20E132FA008084F8 /* Home */ = {
@@ -346,6 +378,7 @@
 		8C72FC9620DF05FB00795257 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				49C48A5220F7B97B002C2E30 /* Pop Up View Controller */,
 				49FF655120E3F6A900BB0868 /* Deck Saver */,
 				8C72FC9820DF063600795257 /* Deck Manager */,
 			);
@@ -373,8 +406,8 @@
 		8C72FCAB20DF071500795257 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				490C2D4120F3D41600B2892D /* Start */,
-				4978CF6B20E284EA008E0AA5 /* New */,
+				49C48A5520F7CBFF002C2E30 /* Pop Ups */,
+				4978CF6B20E284EA008E0AA5 /* Edit */,
 				49D83CAC20E132FA008084F8 /* Home */,
 				8C72FCAC20DF074400795257 /* All Decks */,
 				49964D6720EFE6F50041DD15 /* Quiz Modes */,
@@ -511,8 +544,9 @@
 				4978CF7220E2DB09008E0AA5 /* TableTableViewCell.xib in Resources */,
 				8C72FCC920DF07D800795257 /* LaunchScreen.storyboard in Resources */,
 				490AF5D820E13E1D003C312E /* HomeTableViewController.xib in Resources */,
+				49C48A5A20F7CC5A002C2E30 /* DeckSettingsViewController.xib in Resources */,
 				8C72FCD120E1B2BE00795257 /* RightImageWithTitleTableViewCell.xib in Resources */,
-				49FF655720E40EF800BB0868 /* NewDeckViewController.xib in Resources */,
+				49FF655720E40EF800BB0868 /* EditDeckViewController.xib in Resources */,
 				8C72FCC820DF07D800795257 /* Assets.xcassets in Resources */,
 				8C72FCCA20DF07D800795257 /* Info.plist in Resources */,
 				4962E0D520F6533B00FAAA2C /* SectionHeaderCollectionReusableView.xib in Resources */,
@@ -530,12 +564,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C72FC9120DF058100795257 /* Grade.swift in Sources */,
-				49FF655620E40EF800BB0868 /* NewDeckViewController.swift in Sources */,
+				49FF655620E40EF800BB0868 /* EditDeckViewController.swift in Sources */,
 				4978CF6D20E2DA2D008E0AA5 /* Keys.swift in Sources */,
 				49D83CB620E133DD008084F8 /* ButtonTableViewCell.swift in Sources */,
 				8C72FCB620DF074400795257 /* AllDecksCollectionViewController.swift in Sources */,
 				490AF5DC20E13F20003C312E /* CollectionTableViewCell.swift in Sources */,
 				492B9E1D20F3D4C40035AC7C /* StartDeckViewController.swift in Sources */,
+				49C48A5920F7CC5A002C2E30 /* DeckSettingsViewController.swift in Sources */,
 				8C72FC9520DF05D900795257 /* Array+random.swift in Sources */,
 				8C72FC9420DF05D900795257 /* UIColor+custom.swift in Sources */,
 				8C72FC6520DF004800795257 /* AppDelegate.swift in Sources */,
@@ -545,6 +580,7 @@
 				4978CF7120E2DB09008E0AA5 /* TableTableViewCell.swift in Sources */,
 				8C72FCC020DF077100795257 /* Card.swift in Sources */,
 				49FF655320E3F6EB00BB0868 /* DeckSaver.swift in Sources */,
+				49C48A5420F7B993002C2E30 /* PopUpViewController.swift in Sources */,
 				8C72FCA920DF070600795257 /* SingleTitleCollectionViewCell.swift in Sources */,
 				49964D6620EFD74C0041DD15 /* QuizMode.swift in Sources */,
 				8C72FCD320E1CD9100795257 /* GenericCell.swift in Sources */,

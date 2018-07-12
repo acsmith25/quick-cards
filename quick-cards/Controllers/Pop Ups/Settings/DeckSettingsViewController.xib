@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DeckSettingsViewController" customModule="quick_cards" customModuleProvider="target">
+            <connections>
+                <outlet property="deckLabel" destination="RXj-EC-X55" id="0fD-Jj-nUb"/>
+                <outlet property="masteredLabel" destination="yc2-4P-OHp" id="AhX-1B-V4K"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Deck" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RXj-EC-X55">
+                    <rect key="frame" x="32" y="35" width="40" height="492"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100% Mastered" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yc2-4P-OHp">
+                    <rect key="frame" x="243" y="273" width="100" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.4756349325" green="0.47564673419999998" blue="0.47564041610000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EgZ-3w-7BO">
+                    <rect key="frame" x="32" y="543" width="311" height="50"/>
+                    <color key="backgroundColor" red="0.0" green="0.62352941179999999" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="X98-Zq-VdA"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="275" id="nCH-TL-KHo"/>
+                    </constraints>
+                    <state key="normal" title="Edit">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="10"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="editAction:" destination="-1" eventType="touchUpInside" id="TIE-Kp-SNa"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JHH-X1-Xgl">
+                    <rect key="frame" x="32" y="601" width="311" height="50"/>
+                    <color key="backgroundColor" red="0.0" green="0.62352941179999999" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="Kha-MC-T86"/>
+                    </constraints>
+                    <state key="normal" title="Restart">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="10"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="restartAction:" destination="-1" eventType="touchUpInside" id="VaX-Pw-HNB"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="RXj-EC-X55" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leadingMargin" constant="16" id="1y9-Qu-mVE"/>
+                <constraint firstItem="yc2-4P-OHp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="RXj-EC-X55" secondAttribute="trailing" constant="15" id="L5w-VL-XgM"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="JHH-X1-Xgl" secondAttribute="bottom" constant="16" id="NY1-Eu-Epq"/>
+                <constraint firstItem="EgZ-3w-7BO" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailingMargin" constant="-16" id="SSQ-IQ-FKR"/>
+                <constraint firstItem="EgZ-3w-7BO" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leadingMargin" constant="16" id="ddP-Dt-Pi2"/>
+                <constraint firstItem="JHH-X1-Xgl" firstAttribute="centerX" secondItem="EgZ-3w-7BO" secondAttribute="centerX" id="ewx-Wx-Nmf"/>
+                <constraint firstItem="JHH-X1-Xgl" firstAttribute="width" secondItem="EgZ-3w-7BO" secondAttribute="width" id="foc-hN-YLv"/>
+                <constraint firstItem="yc2-4P-OHp" firstAttribute="centerY" secondItem="RXj-EC-X55" secondAttribute="centerY" id="i6s-hO-Ubw"/>
+                <constraint firstItem="JHH-X1-Xgl" firstAttribute="top" secondItem="EgZ-3w-7BO" secondAttribute="bottom" constant="8" id="lf7-pI-805"/>
+                <constraint firstItem="RXj-EC-X55" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="topMargin" constant="15" id="mgE-qy-efb"/>
+                <constraint firstItem="EgZ-3w-7BO" firstAttribute="top" secondItem="RXj-EC-X55" secondAttribute="bottom" constant="16" id="n7c-5r-Pxm"/>
+                <constraint firstItem="yc2-4P-OHp" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailingMargin" constant="-16" id="sxa-sr-eTR"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+        </view>
+    </objects>
+</document>

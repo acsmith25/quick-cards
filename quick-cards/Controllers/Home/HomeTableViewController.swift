@@ -35,6 +35,7 @@ class HomeTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = false
+        self.navigationController?.navigationBar.backgroundColor = .white
         tableView.reloadData()
     }
     
@@ -82,7 +83,7 @@ extension HomeTableViewController {
             }
             cell.selectionStyle = .none
             cell.configure(with: section.rawValue, image: section.icon, color: section.color) {
-                let controller = NewDeckViewController(isEditing: false)
+                let controller = EditDeckViewController(isEditing: false)
                 controller.delegate = self
                 self.navigationController?.pushViewController(controller, animated: true)
             }

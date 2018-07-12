@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewDeckViewController: UIViewController {
+class EditDeckViewController: UIViewController {
     
     @IBOutlet weak var questionTextField: UITextField!
     @IBOutlet weak var answerTextField: UITextField!
@@ -30,7 +30,7 @@ class NewDeckViewController: UIViewController {
     
     init(isEditing: Bool) {
         viewState = isEditing ? .enterCard : .new
-        super.init(nibName: String(describing: NewDeckViewController.self), bundle: nil)
+        super.init(nibName: String(describing: EditDeckViewController.self), bundle: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -41,7 +41,11 @@ class NewDeckViewController: UIViewController {
         super.viewDidLoad()
         
         deck = Deck(title: "New Deck", cards: [:])
-        setViewState(.new)
+        setViewState(viewState)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        navigationController?.navigationBar.backgroundColor = .white
     }
     
     override func didReceiveMemoryWarning() {
@@ -86,7 +90,7 @@ class NewDeckViewController: UIViewController {
 }
 
 // MARK: - View State
-extension NewDeckViewController {
+extension EditDeckViewController {
     
     private func setViewState(_ viewState: ViewState) {
         self.viewState = viewState

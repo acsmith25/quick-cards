@@ -11,7 +11,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewDeckViewController" customModule="quick_cards" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditDeckViewController" customModule="quick_cards" customModuleProvider="target">
             <connections>
                 <outlet property="answerLabel" destination="Jxs-qV-5VR" id="zEf-KI-jvQ"/>
                 <outlet property="answerTextField" destination="RL0-zo-tad" id="Ibs-wk-qPE"/>

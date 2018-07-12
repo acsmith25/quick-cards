@@ -23,6 +23,7 @@
                 <outlet property="giveUpButton" destination="lig-Fq-oV8" id="4dh-GE-AWe"/>
                 <outlet property="giveUpButtonCenter" destination="9nE-vE-nv8" id="jvf-YA-vl1"/>
                 <outlet property="questionLabel" destination="7Xr-bx-kX3" id="fur-kC-ES8"/>
+                <outlet property="settingsButton" destination="Sqc-Fs-LP1" id="qy7-Cu-Cbn"/>
                 <outlet property="view" destination="fML-fd-D3l" id="06C-qe-dki"/>
             </connections>
         </placeholder>
@@ -131,6 +132,16 @@
                         <action selector="backButtonAction:" destination="-1" eventType="touchUpInside" id="JCk-1F-Rt5"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sqc-Fs-LP1">
+                    <rect key="frame" x="338" y="32" width="21" height="21"/>
+                    <color key="tintColor" red="0.0" green="0.62352941179999999" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <state key="normal" backgroundImage="settingsIcon">
+                        <color key="titleColor" red="0.0" green="0.62352941179999999" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="settingsAction:" destination="-1" eventType="touchUpInside" id="KDe-I8-fin"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
             <constraints>
@@ -141,7 +152,9 @@
                 <constraint firstItem="5KK-vY-Oi1" firstAttribute="top" secondItem="Z8W-wU-VWe" secondAttribute="bottom" constant="40" id="6Xp-bj-8QX"/>
                 <constraint firstItem="KI6-hV-Obq" firstAttribute="centerX" secondItem="fML-fd-D3l" secondAttribute="centerX" id="7Jo-Oo-hWi"/>
                 <constraint firstItem="lig-Fq-oV8" firstAttribute="centerX" secondItem="5KK-vY-Oi1" secondAttribute="centerX" id="9nE-vE-nv8"/>
+                <constraint firstItem="Sqc-Fs-LP1" firstAttribute="trailing" secondItem="fML-fd-D3l" secondAttribute="trailingMargin" id="BCI-Yt-P7o"/>
                 <constraint firstItem="Z8W-wU-VWe" firstAttribute="centerX" secondItem="fML-fd-D3l" secondAttribute="centerX" id="DkR-Ec-AjC"/>
+                <constraint firstItem="Sqc-Fs-LP1" firstAttribute="centerY" secondItem="KTP-60-Wm8" secondAttribute="centerY" id="IaN-cq-hgm"/>
                 <constraint firstItem="KTP-60-Wm8" firstAttribute="top" secondItem="Q3U-39-4AH" secondAttribute="top" constant="12" id="OQu-2t-css"/>
                 <constraint firstItem="5KK-vY-Oi1" firstAttribute="centerX" secondItem="fML-fd-D3l" secondAttribute="centerX" id="RBi-Zm-FqL"/>
                 <constraint firstItem="5KK-vY-Oi1" firstAttribute="centerY" secondItem="fML-fd-D3l" secondAttribute="centerY" id="S2D-6P-qhN"/>
@@ -157,5 +170,6 @@
     </objects>
     <resources>
         <image name="leftArrowIcon" width="21" height="21"/>
+        <image name="settingsIcon" width="21" height="21"/>
     </resources>
 </document>

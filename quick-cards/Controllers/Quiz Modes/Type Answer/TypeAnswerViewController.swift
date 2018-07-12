@@ -12,14 +12,14 @@ protocol QuizModeController {
     var delegate: NavigationDelegate? { get set }
 }
 
-class TypeAnswerViewController: UIViewController, QuizModeController {
-    
+class TypeAnswerViewController: UIViewController, QuizModeController, PopUpPresentationController {
     @IBOutlet weak var giveUpButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var answerTextField: UITextField!
     @IBOutlet weak var cardView: UIView!
     @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var settingsButton: UIButton!
     
     @IBOutlet weak var continueButtonCenter: NSLayoutConstraint!
     @IBOutlet weak var cardViewCenter: NSLayoutConstraint!
@@ -40,6 +40,9 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
     var shouldResume: Bool
     var delegate: NavigationDelegate?
     
+    var gesture: UIGestureRecognizer?
+    var popUp: PopUpViewController?
+    
     init(deck: Deck, shouldResume: Bool) {
         self.deckManager = DeckManager(deck: deck)
         self.shouldResume = shouldResume
@@ -54,6 +57,7 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
         super.viewDidLoad()
         
         backButton.imageView?.tintColor = GenericSection.quickResume.color
+        
         navigationController?.navigationBar.isHidden = true
         
         deckManager.delegate = self
@@ -112,6 +116,16 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
         // Give Up
         deckManager.validate(userAnswer: nil)
     }
+    
+    @IBAction func settingsAction(_ sender: Any) {
+        popUp = PopUpViewController(popUpView: StartDeckViewController(deck: deckManager.deck))
+        guard let popUp = popUp else { return }
+        popUp.presentPopUp(on: self)
+        
+        gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
+        guard let gesture = gesture else { return }
+        self.view.addGestureRecognizer(gesture)
+    }
 }
 
 
@@ -169,6 +183,12 @@ extension TypeAnswerViewController {
         alertController.addAction(okAction)
         alertController.addAction(cancelAction)
         present(alertController, animated: true, completion: nil)
+    }
+    
+    @objc func dismissPopUp() {
+        guard let popUp = popUp, let gesture = gesture else { return }
+        popUp.dismissSubviews()
+        self.view.removeGestureRecognizer(gesture)
     }
 }
 

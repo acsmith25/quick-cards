@@ -8,13 +8,12 @@
 
 import UIKit
 
-class AllDecksCollectionViewController: UICollectionViewController {
+class AllDecksCollectionViewController: UICollectionViewController, PopUpPresentationController {
     
     var sections: [(String, [Deck])] = []
-    
-    var popUpVC: UIViewController?
-    var dimmerView: UIView?
+    var popUp: PopUpViewController?
     var gesture: UIGestureRecognizer?
+//    var gesture: UIGestureRecognizer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +26,7 @@ class AllDecksCollectionViewController: UICollectionViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = false
+        dismissPopUp()
     }
     
     override func didReceiveMemoryWarning() {
@@ -86,59 +86,18 @@ extension AllDecksCollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let deck = sections[indexPath.section].1[indexPath.row]
-        presentStartDeckPopup(for: deck)
-    }
-    
-    func presentStartDeckPopup(for deck: Deck) {
-        let width = UIScreen.main.bounds.width
-        let height = UIScreen.main.bounds.height
+        popUp = PopUpViewController(popUpView: StartDeckViewController(deck: deck))
+        guard let popUp = popUp else { return }
+        popUp.presentPopUp(on: self)
         
-        dimmerView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: height))
-        guard let dimmerView = dimmerView else { return }
-        dimmerView.backgroundColor = .black
-        dimmerView.alpha = 0.25
-        
-        popUpVC = StartDeckViewController(deck: deck)
-        guard let popUp = popUpVC else { return }
-        popUp.view.bounds = CGRect(x: 0, y: 0, width: width/1.25, height: deck.isInInitialState ? height/3 - 50 : height)
-        popUp.view.layer.cornerRadius = 10
-        popUp.view.layer.shadowOffset = CGSize(width: 0, height: 11)
-        popUp.view.layer.shadowOpacity = 0.15
-        popUp.view.layer.shadowRadius = 13
-        
-        self.view.addSubview(dimmerView)
-//        navigationController?.view.addSubview(dimmerView)
-        self.view.addSubview(popUp.view)
-//        navigationController?.view.addSubview(popUp.view)
-//        dimmerView.addSubview(popUp.view)
-//        self.addChildViewController(popUp)
-        popUp.view.center = self.view.center
-        popUp.view.alpha = 0
-//        popUp.view.frame = CGRect(x: self.view.center.x, y: self.view.center.y, width: 0, height: 0)
-        
-        UIView.animate(withDuration: 0.2) {
-            dimmerView.alpha = 0.25
-//            popUp.view.transform = CGAffineTransform(scaleX: width, y: height)
-            popUp.view.alpha = 1
-        }
-        
-        gesture = UITapGestureRecognizer(target: self, action: #selector(dismissSubviews(_:)))
+        gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
         guard let gesture = gesture else { return }
         self.view.addGestureRecognizer(gesture)
     }
     
-    @objc func dismissSubviews(_ sender: UITapGestureRecognizer) {
-        //dismiss subviews here
-        guard let popUp = popUpVC, let dimmerView = dimmerView else { return }
-        UIView.animate(withDuration: 0.2, animations: {
-            dimmerView.alpha = 0
-            popUp.view.alpha = 0
-        }) { (completion) in
-            dimmerView.removeFromSuperview()
-            popUp.view.removeFromSuperview()
-            popUp.removeFromParentViewController()
-        }
-        guard let gesture = gesture else { return }
+    @objc func dismissPopUp() {
+        guard let popUp = popUp, let gesture = gesture else { return }
+        popUp.dismissSubviews()
         self.view.removeGestureRecognizer(gesture)
     }
 }
@@ -150,5 +109,4 @@ extension AllDecksCollectionViewController: NavigationDelegate {
         navigationController?.popViewController(animated: true)
         collectionView?.reloadData()
     }
-    
 }

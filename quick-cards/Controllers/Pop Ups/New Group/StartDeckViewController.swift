@@ -15,7 +15,6 @@ class StartDeckViewController: UIViewController {
     @IBOutlet weak var startButton: UIButton!
     
     @IBOutlet var resumeButtonBottomConstraint: NSLayoutConstraint!
-    @IBOutlet var startButtonBottomConstraint: NSLayoutConstraint!
     
     var deck: Deck
     
@@ -48,8 +47,9 @@ class StartDeckViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func editAction(_ sender: Any) {
-        let controller = NewDeckViewController(isEditing: true)
+        let controller = EditDeckViewController(isEditing: true)
         navigationController?.pushViewController(controller, animated: true)
+        navigationController?.navigationBar.backgroundColor = .white
     }
     
     @IBAction func startDeckAction(_ sender: Any) {
