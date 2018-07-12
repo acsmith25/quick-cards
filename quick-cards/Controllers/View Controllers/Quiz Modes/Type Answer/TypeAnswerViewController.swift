@@ -18,6 +18,7 @@ class TypeAnswerViewController: UIViewController, QuizModeController, PopUpPrese
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var answerTextField: UITextField!
     @IBOutlet weak var cardView: UIView!
+    @IBOutlet weak var answerView: UIView!
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
     
@@ -41,7 +42,7 @@ class TypeAnswerViewController: UIViewController, QuizModeController, PopUpPrese
     var delegate: NavigationDelegate?
     
     var gesture: UIGestureRecognizer?
-    var popUp: PopUpViewController?
+    var popUp: PopUpController?
     
     init(deck: Deck, shouldResume: Bool) {
         self.deckManager = DeckManager(deck: deck)
@@ -57,8 +58,15 @@ class TypeAnswerViewController: UIViewController, QuizModeController, PopUpPrese
         super.viewDidLoad()
         
         backButton.imageView?.tintColor = GenericSection.quickResume.color
+//        cardView.layer.cornerRadius = 10
+//        cardView.layer.shadowOffset = CGSize(width: 0, height: 11)
+//        cardView.layer.shadowOpacity = 0.15
+//        cardView.layer.shadowRadius = 13
         
         navigationController?.navigationBar.isHidden = true
+        
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(flipCard))
+        cardView.addGestureRecognizer(gesture)
         
         deckManager.delegate = self
         if shouldResume { deckManager.startDeck() }
@@ -118,7 +126,7 @@ class TypeAnswerViewController: UIViewController, QuizModeController, PopUpPrese
     }
     
     @IBAction func settingsAction(_ sender: Any) {
-        popUp = PopUpViewController(popUpView: StartDeckViewController(deck: deckManager.deck))
+        popUp = PopUpController(popUpView: StartDeckViewController(deck: deckManager.deck))
         guard let popUp = popUp else { return }
         popUp.presentPopUp(on: self)
         
@@ -189,6 +197,14 @@ extension TypeAnswerViewController {
         guard let popUp = popUp, let gesture = gesture else { return }
         popUp.dismissSubviews()
         self.view.removeGestureRecognizer(gesture)
+    }
+    
+    @objc func flipCard() {
+//        let animations: [UIViewAnimationOptions] = [.transitionFlipFromRight, .showHideTransitionViews]
+        UIView.transition(with: cardView, duration: 0.5, options: .transitionFlipFromRight, animations: {
+            self.questionLabel.text = "Answer"
+        }, completion: nil)
+//        UIView.transition(from: cardView, to: answerView, duration: 0.5, options: animations, completion: nil)
     }
 }
 

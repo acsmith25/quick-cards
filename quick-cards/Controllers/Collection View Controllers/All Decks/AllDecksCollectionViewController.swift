@@ -11,9 +11,8 @@ import UIKit
 class AllDecksCollectionViewController: UICollectionViewController, PopUpPresentationController {
     
     var sections: [(String, [Deck])] = []
-    var popUp: PopUpViewController?
+    var popUp: PopUpController?
     var gesture: UIGestureRecognizer?
-//    var gesture: UIGestureRecognizer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,7 +85,7 @@ extension AllDecksCollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let deck = sections[indexPath.section].1[indexPath.row]
-        popUp = PopUpViewController(popUpView: StartDeckViewController(deck: deck))
+        popUp = PopUpController(popUpView: StartDeckViewController(deck: deck))
         guard let popUp = popUp else { return }
         popUp.presentPopUp(on: self)
         

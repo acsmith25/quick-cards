@@ -112,7 +112,7 @@ extension EditDeckViewController {
                 self.questionLabel.alpha = 1
                 self.answerTextField.alpha = 1
                 self.answerLabel.alpha = 1
-                self.doneButton.alpha = 0
+                self.doneButton.alpha = 1
             }, completion: nil)
         case .submitted:
             UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: {

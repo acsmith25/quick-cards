@@ -10,11 +10,11 @@ import UIKit
 
 protocol PopUpPresentationController {
     var gesture: UIGestureRecognizer? { get set }
-    var popUp: PopUpViewController? { get set }
+    var popUp: PopUpController? { get set }
     func dismissPopUp()
 }
 
-class PopUpViewController {
+class PopUpController {
     
     var popUpController: UIViewController
     var dimmerView: UIView?
@@ -37,23 +37,22 @@ class PopUpViewController {
         dimmerView.alpha = 0
         
         
-        popUpController.view.bounds.size = popUpController.view.systemLayoutSizeFitting(CGSize(width: width/1.25, height: height/3)) //CGRect(x: 0, y: 0, width: width/1.25, height: height/3)
+        popUpController.view.bounds.size = popUpController.view.systemLayoutSizeFitting(CGSize(width: width/1.25, height: height/3))
         popUpController.view.layer.cornerRadius = 10
         popUpController.view.layer.shadowOffset = CGSize(width: 0, height: 11)
         popUpController.view.layer.shadowOpacity = 0.15
         popUpController.view.layer.shadowRadius = 13
+        popUpController.view.center.y = height + popUpController.view.bounds.height/2
         
         controller.view.addSubview(dimmerView)
         controller.view.addSubview(popUpController.view)
         controller.addChildViewController(popUpController)
-        popUpController.view.center = controller.view.center
-        popUpController.view.alpha = 0
         
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseInOut, animations: {
             controller.navigationController?.navigationBar.backgroundColor = .black
             dimmerView.alpha = 0.25
-            self.popUpController.view.alpha = 1
-        }
+            self.popUpController.view.center = controller.view.center
+        }, completion: nil)
     }
     
     func dismissSubviews() {
