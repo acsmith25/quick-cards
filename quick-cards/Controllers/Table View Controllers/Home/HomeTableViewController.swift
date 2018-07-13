@@ -36,6 +36,7 @@ class HomeTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = false
         self.navigationController?.navigationBar.backgroundColor = .white
+        configureSections()
         tableView.reloadData()
     }
     
@@ -57,7 +58,7 @@ class HomeTableViewController: UITableViewController {
     }
     
     func configureSections() {
-        if !decksInProgress.isEmpty {
+        if !decksInProgress.isEmpty && sections.last?.1 != .quickResume {
             sections.append(("Quick Resume", .quickResume))
         }
     }

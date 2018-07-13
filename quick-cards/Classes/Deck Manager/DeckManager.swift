@@ -41,7 +41,7 @@ class DeckManager {
         }
         
         // Calculate the sum of all grade weights
-        Grade.allCases.forEach { gradeWeightsSum += $0.distributionWeight }
+//        Grade.allCases.forEach { gradeWeightsSum += $0.distributionWeight }
         
         // The sum for when all grades are mastered
         totalMastery = deck.cards.count * Grade.mastered.masteryValue
@@ -65,6 +65,11 @@ class DeckManager {
         delegate?.askQuestion(question: "\(currentQuestion.question)")
     }
     
+    func exit() {
+        guard let currentQuestion = currentQuestion else { return }
+        deck.updateQuestionGrade(question: currentQuestion, grade: currentQuestion.grade)
+    }
+    
     func validate(userAnswer: String?) {
         guard let currentQuestion = currentQuestion else { return }
         guard let correctAnswer = deck.cards[currentQuestion] else {
@@ -86,6 +91,7 @@ class DeckManager {
             delegate?.showAnswer(correctAnswer: correctAnswer.answer)
         }
         saveMastery()
+        self.currentQuestion = nil
         print("Current mastery: \(deck.mastery)")
     }
     
@@ -95,7 +101,7 @@ class DeckManager {
     
     // MARK: - Private
     
-    private var gradeWeightsSum: Int = 0
+//    private var gradeWeightsSum: Int = 0
     private var totalMastery: Int = 0
     private var currentMastery: Int = 0
     
@@ -129,10 +135,12 @@ class DeckManager {
     
     private func getRandomWeightedGrade() -> Grade? {
         // Get random weight from the summ of all level weights
+        var gradeWeightsSum = 0
+        deck.gradeDistribution.keys.forEach { gradeWeightsSum += $0.distributionWeight }
         var randomWeight = Int(arc4random_uniform(UInt32(gradeWeightsSum + 1)))
         
         // Get level of random weight by subtracting weight of current level until <= 0
-        for level in Grade.allCases.reversed() {
+        for level in deck.gradeDistribution.keys.reversed() {
             randomWeight = randomWeight - level.distributionWeight
             if randomWeight <= 0 {
                 return level

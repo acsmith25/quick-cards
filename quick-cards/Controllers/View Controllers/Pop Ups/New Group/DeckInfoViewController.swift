@@ -8,19 +8,25 @@
 
 import UIKit
 
-class StartDeckViewController: UIViewController {
+class DeckInfoViewController: UIViewController {
 
+    @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var masteredLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var quizModePickerView: UIPickerView!
     @IBOutlet weak var resumeButton: UIButton!
     @IBOutlet weak var startButton: UIButton!
-    
-    @IBOutlet var resumeButtonBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var bigEditButton: UIButton!
     
     var deck: Deck
+    var isViewingDeck: Bool
     
-    init(deck: Deck) {
+    init(deck: Deck, isViewingDeck: Bool) {
         self.deck = deck
-        super.init(nibName: String(describing: StartDeckViewController.self), bundle: nil)
+        self.isViewingDeck = isViewingDeck
+        super.init(nibName: String(describing: DeckInfoViewController.self), bundle: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -30,18 +36,32 @@ class StartDeckViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.quizModePickerView.dataSource = self
-        self.quizModePickerView.delegate = self
+        titleLabel.text = deck.title
+        
+        if isViewingDeck {
+            editButton.isHidden = true
+            masteredLabel.text = "\(deck.mastery)% Mastered"
+            stackView.removeArrangedSubview(resumeButton)
+            resumeButton.removeFromSuperview()
+        } else {
+            masteredLabel.isHidden = true
+            stackView.removeArrangedSubview(bigEditButton)
+            bigEditButton.removeFromSuperview()
+        }
+        
+        quizModePickerView.dataSource = self
+        quizModePickerView.delegate = self
         
         // Remove resume button if hasn't been started
         if deck.isInInitialState {
-            self.resumeButton.isHidden = true
-            view.removeConstraint(resumeButtonBottomConstraint)
-            NSLayoutConstraint.activate([
-                startButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
-            ])
-            updateViewConstraints()
+            startButton.setTitle("Start Deck", for: .normal)
+            stackView.removeArrangedSubview(resumeButton)
+            resumeButton.removeFromSuperview()
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
     }
     
     // MARK: - Actions
@@ -76,13 +96,13 @@ class StartDeckViewController: UIViewController {
 
 }
 
-extension StartDeckViewController: NavigationDelegate {
+extension DeckInfoViewController: NavigationDelegate {
     func dismissViewController() {
         navigationController?.popToRootViewController(animated: true)
     }
 }
 
-extension StartDeckViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+extension DeckInfoViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }

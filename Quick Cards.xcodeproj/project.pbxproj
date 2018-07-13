@@ -11,8 +11,8 @@
 		490AF5D820E13E1D003C312E /* HomeTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 490AF5D620E13E1D003C312E /* HomeTableViewController.xib */; };
 		490AF5DC20E13F20003C312E /* CollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490AF5DA20E13F20003C312E /* CollectionTableViewCell.swift */; };
 		490AF5DD20E13F20003C312E /* CollectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 490AF5DB20E13F20003C312E /* CollectionTableViewCell.xib */; };
-		492B9E1D20F3D4C40035AC7C /* StartDeckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492B9E1B20F3D4C40035AC7C /* StartDeckViewController.swift */; };
-		492B9E1E20F3D4C40035AC7C /* StartDeckViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 492B9E1C20F3D4C40035AC7C /* StartDeckViewController.xib */; };
+		492B9E1D20F3D4C40035AC7C /* DeckInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492B9E1B20F3D4C40035AC7C /* DeckInfoViewController.swift */; };
+		492B9E1E20F3D4C40035AC7C /* DeckInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 492B9E1C20F3D4C40035AC7C /* DeckInfoViewController.xib */; };
 		4962E0D420F6533B00FAAA2C /* SectionHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4962E0D220F6533B00FAAA2C /* SectionHeaderCollectionReusableView.swift */; };
 		4962E0D520F6533B00FAAA2C /* SectionHeaderCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4962E0D320F6533B00FAAA2C /* SectionHeaderCollectionReusableView.xib */; };
 		4978CF6D20E2DA2D008E0AA5 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4978CF6C20E2DA2D008E0AA5 /* Keys.swift */; };
@@ -26,8 +26,6 @@
 		49AE4F6B20E677F8006AAAD4 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49AE4F6A20E677F8006AAAD4 /* Question.swift */; };
 		49AE4F6D20E67803006AAAD4 /* Answer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49AE4F6C20E67803006AAAD4 /* Answer.swift */; };
 		49C48A5420F7B993002C2E30 /* PopUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C48A5320F7B993002C2E30 /* PopUpController.swift */; };
-		49C48A5920F7CC5A002C2E30 /* DeckSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C48A5720F7CC5A002C2E30 /* DeckSettingsViewController.swift */; };
-		49C48A5A20F7CC5A002C2E30 /* DeckSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C48A5820F7CC5A002C2E30 /* DeckSettingsViewController.xib */; };
 		49C48A5D20F7F0DF002C2E30 /* ShowAnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C48A5B20F7F0DF002C2E30 /* ShowAnswerViewController.swift */; };
 		49C48A5E20F7F0DF002C2E30 /* ShowAnswerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C48A5C20F7F0DF002C2E30 /* ShowAnswerViewController.xib */; };
 		49C48A6420F7F167002C2E30 /* MultipleChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C48A6220F7F167002C2E30 /* MultipleChoiceViewController.swift */; };
@@ -62,8 +60,8 @@
 		490AF5D620E13E1D003C312E /* HomeTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeTableViewController.xib; sourceTree = "<group>"; };
 		490AF5DA20E13F20003C312E /* CollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionTableViewCell.swift; sourceTree = "<group>"; };
 		490AF5DB20E13F20003C312E /* CollectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionTableViewCell.xib; sourceTree = "<group>"; };
-		492B9E1B20F3D4C40035AC7C /* StartDeckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartDeckViewController.swift; sourceTree = "<group>"; };
-		492B9E1C20F3D4C40035AC7C /* StartDeckViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StartDeckViewController.xib; sourceTree = "<group>"; };
+		492B9E1B20F3D4C40035AC7C /* DeckInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckInfoViewController.swift; sourceTree = "<group>"; };
+		492B9E1C20F3D4C40035AC7C /* DeckInfoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeckInfoViewController.xib; sourceTree = "<group>"; };
 		4962E0D220F6533B00FAAA2C /* SectionHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		4962E0D320F6533B00FAAA2C /* SectionHeaderCollectionReusableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SectionHeaderCollectionReusableView.xib; sourceTree = "<group>"; };
 		4978CF6C20E2DA2D008E0AA5 /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
@@ -77,8 +75,6 @@
 		49AE4F6A20E677F8006AAAD4 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		49AE4F6C20E67803006AAAD4 /* Answer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Answer.swift; sourceTree = "<group>"; };
 		49C48A5320F7B993002C2E30 /* PopUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpController.swift; sourceTree = "<group>"; };
-		49C48A5720F7CC5A002C2E30 /* DeckSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckSettingsViewController.swift; sourceTree = "<group>"; };
-		49C48A5820F7CC5A002C2E30 /* DeckSettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeckSettingsViewController.xib; sourceTree = "<group>"; };
 		49C48A5B20F7F0DF002C2E30 /* ShowAnswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowAnswerViewController.swift; sourceTree = "<group>"; };
 		49C48A5C20F7F0DF002C2E30 /* ShowAnswerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowAnswerViewController.xib; sourceTree = "<group>"; };
 		49C48A6220F7F167002C2E30 /* MultipleChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoiceViewController.swift; sourceTree = "<group>"; };
@@ -129,13 +125,13 @@
 			path = Collection;
 			sourceTree = "<group>";
 		};
-		490C2D4120F3D41600B2892D /* Start */ = {
+		490C2D4120F3D41600B2892D /* Info */ = {
 			isa = PBXGroup;
 			children = (
-				492B9E1B20F3D4C40035AC7C /* StartDeckViewController.swift */,
-				492B9E1C20F3D4C40035AC7C /* StartDeckViewController.xib */,
+				492B9E1B20F3D4C40035AC7C /* DeckInfoViewController.swift */,
+				492B9E1C20F3D4C40035AC7C /* DeckInfoViewController.xib */,
 			);
-			name = Start;
+			name = Info;
 			path = "New Group";
 			sourceTree = "<group>";
 		};
@@ -272,19 +268,9 @@
 		49C48A5520F7CBFF002C2E30 /* Pop Ups */ = {
 			isa = PBXGroup;
 			children = (
-				49C48A5620F7CC1C002C2E30 /* Settings */,
-				490C2D4120F3D41600B2892D /* Start */,
+				490C2D4120F3D41600B2892D /* Info */,
 			);
 			path = "Pop Ups";
-			sourceTree = "<group>";
-		};
-		49C48A5620F7CC1C002C2E30 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				49C48A5720F7CC5A002C2E30 /* DeckSettingsViewController.swift */,
-				49C48A5820F7CC5A002C2E30 /* DeckSettingsViewController.xib */,
-			);
-			path = Settings;
 			sourceTree = "<group>";
 		};
 		49C48A5F20F7F0F0002C2E30 /* Table View Controllers */ = {
@@ -336,6 +322,7 @@
 			children = (
 				4978CF7320E2DCC1008E0AA5 /* Left Title Right Subtitle */,
 				8C72FCCD20E1B2A400795257 /* Right Image Left Title */,
+				490AF5D920E13F08003C312E /* Collection */,
 				4978CF6E20E2DAE6008E0AA5 /* Table */,
 				49D83CB320E133A9008084F8 /* Button */,
 			);
@@ -508,7 +495,6 @@
 		8C72FCCD20E1B2A400795257 /* Right Image Left Title */ = {
 			isa = PBXGroup;
 			children = (
-				490AF5D920E13F08003C312E /* Collection */,
 				8C72FCCE20E1B2BE00795257 /* RightImageWithTitleTableViewCell.swift */,
 				8C72FCCF20E1B2BE00795257 /* RightImageWithTitleTableViewCell.xib */,
 			);
@@ -575,12 +561,11 @@
 			files = (
 				4978CF7720E2DCE8008E0AA5 /* LeftTitleRightSubtitleTableViewCell.xib in Resources */,
 				8C72FCB520DF074400795257 /* AllDecksCollectionViewController.xib in Resources */,
-				492B9E1E20F3D4C40035AC7C /* StartDeckViewController.xib in Resources */,
+				492B9E1E20F3D4C40035AC7C /* DeckInfoViewController.xib in Resources */,
 				8C72FCAA20DF070600795257 /* SingleTitleCollectionViewCell.xib in Resources */,
 				4978CF7220E2DB09008E0AA5 /* TableTableViewCell.xib in Resources */,
 				8C72FCC920DF07D800795257 /* LaunchScreen.storyboard in Resources */,
 				490AF5D820E13E1D003C312E /* HomeTableViewController.xib in Resources */,
-				49C48A5A20F7CC5A002C2E30 /* DeckSettingsViewController.xib in Resources */,
 				8C72FCD120E1B2BE00795257 /* RightImageWithTitleTableViewCell.xib in Resources */,
 				49C48A5E20F7F0DF002C2E30 /* ShowAnswerViewController.xib in Resources */,
 				49FF655720E40EF800BB0868 /* EditDeckViewController.xib in Resources */,
@@ -607,8 +592,7 @@
 				49D83CB620E133DD008084F8 /* ButtonTableViewCell.swift in Sources */,
 				8C72FCB620DF074400795257 /* AllDecksCollectionViewController.swift in Sources */,
 				490AF5DC20E13F20003C312E /* CollectionTableViewCell.swift in Sources */,
-				492B9E1D20F3D4C40035AC7C /* StartDeckViewController.swift in Sources */,
-				49C48A5920F7CC5A002C2E30 /* DeckSettingsViewController.swift in Sources */,
+				492B9E1D20F3D4C40035AC7C /* DeckInfoViewController.swift in Sources */,
 				8C72FC9520DF05D900795257 /* Array+random.swift in Sources */,
 				8C72FC9420DF05D900795257 /* UIColor+custom.swift in Sources */,
 				8C72FC6520DF004800795257 /* AppDelegate.swift in Sources */,

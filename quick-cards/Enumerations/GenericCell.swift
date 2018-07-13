@@ -33,7 +33,7 @@ enum GenericSection: String {
 //        case .allDecks:
 //            return UIColor(red: 0/255.0, green: 159.0/255.0, blue: 183.0/255.0, alpha: 1)
         default:
-            return UIColor(red: 0/255.0, green: 159.0/255.0, blue: 183.0/255.0, alpha: 1)
+            return .myTeal
         }
     }
     

@@ -18,7 +18,6 @@ class TypeAnswerViewController: UIViewController, QuizModeController, PopUpPrese
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var answerTextField: UITextField!
     @IBOutlet weak var cardView: UIView!
-    @IBOutlet weak var answerView: UIView!
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
     
@@ -63,8 +62,6 @@ class TypeAnswerViewController: UIViewController, QuizModeController, PopUpPrese
 //        cardView.layer.shadowOpacity = 0.15
 //        cardView.layer.shadowRadius = 13
         
-        navigationController?.navigationBar.isHidden = true
-        
         let gesture = UITapGestureRecognizer(target: self, action: #selector(flipCard))
         cardView.addGestureRecognizer(gesture)
         
@@ -74,6 +71,7 @@ class TypeAnswerViewController: UIViewController, QuizModeController, PopUpPrese
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = true
         //        cardViewCenter.constant += view.bounds.width
         //        answerFieldCenter.constant += view.bounds.width
         //        giveUpButtonCenter.constant += view.bounds.width
@@ -102,6 +100,7 @@ class TypeAnswerViewController: UIViewController, QuizModeController, PopUpPrese
     
     @IBAction func backButtonAction(_ sender: Any) {
         print("Current deck mastery: \(deckManager.deck.mastery)%")
+        deckManager.exit()
         let ipIndex = decksInProgress.index { $0 == deckManager.deck }
         if let index = ipIndex {
             decksInProgress[index] = deckManager.deck
@@ -110,7 +109,7 @@ class TypeAnswerViewController: UIViewController, QuizModeController, PopUpPrese
         }
         let udIndex = userDecks.index { $0 == deckManager.deck }
         if let index = udIndex {
-            decksInProgress[index] = deckManager.deck
+            userDecks[index] = deckManager.deck
         } else {
             if let ddIndex = defaultDecks.index(where: { $0 == deckManager.deck }) {
                 defaultDecks[ddIndex] = deckManager.deck
@@ -126,11 +125,12 @@ class TypeAnswerViewController: UIViewController, QuizModeController, PopUpPrese
     }
     
     @IBAction func settingsAction(_ sender: Any) {
-        popUp = PopUpController(popUpView: StartDeckViewController(deck: deckManager.deck))
+        popUp = PopUpController(popUpView: DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true))
         guard let popUp = popUp else { return }
         popUp.presentPopUp(on: self)
         
         gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
+        gesture?.delegate = self
         guard let gesture = gesture else { return }
         self.view.addGestureRecognizer(gesture)
     }
@@ -148,6 +148,7 @@ extension TypeAnswerViewController {
             UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: {
                 self.continueButton.setTitle("Submit", for: .normal)
                 self.questionLabel.text = question
+                self.cardView.backgroundColor = .white
                 
                 self.answerTextField.alpha = 1.0
                 self.giveUpButton.alpha = 1.0
@@ -155,26 +156,38 @@ extension TypeAnswerViewController {
         case .correct:
             UIView.animate(withDuration: 0.2) {
                 self.continueButton.setTitle("Next Question", for: .normal)
-                self.questionLabel.text = "Correct!"
+//                self.questionLabel.text = "Correct!"
                 self.answerTextField.text = ""
+                self.cardView.backgroundColor = .myGreen
                 
                 self.answerTextField.alpha = 0.0
                 self.giveUpButton.alpha = 0.0
             }
+            UIView.transition(with: cardView, duration: 0.5, options: .transitionFlipFromRight, animations: {
+                //                self.questionLabel.text = "Answer"
+                self.questionLabel.text = "Correct!"
+            }, completion: nil)
+
         case .incorrect(let correctAnswer):
             UIView.animate(withDuration: 0.2) {
                 self.continueButton.setTitle("Next Question", for: .normal)
-                self.questionLabel.text = "Wrong: \(correctAnswer)"
+//                self.questionLabel.text = "Wrong: \(correctAnswer)"
                 self.answerTextField.text = ""
+                self.cardView.backgroundColor = .myRed
                 
                 self.answerTextField.alpha = 0.0
                 self.giveUpButton.alpha = 0.0
             }
+            UIView.transition(with: cardView, duration: 0.5, options: .transitionFlipFromRight, animations: {
+//                self.questionLabel.text = "Answer"
+                self.questionLabel.text = "Wrong: \(correctAnswer)"
+            }, completion: nil)
         case .mastered:
             UIView.animate(withDuration: 0.2) {
                 self.continueButton.setTitle("Done", for: .normal)
                 self.questionLabel.text = "Congratulations!\nYou have mastered this deck."
                 self.answerTextField.text = ""
+                self.cardView.backgroundColor = .white
                 
                 self.answerTextField.alpha = 0.0
                 self.giveUpButton.alpha = 0.0
@@ -200,11 +213,20 @@ extension TypeAnswerViewController {
     }
     
     @objc func flipCard() {
-//        let animations: [UIViewAnimationOptions] = [.transitionFlipFromRight, .showHideTransitionViews]
-        UIView.transition(with: cardView, duration: 0.5, options: .transitionFlipFromRight, animations: {
-            self.questionLabel.text = "Answer"
-        }, completion: nil)
-//        UIView.transition(from: cardView, to: answerView, duration: 0.5, options: animations, completion: nil)
+//        UIView.transition(with: cardView, duration: 0.5, options: .transitionFlipFromRight, animations: {
+//            self.questionLabel.text = "Answer"
+//        }, completion: nil)
+        deckManager.validate(userAnswer: nil)
+    }
+}
+
+extension TypeAnswerViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        guard let popUp = popUp, let view = touch.view else { return false }
+        if view.isDescendant(of: popUp.popUpController.view) {
+            return false
+        }
+        return true
     }
 }
 

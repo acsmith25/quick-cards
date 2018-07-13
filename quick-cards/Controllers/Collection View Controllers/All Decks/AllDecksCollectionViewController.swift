@@ -42,13 +42,16 @@ class AllDecksCollectionViewController: UICollectionViewController, PopUpPresent
     }
     
     func configureSections() {
-        if !userDecks.isEmpty {
-            sections.append(("Your Decks", userDecks))
-        }
         if !decksInProgress.isEmpty {
             sections.append(("Decks in Progress", decksInProgress))
         }
-        sections.append(("Default Decks", allDecks))
+        if !userDecks.isEmpty {
+            sections.append(("Your Decks", userDecks))
+        }
+        let decks = allDecks.filter { (deck) -> Bool in
+            defaultDecks.contains(where: { $0 == deck })
+        }
+        sections.append(("Default Decks", decks))
     }
 }
 
@@ -85,11 +88,12 @@ extension AllDecksCollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let deck = sections[indexPath.section].1[indexPath.row]
-        popUp = PopUpController(popUpView: StartDeckViewController(deck: deck))
+        popUp = PopUpController(popUpView: DeckInfoViewController(deck: deck, isViewingDeck: false))
         guard let popUp = popUp else { return }
         popUp.presentPopUp(on: self)
         
         gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
+        gesture?.delegate = self
         guard let gesture = gesture else { return }
         self.view.addGestureRecognizer(gesture)
     }
@@ -98,6 +102,16 @@ extension AllDecksCollectionViewController {
         guard let popUp = popUp, let gesture = gesture else { return }
         popUp.dismissSubviews()
         self.view.removeGestureRecognizer(gesture)
+    }
+}
+
+extension AllDecksCollectionViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        guard let popUp = popUp, let view = touch.view else { return false }
+        if view.isDescendant(of: popUp.popUpController.view) {
+            return false
+        }
+        return true
     }
 }
 

@@ -40,6 +40,10 @@ class Deck: Codable {
     func reset() {
         mastery = 50.0
         hasCompletedFirstPass = false
+        questions = questions.map({ (question) -> Question in
+            question.grade = .average
+            return question
+        })
         gradeDistribution = [.average: questions]
     }
     
@@ -51,19 +55,24 @@ class Deck: Codable {
         answers.append(answer)
         
         guard var targetGrade = gradeDistribution[grade] else {
+            question.grade = grade
             gradeDistribution[grade] = [question]
             return
         }
+        question.grade = grade
         targetGrade.append(question)
+        gradeDistribution[grade] = targetGrade
     }
     
     func updateQuestionGrade(question: Question, grade: Grade) {
         guard var targetGrade = gradeDistribution[grade] else {
+            question.grade = grade
             gradeDistribution[grade] = [question]
             return
         }
-        targetGrade.append(question)
         question.grade = grade
+        targetGrade.append(question)
+        gradeDistribution[grade] = targetGrade
     }
 }
 
