@@ -13,15 +13,14 @@ class SingleTitleCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var titleButton: UIButton!
     
-    var deck: Deck?
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         titleButton.isUserInteractionEnabled = false
     }
 
-    func configure(with deck: Deck) {
-        self.deck = deck
-        titleButton.setTitle(deck.title, for: .normal)
+    func configure(with title: String, backgroundColor: UIColor = .white, textColor: UIColor = .black) {
+        titleButton.backgroundColor = backgroundColor
+        titleButton.setTitleColor(textColor, for: .normal)
+        titleButton.setTitle(title, for: .normal)
     }
 }

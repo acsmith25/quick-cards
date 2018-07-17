@@ -16,9 +16,13 @@ class Question: Codable, Hashable {
     
     var question: String
     var grade: Grade
+    var seen: Int
+    var correct: Int
 
     init(_ question: String, grade: Grade = .average) {
         self.question = question
         self.grade = grade
+        self.seen = 0
+        self.correct = 0
     }
 }

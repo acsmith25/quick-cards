@@ -9,7 +9,7 @@
 import Foundation
 
 protocol DeckManagerDelegate {
-    func askQuestion(question: String)
+    func askQuestion(question: Question, wrongAnswers: [Answer])
     func showAnswer(correctAnswer: String?)
     func masteredDeck()
 }
@@ -18,12 +18,11 @@ class DeckManager {
     
     // MARK: - Public
     
-    var delegate: DeckManagerDelegate?
+    public var delegate: DeckManagerDelegate?
+    public var deck: Deck
+    public var currentQuestion: Question?
     
-    var deck: Deck
-    var currentQuestion: Question?
-    
-    var getNextQuestion: (() -> Question?)?
+    private var getNextQuestion: (() -> Question?)?
     
     init(deck: Deck) {
         self.deck = deck
@@ -62,7 +61,13 @@ class DeckManager {
             currentQuestion = question
         }
         guard let currentQuestion = currentQuestion else { return }
-        delegate?.askQuestion(question: "\(currentQuestion.question)")
+        guard let mcController = delegate as? MultipleChoiceViewController else {
+            delegate?.askQuestion(question: currentQuestion, wrongAnswers: [])
+            return
+        }
+        let randomIndices = [getRandomIndex(deck.answers)!, getRandomIndex(deck.answers)!, getRandomIndex(deck.answers)!]
+        let randomAnswers = [deck.answers[randomIndices[0]], deck.answers[randomIndices[1]], deck.answers[randomIndices[2]]]
+        mcController.askQuestion(question: currentQuestion, wrongAnswers: randomAnswers)
     }
     
     func exit() {
@@ -162,11 +167,15 @@ class DeckManager {
         guard newGrade < Grade.allCases.count else {
             // Already at heighest level, insert card back into top level
             let grade = Grade(masteryValue: newGrade - 1)
+            currentQuestion.seen += 1
+            currentQuestion.correct += 1
             deck.updateQuestionGrade(question: currentQuestion, grade: grade)
             return
         }
         // Update card's level
         let grade = Grade(masteryValue: newGrade)
+        currentQuestion.seen += 1
+        currentQuestion.correct += 1
         deck.updateQuestionGrade(question: currentQuestion, grade: grade)
         currentMastery += 1
     }
@@ -177,11 +186,15 @@ class DeckManager {
         guard newGrade >= 0 else {
             // Already at lowest level, insert card back into bottom level
             let grade = Grade(masteryValue: newGrade + 1)
+            currentQuestion.seen += 1
+            currentQuestion.correct -= 1
             deck.updateQuestionGrade(question: currentQuestion, grade: grade)
             return
         }
         // Update card's level
         let grade = Grade(masteryValue: newGrade)
+        currentQuestion.seen += 1
+        currentQuestion.correct -= 1
         deck.updateQuestionGrade(question: currentQuestion, grade: grade)
         currentMastery -= 1
     }

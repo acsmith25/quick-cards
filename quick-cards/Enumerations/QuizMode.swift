@@ -8,11 +8,11 @@
 
 import UIKit
 
-enum QuizMode {
-    case showAnswer
-    case typeAnswer
-    case multipleChoice
-    case grid
+enum QuizMode: Int, Codable {
+    case showAnswer = 0
+    case typeAnswer = 1
+    case multipleChoice = 2
+    case grid = 3
     
     static let allModes: [QuizMode] = [.showAnswer, .typeAnswer, .multipleChoice, .grid]
     
@@ -25,14 +25,20 @@ enum QuizMode {
         case .multipleChoice:
             return "Multiple Choice"
         case .grid:
-            return "Grid"
+            return "Freeform"
         }
     }
     
     func getController(with deck: Deck, shouldResume: Bool) -> QuizModeController {
         switch self {
-        default:
+        case .showAnswer:
+            return ShowAnswerViewController(deck: deck)
+        case .typeAnswer:
             return TypeAnswerViewController(deck: deck, shouldResume: shouldResume)
+        case .multipleChoice:
+            return MultipleChoiceViewController(deck: deck)
+        case .grid:
+            return GridViewController(deck: deck)
         }
     }
 }

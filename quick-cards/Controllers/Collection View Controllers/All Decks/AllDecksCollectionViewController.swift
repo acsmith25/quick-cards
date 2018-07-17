@@ -71,7 +71,7 @@ extension AllDecksCollectionViewController {
             fatalError("Could not dequeue cell.")
         }
         let deck = sections[indexPath.section].1[indexPath.row]
-        cell.configure(with: deck)
+        cell.configure(with: deck.title, backgroundColor: .myTeal, textColor: .white)
         
         return cell
     }

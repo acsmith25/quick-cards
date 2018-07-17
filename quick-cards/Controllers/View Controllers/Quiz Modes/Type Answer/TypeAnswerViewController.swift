@@ -23,9 +23,8 @@ class TypeAnswerViewController: UIViewController, QuizModeController, PopUpPrese
     
     @IBOutlet weak var continueButtonCenter: NSLayoutConstraint!
     @IBOutlet weak var cardViewCenter: NSLayoutConstraint!
-    @IBOutlet weak var answerFieldCenter: NSLayoutConstraint!
+//    @IBOutlet weak var answerFieldCenter: NSLayoutConstraint!
     @IBOutlet weak var giveUpButtonCenter: NSLayoutConstraint!
-    
     
     private enum ViewState {
         case asking(String?)
@@ -245,8 +244,8 @@ extension TypeAnswerViewController: DeckManagerDelegate {
         setViewState(.incorrect(correctAnswer))
     }
     
-    func askQuestion(question: String) {
-        setViewState(.asking(question))
+    func askQuestion(question: Question, wrongAnswers: [Answer]) {
+        setViewState(.asking(question.question))
     }
     
 }

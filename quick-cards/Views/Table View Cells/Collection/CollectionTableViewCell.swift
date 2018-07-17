@@ -58,7 +58,7 @@ extension CollectionTableViewCell: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SingleTitleCollectionViewCell.identifier, for: indexPath) as? SingleTitleCollectionViewCell else {
             fatalError("Could not dequeue deck collection cell.")
         }
-        cell.configure(with: decks[indexPath.row])
+        cell.configure(with: decks[indexPath.row].title)
         return cell
     }
     

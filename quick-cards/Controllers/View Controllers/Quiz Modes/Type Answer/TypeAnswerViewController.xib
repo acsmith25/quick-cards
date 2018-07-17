@@ -13,7 +13,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TypeAnswerViewController" customModule="quick_cards" customModuleProvider="target">
             <connections>
-                <outlet property="answerFieldCenter" destination="DkR-Ec-AjC" id="kBn-2G-t0S"/>
                 <outlet property="answerTextField" destination="Z8W-wU-VWe" id="bB5-Ew-GJI"/>
                 <outlet property="backButton" destination="KTP-60-Wm8" id="Rnk-Es-YJz"/>
                 <outlet property="cardView" destination="KI6-hV-Obq" id="yvS-Uc-4qu"/>
@@ -153,7 +152,7 @@
                 <constraint firstItem="KI6-hV-Obq" firstAttribute="centerX" secondItem="fML-fd-D3l" secondAttribute="centerX" id="7Jo-Oo-hWi"/>
                 <constraint firstItem="lig-Fq-oV8" firstAttribute="centerX" secondItem="5KK-vY-Oi1" secondAttribute="centerX" id="9nE-vE-nv8"/>
                 <constraint firstItem="Sqc-Fs-LP1" firstAttribute="trailing" secondItem="fML-fd-D3l" secondAttribute="trailingMargin" id="BCI-Yt-P7o"/>
-                <constraint firstItem="Z8W-wU-VWe" firstAttribute="centerX" secondItem="fML-fd-D3l" secondAttribute="centerX" id="DkR-Ec-AjC"/>
+                <constraint firstItem="Z8W-wU-VWe" firstAttribute="centerX" secondItem="fML-fd-D3l" secondAttribute="centerX" id="Cfm-og-Z86"/>
                 <constraint firstItem="Sqc-Fs-LP1" firstAttribute="centerY" secondItem="KTP-60-Wm8" secondAttribute="centerY" id="IaN-cq-hgm"/>
                 <constraint firstItem="KTP-60-Wm8" firstAttribute="top" secondItem="Q3U-39-4AH" secondAttribute="top" constant="12" id="OQu-2t-css"/>
                 <constraint firstItem="5KK-vY-Oi1" firstAttribute="centerX" secondItem="fML-fd-D3l" secondAttribute="centerX" id="RBi-Zm-FqL"/>

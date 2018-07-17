@@ -75,7 +75,8 @@ class DeckInfoViewController: UIViewController {
     @IBAction func startDeckAction(_ sender: Any) {
         let selectedRow = quizModePickerView.selectedRow(inComponent: 0)
         let quizMode = QuizMode.allModes[selectedRow]
-
+        deck.mode = quizMode
+        
         var quizController = quizMode.getController(with: deck, shouldResume: false)
         quizController.delegate = self
 
@@ -86,6 +87,7 @@ class DeckInfoViewController: UIViewController {
     @IBAction func resumeDeckAction(_ sender: Any) {
         let selectedRow = quizModePickerView.selectedRow(inComponent: 0)
         let quizMode = QuizMode.allModes[selectedRow]
+        deck.mode = quizMode
         
         var quizController = quizMode.getController(with: deck, shouldResume: true)
         quizController.delegate = self
