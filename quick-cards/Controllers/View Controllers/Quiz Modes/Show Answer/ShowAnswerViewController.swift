@@ -15,6 +15,7 @@ class ShowAnswerViewController: UIViewController, QuizModeController, PopUpPrese
     @IBOutlet weak var cardView: UIView!
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var stackView: UIStackView!
     
     private enum ViewState {
         case asking(String?)
@@ -82,6 +83,7 @@ class ShowAnswerViewController: UIViewController, QuizModeController, PopUpPrese
         DeckSaver.saveAllDecks()
         delegate?.dismissViewController()
     }
+    
     @IBAction func settingsAction(_ sender: Any) {
         popUp = PopUpController(popUpView: DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true))
         guard let popUp = popUp else { return }
@@ -100,9 +102,6 @@ class ShowAnswerViewController: UIViewController, QuizModeController, PopUpPrese
     }
     
     @objc func flipCard() {
-        //        UIView.transition(with: cardView, duration: 0.5, options: .transitionFlipFromRight, animations: {
-        //            self.questionLabel.text = "Answer"
-        //        }, completion: nil)
         deckManager.validate(userAnswer: nil)
     }
     
@@ -113,15 +112,27 @@ class ShowAnswerViewController: UIViewController, QuizModeController, PopUpPrese
         case .asking(let question):
             UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: {
                 self.questionLabel.text = question
+                
+                self.nextButton.isHidden = true
+                self.stackView.layoutIfNeeded()
+                
                 self.nextButton.alpha = 0.0
             }, completion: nil)
         case .answer(let answer):
             UIView.transition(with: cardView, duration: 0.5, options: .transitionFlipFromRight, animations: {
                 self.questionLabel.text = answer
+                
+                self.nextButton.isHidden = false
+                self.stackView.layoutIfNeeded()
+                
                 self.nextButton.alpha = 1.0
             }, completion: nil)
         case .mastered:
             self.questionLabel.text = "Congratulations!\nYou have mastered this deck."
+            
+            self.nextButton.isHidden = true
+            self.stackView.layoutIfNeeded()
+            
             self.nextButton.alpha = 0.0
         }
     }

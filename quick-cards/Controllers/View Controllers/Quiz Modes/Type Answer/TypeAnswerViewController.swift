@@ -20,6 +20,7 @@ class TypeAnswerViewController: UIViewController, QuizModeController, PopUpPrese
     @IBOutlet weak var cardView: UIView!
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
+    @IBOutlet weak var stackView: UIStackView!
     
     @IBOutlet weak var continueButtonCenter: NSLayoutConstraint!
     @IBOutlet weak var cardViewCenter: NSLayoutConstraint!
@@ -61,8 +62,14 @@ class TypeAnswerViewController: UIViewController, QuizModeController, PopUpPrese
 //        cardView.layer.shadowOpacity = 0.15
 //        cardView.layer.shadowRadius = 13
         
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(flipCard))
-        cardView.addGestureRecognizer(gesture)
+        answerTextField.delegate = self
+        
+        let cardGesture = UITapGestureRecognizer(target: self, action: #selector(flipCard))
+        cardView.addGestureRecognizer(cardGesture)
+        
+        let keyboardGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(keyboardGesture)
+
         
         deckManager.delegate = self
         if shouldResume { deckManager.startDeck() }
@@ -144,41 +151,50 @@ extension TypeAnswerViewController {
         
         switch viewState {
         case .asking(let question):
-            UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: {
+            UIView.animate(withDuration: 0.2, delay: 0, options: [], animations: {
                 self.continueButton.setTitle("Submit", for: .normal)
                 self.questionLabel.text = question
                 self.cardView.backgroundColor = .white
                 
+                if self.answerTextField.isHidden == true {
+                    self.giveUpButton.isHidden = false
+                    self.answerTextField.isHidden = false
+                    self.stackView.layoutIfNeeded()
+                }
                 self.answerTextField.alpha = 1.0
                 self.giveUpButton.alpha = 1.0
             }, completion: nil)
         case .correct:
             UIView.animate(withDuration: 0.2) {
                 self.continueButton.setTitle("Next Question", for: .normal)
-//                self.questionLabel.text = "Correct!"
                 self.answerTextField.text = ""
                 self.cardView.backgroundColor = .myGreen
+            
+                self.giveUpButton.isHidden = true
+                self.answerTextField.isHidden = true
+                self.stackView.layoutIfNeeded()
                 
                 self.answerTextField.alpha = 0.0
                 self.giveUpButton.alpha = 0.0
             }
             UIView.transition(with: cardView, duration: 0.5, options: .transitionFlipFromRight, animations: {
-                //                self.questionLabel.text = "Answer"
                 self.questionLabel.text = "Correct!"
             }, completion: nil)
 
         case .incorrect(let correctAnswer):
             UIView.animate(withDuration: 0.2) {
                 self.continueButton.setTitle("Next Question", for: .normal)
-//                self.questionLabel.text = "Wrong: \(correctAnswer)"
                 self.answerTextField.text = ""
                 self.cardView.backgroundColor = .myRed
+
+                self.giveUpButton.isHidden = true
+                self.answerTextField.isHidden = true
+                self.stackView.layoutIfNeeded()
                 
                 self.answerTextField.alpha = 0.0
                 self.giveUpButton.alpha = 0.0
             }
             UIView.transition(with: cardView, duration: 0.5, options: .transitionFlipFromRight, animations: {
-//                self.questionLabel.text = "Answer"
                 self.questionLabel.text = "Wrong: \(correctAnswer)"
             }, completion: nil)
         case .mastered:
@@ -187,6 +203,10 @@ extension TypeAnswerViewController {
                 self.questionLabel.text = "Congratulations!\nYou have mastered this deck."
                 self.answerTextField.text = ""
                 self.cardView.backgroundColor = .white
+
+                self.giveUpButton.isHidden = true
+                self.answerTextField.isHidden = true
+                self.stackView.layoutIfNeeded()
                 
                 self.answerTextField.alpha = 0.0
                 self.giveUpButton.alpha = 0.0
@@ -215,7 +235,21 @@ extension TypeAnswerViewController {
 //        UIView.transition(with: cardView, duration: 0.5, options: .transitionFlipFromRight, animations: {
 //            self.questionLabel.text = "Answer"
 //        }, completion: nil)
+        dismissKeyboard()
         deckManager.validate(userAnswer: nil)
+    }
+    
+    @objc func dismissKeyboard() {
+        answerTextField.endEditing(true)    }
+}
+
+extension TypeAnswerViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+//        textField.endEditing(true)
+        deckManager.validate(userAnswer: answerTextField.text)
+        return true
     }
 }
 
@@ -225,6 +259,7 @@ extension TypeAnswerViewController: UIGestureRecognizerDelegate {
         if view.isDescendant(of: popUp.popUpController.view) {
             return false
         }
+//        answerTextField.endEditing(true)
         return true
     }
 }

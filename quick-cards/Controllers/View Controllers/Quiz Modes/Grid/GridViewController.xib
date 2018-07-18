@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GridViewController" customModule="quick_cards" customModuleProvider="target">
+            <connections>
+                <outlet property="backButton" destination="VUl-sc-IAF" id="MP2-re-S0h"/>
+                <outlet property="collectionView" destination="dPm-9m-PZ6" id="utK-tn-0Yh"/>
+                <outlet property="settingsButton" destination="OPx-io-u3Z" id="muy-NP-mVq"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VUl-sc-IAF">
+                    <rect key="frame" x="16" y="36" width="61" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="JAT-4f-DNL"/>
+                    </constraints>
+                    <color key="tintColor" red="0.0" green="0.62352941179999999" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <state key="normal" title="Back" image="leftArrowIcon">
+                        <color key="titleColor" red="0.0" green="0.62352941179999999" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="backButtonAction:" destination="-1" eventType="touchUpInside" id="PIO-M0-1tG"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OPx-io-u3Z">
+                    <rect key="frame" x="338" y="36" width="21" height="21"/>
+                    <color key="tintColor" red="0.0" green="0.62352941179999999" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <state key="normal" backgroundImage="settingsIcon">
+                        <color key="titleColor" red="0.0" green="0.62352941179999999" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="settingsButtonAction:" destination="-1" eventType="touchUpInside" id="WG2-8v-6hq"/>
+                    </connections>
+                </button>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="dPm-9m-PZ6">
+                    <rect key="frame" x="16" y="73" width="343" height="594"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="NhB-iz-G2W">
+                        <size key="itemSize" width="100" height="100"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+            </subviews>
+            <color key="backgroundColor" red="0.93725490570000003" green="0.93725490570000003" blue="0.95686274770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="dPm-9m-PZ6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leadingMargin" id="Jdj-cD-gMH"/>
+                <constraint firstItem="dPm-9m-PZ6" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailingMargin" id="MDe-tL-Bbi"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="dPm-9m-PZ6" secondAttribute="bottom" id="N2S-4W-8r6"/>
+                <constraint firstItem="dPm-9m-PZ6" firstAttribute="top" secondItem="VUl-sc-IAF" secondAttribute="bottom" constant="16" id="QwA-pa-A2z"/>
+                <constraint firstItem="VUl-sc-IAF" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="RBt-xP-6Xi"/>
+                <constraint firstItem="OPx-io-u3Z" firstAttribute="centerY" secondItem="VUl-sc-IAF" secondAttribute="centerY" id="V2T-0G-Tv3"/>
+                <constraint firstItem="VUl-sc-IAF" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="cvk-8k-X6Z"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="OPx-io-u3Z" secondAttribute="trailing" constant="16" id="ssG-ny-PG0"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="leftArrowIcon" width="21" height="21"/>
+        <image name="settingsIcon" width="21" height="21"/>
+    </resources>
+</document>

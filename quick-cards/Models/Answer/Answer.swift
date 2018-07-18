@@ -9,6 +9,10 @@
 import Foundation
 
 class Answer: Codable {
+    static func == (lhs: Answer, rhs: Answer) -> Bool {
+        return lhs.answer == rhs.answer
+    }
+    
     var answer: String
     
     init(_ answer: String, level: Grade = .average) {

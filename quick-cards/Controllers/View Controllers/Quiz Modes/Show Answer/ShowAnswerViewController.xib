@@ -17,6 +17,7 @@
                 <outlet property="nextButton" destination="mGC-DJ-WRD" id="g0Y-Sb-8M7"/>
                 <outlet property="questionLabel" destination="Vj6-gf-JbF" id="CgM-Uz-AOM"/>
                 <outlet property="settingsButton" destination="sKw-d8-erq" id="cfS-YJ-mZJ"/>
+                <outlet property="stackView" destination="DeI-lq-DxX" id="Tv8-yE-I7c"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -25,46 +26,6 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AQn-Pc-7qz">
-                    <rect key="frame" x="16" y="73" width="343" height="293.5"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Question" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vj6-gf-JbF">
-                            <rect key="frame" x="16" y="16" width="311" height="261.5"/>
-                            <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="bottom" secondItem="Vj6-gf-JbF" secondAttribute="bottom" constant="16" id="9Pr-ZH-Ot7"/>
-                        <constraint firstItem="Vj6-gf-JbF" firstAttribute="centerX" secondItem="AQn-Pc-7qz" secondAttribute="centerX" id="B41-Tp-LJw"/>
-                        <constraint firstItem="Vj6-gf-JbF" firstAttribute="top" secondItem="AQn-Pc-7qz" secondAttribute="top" constant="16" id="LME-FG-Hs2"/>
-                        <constraint firstItem="Vj6-gf-JbF" firstAttribute="centerY" secondItem="AQn-Pc-7qz" secondAttribute="centerY" id="Naj-h5-18D"/>
-                        <constraint firstItem="Vj6-gf-JbF" firstAttribute="leading" secondItem="AQn-Pc-7qz" secondAttribute="leading" constant="16" id="TfB-jG-tR2"/>
-                        <constraint firstAttribute="width" constant="343" id="e0L-8z-hNd"/>
-                        <constraint firstAttribute="height" constant="293.5" id="qQC-Vp-947"/>
-                        <constraint firstAttribute="trailing" secondItem="Vj6-gf-JbF" secondAttribute="trailing" constant="16" id="sPf-PS-q1K"/>
-                        <constraint firstItem="Vj6-gf-JbF" firstAttribute="centerX" secondItem="AQn-Pc-7qz" secondAttribute="centerX" id="v6i-bk-2tR"/>
-                    </constraints>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="10"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="color" keyPath="layer.shadowColor">
-                            <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="size" keyPath="layer.shadowOffset">
-                            <size key="value" width="0.0" height="11"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
-                            <real key="value" value="0.14999999999999999"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowRadius">
-                            <integer key="value" value="13"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sKw-d8-erq">
                     <rect key="frame" x="338" y="36" width="21" height="21"/>
                     <color key="tintColor" red="0.0" green="0.62352941179999999" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -88,36 +49,79 @@
                         <action selector="backButtonAction:" destination="-1" eventType="touchUpInside" id="dcv-Go-vLV"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mGC-DJ-WRD">
-                    <rect key="frame" x="16" y="398.5" width="343" height="50"/>
-                    <color key="backgroundColor" red="0.0" green="0.62352941179999999" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" id="fzb-ro-GOF"/>
-                    </constraints>
-                    <state key="normal" title="Next">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="10"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="nextButtonAction:" destination="-1" eventType="touchUpInside" id="Fmf-gD-11Z"/>
-                    </connections>
-                </button>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="DeI-lq-DxX">
+                    <rect key="frame" x="16" y="150" width="343" height="367.5"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AQn-Pc-7qz">
+                            <rect key="frame" x="0.0" y="0.0" width="343" height="293.5"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Question" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vj6-gf-JbF">
+                                    <rect key="frame" x="16" y="16" width="311" height="261.5"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="Vj6-gf-JbF" secondAttribute="bottom" constant="16" id="9Pr-ZH-Ot7"/>
+                                <constraint firstItem="Vj6-gf-JbF" firstAttribute="centerX" secondItem="AQn-Pc-7qz" secondAttribute="centerX" id="B41-Tp-LJw"/>
+                                <constraint firstItem="Vj6-gf-JbF" firstAttribute="top" secondItem="AQn-Pc-7qz" secondAttribute="top" constant="16" id="LME-FG-Hs2"/>
+                                <constraint firstItem="Vj6-gf-JbF" firstAttribute="centerY" secondItem="AQn-Pc-7qz" secondAttribute="centerY" id="Naj-h5-18D"/>
+                                <constraint firstItem="Vj6-gf-JbF" firstAttribute="leading" secondItem="AQn-Pc-7qz" secondAttribute="leading" constant="16" id="TfB-jG-tR2"/>
+                                <constraint firstAttribute="width" constant="343" id="e0L-8z-hNd"/>
+                                <constraint firstAttribute="height" constant="293.5" id="qQC-Vp-947"/>
+                                <constraint firstAttribute="trailing" secondItem="Vj6-gf-JbF" secondAttribute="trailing" constant="16" id="sPf-PS-q1K"/>
+                                <constraint firstItem="Vj6-gf-JbF" firstAttribute="centerX" secondItem="AQn-Pc-7qz" secondAttribute="centerX" id="v6i-bk-2tR"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="layer.shadowColor">
+                                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="size" keyPath="layer.shadowOffset">
+                                    <size key="value" width="0.0" height="11"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
+                                    <real key="value" value="0.14999999999999999"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowRadius">
+                                    <integer key="value" value="13"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <button opaque="NO" contentMode="left" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mGC-DJ-WRD">
+                            <rect key="frame" x="0.0" y="317.5" width="343" height="50"/>
+                            <color key="backgroundColor" red="0.0" green="0.62352941179999999" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="fzb-ro-GOF"/>
+                            </constraints>
+                            <state key="normal" title="Next">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="10"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="nextButtonAction:" destination="-1" eventType="touchUpInside" id="Fmf-gD-11Z"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </stackView>
             </subviews>
             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
             <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="DeI-lq-DxX" secondAttribute="trailing" constant="16" id="4jQ-NI-BSX"/>
                 <constraint firstAttribute="trailing" secondItem="sKw-d8-erq" secondAttribute="trailing" constant="16" id="77L-aG-xM0"/>
                 <constraint firstItem="yz9-KP-n6N" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="DuB-Ah-6oj"/>
                 <constraint firstItem="sKw-d8-erq" firstAttribute="centerY" secondItem="yz9-KP-n6N" secondAttribute="centerY" id="PtW-7g-n46"/>
-                <constraint firstItem="AQn-Pc-7qz" firstAttribute="top" secondItem="yz9-KP-n6N" secondAttribute="bottom" constant="16" id="SHd-Jz-WMg"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="mGC-DJ-WRD" secondAttribute="trailing" constant="16" id="hps-2F-QEs"/>
-                <constraint firstItem="mGC-DJ-WRD" firstAttribute="top" secondItem="AQn-Pc-7qz" secondAttribute="bottom" constant="32" id="mrH-6d-vf1"/>
+                <constraint firstItem="DeI-lq-DxX" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="W2T-VC-kbk"/>
                 <constraint firstItem="yz9-KP-n6N" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="oFM-7j-dQO"/>
-                <constraint firstItem="mGC-DJ-WRD" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="uj6-Xq-Poi"/>
-                <constraint firstItem="AQn-Pc-7qz" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="zpw-CH-Hfb"/>
+                <constraint firstItem="DeI-lq-DxX" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="uQm-97-v2d"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>

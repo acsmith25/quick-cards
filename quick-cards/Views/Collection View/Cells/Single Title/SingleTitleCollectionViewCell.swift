@@ -13,6 +13,8 @@ class SingleTitleCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var titleButton: UIButton!
     
+    var isShowingFront = true
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         titleButton.isUserInteractionEnabled = false
