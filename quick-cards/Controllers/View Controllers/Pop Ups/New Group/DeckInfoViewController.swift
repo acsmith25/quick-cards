@@ -67,7 +67,7 @@ class DeckInfoViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func editAction(_ sender: Any) {
-        let controller = EditDeckViewController(isEditing: true)
+        let controller = EditDeckViewController(deck: deck)
         navigationController?.pushViewController(controller, animated: true)
         navigationController?.navigationBar.backgroundColor = .white
     }
@@ -94,6 +94,17 @@ class DeckInfoViewController: UIViewController {
         
         guard let controller = quizController as? UIViewController else { return }
         navigationController?.pushViewController(controller, animated: true)
+    }
+
+    func resetDeck() {
+        let alertController = UIAlertController(title: "Confirm Start Over", message: "Are you sure you want to start this deck over? All progress will be lost.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Okay", style: .default) { (action) in
+//            self.deckManager.startFromBeginning()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
     }
 
 }

@@ -10,26 +10,18 @@ import UIKit
 
 class EditDeckViewController: UIViewController {
     
+    @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var questionTextField: UITextField!
     @IBOutlet weak var answerTextField: UITextField!
-    @IBOutlet weak var continueButton: UIButton!
-    @IBOutlet weak var doneButton: UIButton!
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var answerLabel: UILabel!
-    
-    private enum ViewState {
-        case new
-        case enterCard
-        case submitted
-    }
-    
-    private var viewState: ViewState
+    @IBOutlet weak var tableView: UITableView!
     
     var deck: Deck?
     var delegate: NavigationDelegate?
     
-    init(isEditing: Bool) {
-        viewState = isEditing ? .enterCard : .new
+    init(deck: Deck?) {
+        self.deck = deck
         super.init(nibName: String(describing: EditDeckViewController.self), bundle: nil)
     }
     
@@ -40,8 +32,19 @@ class EditDeckViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        deck = Deck(title: "New Deck", cards: [:])
-        setViewState(viewState)
+        guard let deck = self.deck else {
+            self.deck = Deck(title: "New Deck", cards: [:])
+            titleTextField.placeholder = self.deck?.title
+            return
+        }
+        
+        registerCells()
+        
+        titleTextField.placeholder = deck.title
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.estimatedRowHeight = 50.0
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -50,35 +53,30 @@ class EditDeckViewController: UIViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    }
+    
+    func registerCells() {
+        tableView.register(UINib(nibName: String(describing: QuestionAnswerTableViewCell.self), bundle: nil), forCellReuseIdentifier: QuestionAnswerTableViewCell.identifier)
     }
     
     // MARK: - Actions
     
-    @IBAction func didTapNextButton(_ sender: Any) {
-        switch viewState {
-        case .new:
-            self.questionTextField.endEditing(true)
-            
-            let title = questionTextField.text ?? ""
-            deck?.title = title
-            
-            setViewState(.enterCard)
-        case .enterCard:
-            self.answerTextField.endEditing(true)
-            self.questionTextField.endEditing(true)
-            
-            let question = questionTextField.text ?? ""
-            let answer = answerTextField.text ?? ""
-            deck?.addCard(question: question, answer: answer)
-            
-            setViewState(.submitted)
-        case .submitted:
-            setViewState(.enterCard)
+    @IBAction func addCardAction(_ sender: Any) {
+        self.answerTextField.resignFirstResponder()
+        self.questionTextField.resignFirstResponder()
+
+        guard let question = questionTextField.text, let answer = answerTextField.text else {
+            let alertController = UIAlertController(title: "Error adding card", message: "Please provide a valid question and answer.", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Okay", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            present(alertController, animated: true, completion: nil)
+            return
         }
+        deck?.addCard(question: question, answer: answer)
+         tableView.reloadData()
     }
-    
-    @IBAction func didTapDoneButton(_ sender: Any) {
+
+    @IBAction func saveAction(_ sender: Any) {
         if let deck = deck {
             allDecks.append(deck)
             userDecks.append(deck)
@@ -87,46 +85,43 @@ class EditDeckViewController: UIViewController {
         }
         delegate?.dismissViewController()
     }
+    
+    @IBAction func backAction(_ sender: Any) {
+        let alertController = UIAlertController(title: "Are you sure?", message: "All progress creating this deck will be lost.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Yes", style: .default) { (action) in
+            self.delegate?.dismissViewController()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
-// MARK: - View State
-extension EditDeckViewController {
+extension EditDeckViewController: UITableViewDelegate, UITableViewDataSource {
     
-    private func setViewState(_ viewState: ViewState) {
-        self.viewState = viewState
-        switch viewState {
-        case .new:
-            self.continueButton.setTitle("Save Title", for: .normal)
-            self.questionLabel.text = "Title:"
-            
-            self.doneButton.alpha = 0
-            self.answerTextField.alpha = 0
-            self.answerLabel.alpha = 0
-        case .enterCard:
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: {
-                self.continueButton.setTitle("Save", for: .normal)
-                self.questionLabel.text = "Question:"
-                self.questionTextField.text = ""
-                
-                self.questionTextField.alpha = 1
-                self.questionLabel.alpha = 1
-                self.answerTextField.alpha = 1
-                self.answerLabel.alpha = 1
-                self.doneButton.alpha = 1
-            }, completion: nil)
-        case .submitted:
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: {
-                self.continueButton.setTitle("Add Another", for: .normal)
-                self.answerTextField.text = ""
-                self.questionTextField.text = ""
-                
-                self.doneButton.alpha = 1
-                self.answerTextField.alpha = 0
-                self.answerLabel.alpha = 0
-                self.questionTextField.alpha = 0
-                self.questionLabel.alpha = 0
-            }, completion: nil)
-        }
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
-
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let deck = deck else {
+            return 0
+        }
+        return deck.cards.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: QuestionAnswerTableViewCell.identifier, for: indexPath) as? QuestionAnswerTableViewCell else {
+            fatalError("Could not qeueue cell")
+        }
+        
+        guard let deck = deck else { fatalError() }
+        let question = deck.questions[indexPath.row]
+        let answer = deck.cards[question]
+        cell.configure(question: question.question, answer: answer?.answer ?? "")
+        
+        return cell
+    }
+    
 }

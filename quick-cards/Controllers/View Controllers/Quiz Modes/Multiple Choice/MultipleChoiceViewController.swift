@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MultipleChoiceViewController: UIViewController, QuizModeController, PopUpPresentationController {
+class MultipleChoiceViewController: UIViewController, QuizModeController {
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
     @IBOutlet weak var choiceButton1: UIButton!
@@ -17,26 +17,31 @@ class MultipleChoiceViewController: UIViewController, QuizModeController, PopUpP
     @IBOutlet weak var choiceButton4: UIButton!
     @IBOutlet weak var nextButton: UIButton!
     
+    @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var choicesView: UIView!
     @IBOutlet weak var cardView: UIView!
     @IBOutlet weak var questionLabel: UILabel!
 
     private enum ViewState {
         case asking(Question, [Answer])
-        case correct
-        case incorrect(String)
+        case answer(String, Bool)
         case mastered
     }
     
     private var viewState: ViewState = .mastered
     
-    var deckManager: DeckManager
-    var delegate: NavigationDelegate?
-    
+    // Pop Up protocol properties
     var gesture: UIGestureRecognizer?
     var popUp: PopUpController?
     
-    init(deck: Deck) {
+    var delegate: NavigationDelegate?
+    
+    var deckManager: DeckManager
+    var shouldResume: Bool
+    
+    init(deck: Deck, shouldResume: Bool) {
         self.deckManager = DeckManager(deck: deck)
+        self.shouldResume = shouldResume
         super.init(nibName: String(describing: MultipleChoiceViewController.self), bundle: nil)
     }
     
@@ -47,12 +52,11 @@ class MultipleChoiceViewController: UIViewController, QuizModeController, PopUpP
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(flipCard))
-        cardView.addGestureRecognizer(gesture)
+        addGestures()
         
         deckManager.delegate = self
-//        if shouldResume { deckManager.startDeck() }
-        deckManager.startFromBeginning()
+        if shouldResume { deckManager.startDeck() }
+        else { deckManager.startFromBeginning() }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,26 +65,48 @@ class MultipleChoiceViewController: UIViewController, QuizModeController, PopUpP
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    }
+    
+// MARK: - Actions
+    
+    @IBAction func choiceButtonAction(_ sender: Any) {
+        // Submit
+        guard let sender = sender as? UIButton else { return }
+        deckManager.validate(userAnswer: sender.title(for: .normal))
+    }
+    
+    @IBAction func nextButtonAction(_ sender: Any) {
+        switch viewState {
+        case .asking(_):
+            // Give up
+            deckManager.incorrect()
+        default:
+            // Go to next card
+            deckManager.next()
+        }
     }
     
     @IBAction func backButtonAction(_ sender: Any) {
         print("Current deck mastery: \(deckManager.deck.mastery)%")
         deckManager.exit()
-        let ipIndex = decksInProgress.index { $0 == deckManager.deck }
-        if let index = ipIndex {
+        
+        // Update all references to deck
+        let inProgressIndex = decksInProgress.index { $0 == deckManager.deck }
+        if let index = inProgressIndex {
             decksInProgress[index] = deckManager.deck
         } else {
             decksInProgress.append(deckManager.deck)
         }
-        let udIndex = userDecks.index { $0 == deckManager.deck }
-        if let index = udIndex {
+        let userDeckIndex = userDecks.index { $0 == deckManager.deck }
+        if let index = userDeckIndex {
             userDecks[index] = deckManager.deck
         } else {
-            if let ddIndex = defaultDecks.index(where: { $0 == deckManager.deck }) {
-                defaultDecks[ddIndex] = deckManager.deck
+            if let defaultDeckIndex = defaultDecks.index(where: { $0 == deckManager.deck }) {
+                defaultDecks[defaultDeckIndex] = deckManager.deck
             }
         }
+        
+        // Save decks
         DeckSaver.saveAllDecks()
         delegate?.dismissViewController()
     }
@@ -95,20 +121,6 @@ class MultipleChoiceViewController: UIViewController, QuizModeController, PopUpP
         guard let gesture = gesture else { return }
         self.view.addGestureRecognizer(gesture)
     }
-    
-    @IBAction func nextButtonAction(_ sender: Any) {
-        switch viewState {
-        case .asking(_):
-            deckManager.validate(userAnswer: nil)
-        default:
-            deckManager.next()
-        }
-    }
-    
-    @IBAction func choiceButtonAction(_ sender: Any) {
-        guard let sender = sender as? UIButton else { return }
-        deckManager.validate(userAnswer: sender.title(for: .normal))
-    }
 }
 
 // MARK: - View State
@@ -120,45 +132,31 @@ extension MultipleChoiceViewController {
         switch viewState {
         case .asking(let question, let randomAnswers):
             UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: {
-                self.questionLabel.text = question.question
-                self.cardView.backgroundColor = .white
-                
+                self.nextButton.setTitle("Give Up", for: .normal)
                 self.choiceButton1.setTitle(randomAnswers[0].answer, for: .normal)
                 self.choiceButton2.setTitle(randomAnswers[1].answer, for: .normal)
                 self.choiceButton3.setTitle(randomAnswers[2].answer, for: .normal)
                 self.choiceButton4.setTitle(self.deckManager.deck.cards[question]?.answer, for: .normal)
-                self.nextButton.setTitle("Give Up", for: .normal)
+                self.questionLabel.text = question.question
+                self.cardView.backgroundColor = .white
                 
-                self.choiceButton1.alpha = 1.0
-                self.choiceButton2.alpha = 1.0
-                self.choiceButton3.alpha = 1.0
-                self.choiceButton4.alpha = 1.0
+                self.choicesView.isHidden = false
+                self.stackView.layoutIfNeeded()
+                
+                self.choicesView.alpha = 1.0
             }, completion: nil)
-        case .correct:
+        case .answer(let answer, let isCorrect):
             UIView.animate(withDuration: 0.2) {
-                self.cardView.backgroundColor = .myGreen
                 self.nextButton.setTitle("Next", for: .normal)
+                self.cardView.backgroundColor = isCorrect ? .myGreen : .myRed
                 
-                self.choiceButton1.alpha = 0.0
-                self.choiceButton2.alpha = 0.0
-                self.choiceButton3.alpha = 0.0
-                self.choiceButton4.alpha = 0.0
+                self.choicesView.isHidden = true
+                self.stackView.layoutIfNeeded()
+                
+                self.choicesView.alpha = 0.0
             }
             UIView.transition(with: cardView, duration: 0.5, options: .transitionFlipFromRight, animations: {
-                self.questionLabel.text = "Correct!"
-            }, completion: nil)
-            
-        case .incorrect(let correctAnswer):
-            UIView.animate(withDuration: 0.2) {
-                self.cardView.backgroundColor = .myRed
-                self.nextButton.setTitle("Next", for: .normal)
-                
-                self.choiceButton1.alpha = 0.0
-                self.choiceButton2.alpha = 0.0
-                self.choiceButton3.alpha = 0.0
-                self.choiceButton4.alpha = 0.0            }
-            UIView.transition(with: cardView, duration: 0.5, options: .transitionFlipFromRight, animations: {
-                self.questionLabel.text = "Wrong: \(correctAnswer)"
+                self.questionLabel.text = answer
             }, completion: nil)
         case .mastered:
             UIView.animate(withDuration: 0.2) {
@@ -167,39 +165,18 @@ extension MultipleChoiceViewController {
             }
         }
     }
+}
+
+// MARK: - Gestures
+extension MultipleChoiceViewController {
     
-    func resetDeck() {
-        let alertController = UIAlertController(title: "Confirm Start Over", message: "Are you sure you want to start this deck over? All progress will be lost.", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "Okay", style: .default) { (action) in
-            self.deckManager.startFromBeginning()
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alertController.addAction(okAction)
-        alertController.addAction(cancelAction)
-        present(alertController, animated: true, completion: nil)
-    }
-    
-    @objc func dismissPopUp() {
-        guard let popUp = popUp, let gesture = gesture else { return }
-        popUp.dismissSubviews()
-        self.view.removeGestureRecognizer(gesture)
+    func addGestures() {
+        let cardGesture = UITapGestureRecognizer(target: self, action: #selector(flipCard))
+        cardView.addGestureRecognizer(cardGesture)
     }
     
     @objc func flipCard() {
-        //        UIView.transition(with: cardView, duration: 0.5, options: .transitionFlipFromRight, animations: {
-        //            self.questionLabel.text = "Answer"
-        //        }, completion: nil)
-        deckManager.validate(userAnswer: nil)
-    }
-}
-
-extension MultipleChoiceViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        guard let popUp = popUp, let view = touch.view else { return false }
-        if view.isDescendant(of: popUp.popUpController.view) {
-            return false
-        }
-        return true
+        deckManager.incorrect()
     }
 }
 
@@ -210,16 +187,33 @@ extension MultipleChoiceViewController: DeckManagerDelegate {
         setViewState(.mastered)
     }
     
-    func showAnswer(correctAnswer: String? = nil) {
-        guard let correctAnswer = correctAnswer else {
-            setViewState(.correct)
-            return
-        }
-        setViewState(.incorrect(correctAnswer))
+    func showAnswer(answer: Answer, isCorrect: Bool) {
+        setViewState(.answer(answer.answer, isCorrect))
     }
     
     func askQuestion(question: Question, wrongAnswers: [Answer]) {
         setViewState(.asking(question, wrongAnswers))
     }
+}
+
+// MARK: - PopUpPresentationController
+extension MultipleChoiceViewController: PopUpPresentationController {
     
+    @objc func dismissPopUp() {
+        guard let popUp = popUp, let gesture = gesture else { return }
+        popUp.dismissSubviews()
+        self.view.removeGestureRecognizer(gesture)
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+extension MultipleChoiceViewController: UIGestureRecognizerDelegate {
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        guard let popUp = popUp, let view = touch.view else { return false }
+        if view.isDescendant(of: popUp.popUpController.view) {
+            return false
+        }
+        return true
+    }
 }

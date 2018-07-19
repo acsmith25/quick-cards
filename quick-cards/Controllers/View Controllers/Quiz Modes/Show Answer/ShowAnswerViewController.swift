@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ShowAnswerViewController: UIViewController, QuizModeController, PopUpPresentationController {
+class ShowAnswerViewController: UIViewController, QuizModeController {
 
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
@@ -25,14 +25,18 @@ class ShowAnswerViewController: UIViewController, QuizModeController, PopUpPrese
     
     private var viewState: ViewState = .asking(nil)
     
-    var deckManager: DeckManager
-    var delegate: NavigationDelegate?
-    
+    // Pop Up protocol properties
     var gesture: UIGestureRecognizer?
     var popUp: PopUpController?
     
-    init(deck: Deck) {
+    var delegate: NavigationDelegate?
+    
+    var deckManager: DeckManager
+    var shouldResume: Bool
+    
+    init(deck: Deck, shouldResume: Bool) {
         self.deckManager = DeckManager(deck: deck)
+        self.shouldResume = shouldResume
         super.init(nibName: String(describing: ShowAnswerViewController.self), bundle: nil)
     }
     
@@ -43,11 +47,11 @@ class ShowAnswerViewController: UIViewController, QuizModeController, PopUpPrese
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(flipCard))
-        cardView.addGestureRecognizer(gesture)
+        addGestures()
         
         deckManager.delegate = self
-        deckManager.startFromBeginning()
+        if shouldResume { deckManager.startDeck() }
+        else { deckManager.startFromBeginning() }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,8 +60,9 @@ class ShowAnswerViewController: UIViewController, QuizModeController, PopUpPrese
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
+    
+// MARK: - Actions
     
     @IBAction func nextButtonAction(_ sender: Any) {
         deckManager.next()
@@ -66,20 +71,24 @@ class ShowAnswerViewController: UIViewController, QuizModeController, PopUpPrese
     @IBAction func backButtonAction(_ sender: Any) {
         print("Current deck mastery: \(deckManager.deck.mastery)%")
         deckManager.exit()
-        let ipIndex = decksInProgress.index { $0 == deckManager.deck }
-        if let index = ipIndex {
+
+        // Update all references to deck
+        let inProgressIndex = decksInProgress.index { $0 == deckManager.deck }
+        if let index = inProgressIndex {
             decksInProgress[index] = deckManager.deck
         } else {
             decksInProgress.append(deckManager.deck)
         }
-        let udIndex = userDecks.index { $0 == deckManager.deck }
-        if let index = udIndex {
+        let userDeckIndex = userDecks.index { $0 == deckManager.deck }
+        if let index = userDeckIndex {
             userDecks[index] = deckManager.deck
         } else {
-            if let ddIndex = defaultDecks.index(where: { $0 == deckManager.deck }) {
-                defaultDecks[ddIndex] = deckManager.deck
+            if let defaultDeckIndex = defaultDecks.index(where: { $0 == deckManager.deck }) {
+                defaultDecks[defaultDeckIndex] = deckManager.deck
             }
         }
+        
+        // Save decks
         DeckSaver.saveAllDecks()
         delegate?.dismissViewController()
     }
@@ -94,16 +103,10 @@ class ShowAnswerViewController: UIViewController, QuizModeController, PopUpPrese
         guard let gesture = gesture else { return }
         self.view.addGestureRecognizer(gesture)
     }
+}
 
-    @objc func dismissPopUp() {
-        guard let popUp = popUp, let gesture = gesture else { return }
-        popUp.dismissSubviews()
-        self.view.removeGestureRecognizer(gesture)
-    }
-    
-    @objc func flipCard() {
-        deckManager.validate(userAnswer: nil)
-    }
+// MARK: - View State
+extension ShowAnswerViewController {
     
     private func setViewState(_ viewState: ViewState) {
         self.viewState = viewState
@@ -139,6 +142,46 @@ class ShowAnswerViewController: UIViewController, QuizModeController, PopUpPrese
     
 }
 
+// MARK: - Gestures
+extension ShowAnswerViewController {
+    
+    func addGestures() {
+        let cardGesture = UITapGestureRecognizer(target: self, action: #selector(flipCard))
+        cardView.addGestureRecognizer(cardGesture)
+    }
+    
+    @objc func flipCard() {
+        deckManager.correct()
+    }
+}
+
+// MARK: - DeckManagerDelegate
+extension ShowAnswerViewController: DeckManagerDelegate {
+    
+    func masteredDeck() {
+        setViewState(.mastered)
+    }
+    
+    func showAnswer(answer: Answer, isCorrect: Bool) {
+        setViewState(.answer(answer.answer))
+    }
+    
+    func askQuestion(question: Question, wrongAnswers: [Answer]) {
+        setViewState(.asking(question.question))
+    }
+}
+
+// MARK: - PopUpPresentationController
+extension ShowAnswerViewController: PopUpPresentationController {
+    
+    @objc func dismissPopUp() {
+        guard let popUp = popUp, let gesture = gesture else { return }
+        popUp.dismissSubviews()
+        self.view.removeGestureRecognizer(gesture)
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
 extension ShowAnswerViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         guard let popUp = popUp, let view = touch.view else { return false }
@@ -147,24 +190,4 @@ extension ShowAnswerViewController: UIGestureRecognizerDelegate {
         }
         return true
     }
-}
-
-// MARK: - Card Deck Delegate
-extension ShowAnswerViewController: DeckManagerDelegate {
-    
-    func masteredDeck() {
-        setViewState(.mastered)
-    }
-    
-    func showAnswer(correctAnswer: String? = nil) {
-        guard let correctAnswer = correctAnswer else {
-            return
-        }
-        setViewState(.answer(correctAnswer))
-    }
-    
-    func askQuestion(question: Question, wrongAnswers: [Answer]) {
-        setViewState(.asking(question.question))
-    }
-    
 }

@@ -10,7 +10,7 @@ import Foundation
 
 protocol DeckManagerDelegate {
     func askQuestion(question: Question, wrongAnswers: [Answer])
-    func showAnswer(correctAnswer: String?)
+    func showAnswer(answer: Answer, isCorrect: Bool)
     func masteredDeck()
 }
 
@@ -75,6 +75,40 @@ class DeckManager {
         deck.updateQuestionGrade(question: currentQuestion, grade: currentQuestion.grade)
     }
     
+    func incorrect() {
+        guard let currentQuestion = currentQuestion else { return }
+        guard let correctAnswer = deck.cards[currentQuestion] else {
+            fatalError("Question does not exist.")
+        }
+
+        decreaseLevel()
+        delegate?.showAnswer(answer: correctAnswer, isCorrect: false)
+        
+        saveMastery()
+        self.currentQuestion = nil
+        print("Current mastery: \(deck.mastery)")
+    }
+    
+    func correct() {
+        guard let currentQuestion = currentQuestion else { return }
+        guard let correctAnswer = deck.cards[currentQuestion] else {
+            fatalError("Question does not exist.")
+        }
+        
+        increaseLevel()
+        if currentMastery == totalMastery {
+            // Deck is mastered
+            delegate?.masteredDeck()
+        } else {
+            // Continue
+            delegate?.showAnswer(answer: correctAnswer, isCorrect: true)
+        }
+        
+        saveMastery()
+        self.currentQuestion = nil
+        print("Current mastery: \(deck.mastery)")
+    }
+    
     func validate(userAnswer: String?) {
         guard let currentQuestion = currentQuestion else { return }
         guard let correctAnswer = deck.cards[currentQuestion] else {
@@ -82,22 +116,10 @@ class DeckManager {
         }
         let didAnswerCorrectly = userAnswer == correctAnswer.answer ? true : false
         if didAnswerCorrectly {
-            increaseLevel()
-            if currentMastery == totalMastery {
-                // Deck is mastered
-                delegate?.masteredDeck()
-            } else {
-                // Continue
-                delegate?.showAnswer(correctAnswer: nil)
-            }
+            correct()
         } else {
-            // Continue
-            decreaseLevel()
-            delegate?.showAnswer(correctAnswer: correctAnswer.answer)
+            incorrect()
         }
-        saveMastery()
-        self.currentQuestion = nil
-        print("Current mastery: \(deck.mastery)")
     }
     
     func saveMastery() {

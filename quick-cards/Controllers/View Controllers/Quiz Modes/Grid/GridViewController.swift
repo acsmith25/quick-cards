@@ -8,21 +8,25 @@
 
 import UIKit
 
-class GridViewController: UIViewController, QuizModeController, PopUpPresentationController {
+class GridViewController: UIViewController, QuizModeController {
     
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var deckManager: DeckManager
-    var delegate: NavigationDelegate?
-    
+    // Pop Up protocol properties
     var gesture: UIGestureRecognizer?
     var popUp: PopUpController?
     
-    init(deck: Deck) {
+    var delegate: NavigationDelegate?
+    
+    var deckManager: DeckManager
+    var shouldResume: Bool
+    
+    init(deck: Deck, shouldResume: Bool) {
         self.deckManager = DeckManager(deck: deck)
+        self.shouldResume = shouldResume
         super.init(nibName: String(describing: GridViewController.self), bundle: nil)
     }
     
@@ -37,14 +41,14 @@ class GridViewController: UIViewController, QuizModeController, PopUpPresentatio
         
         collectionView.delegate = self
         collectionView.dataSource = self
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Register cell classes
-        //        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        
-        // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
     }
     
     func registerCellsAndViews() {
@@ -56,32 +60,29 @@ class GridViewController: UIViewController, QuizModeController, PopUpPresentatio
         collectionView.register(UINib(nibName: String(describing: SectionHeaderCollectionReusableView.self), bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: SectionHeaderCollectionReusableView.identifier)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        navigationController?.navigationBar.isHidden = true
-    }
+    // MARK: - Actions
     
     @IBAction func backButtonAction(_ sender: Any) {
         print("Current deck mastery: \(deckManager.deck.mastery)%")
         deckManager.exit()
-        let ipIndex = decksInProgress.index { $0 == deckManager.deck }
-        if let index = ipIndex {
+        
+        // Update all references to deck
+        let inProgressIndex = decksInProgress.index { $0 == deckManager.deck }
+        if let index = inProgressIndex {
             decksInProgress[index] = deckManager.deck
         } else {
             decksInProgress.append(deckManager.deck)
         }
-        let udIndex = userDecks.index { $0 == deckManager.deck }
-        if let index = udIndex {
+        let userDeckIndex = userDecks.index { $0 == deckManager.deck }
+        if let index = userDeckIndex {
             userDecks[index] = deckManager.deck
         } else {
-            if let ddIndex = defaultDecks.index(where: { $0 == deckManager.deck }) {
-                defaultDecks[ddIndex] = deckManager.deck
+            if let defaultDeckIndex = defaultDecks.index(where: { $0 == deckManager.deck }) {
+                defaultDecks[defaultDeckIndex] = deckManager.deck
             }
         }
+        
+        // Save decks
         DeckSaver.saveAllDecks()
         delegate?.dismissViewController()
     }
@@ -96,16 +97,9 @@ class GridViewController: UIViewController, QuizModeController, PopUpPresentatio
         guard let gesture = gesture else { return }
         self.view.addGestureRecognizer(gesture)
     }
-    
-    @objc func dismissPopUp() {
-        guard let popUp = popUp, let gesture = gesture else { return }
-        popUp.dismissSubviews()
-        self.view.removeGestureRecognizer(gesture)
-    }
 }
     
-    // MARK: UICollectionViewDataSource
-
+// MARK: UICollectionView
 extension GridViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -134,7 +128,6 @@ extension GridViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let question = deckManager.deck.questions[indexPath.row]
         if card.isShowingFront {
             guard let answer = deckManager.deck.cards[question] else { return }
-            deckManager.validate(userAnswer: answer.answer)
             UIView.transition(with: card, duration: 0.5, options: .transitionFlipFromRight, animations: {
                 card.configure(with: answer.answer, backgroundColor: .myGreen)
             }, completion: nil)
@@ -149,6 +142,26 @@ extension GridViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
 }
 
+// MARK: - Card Deck Delegate
+extension GridViewController: DeckManagerDelegate {
+    
+    func masteredDeck() { return }
+    func showAnswer(answer: Answer, isCorrect: Bool) { return }
+    func askQuestion(question: Question, wrongAnswers: [Answer]) { return }
+    
+}
+
+// MARK: - PopUpPresentationController
+extension GridViewController: PopUpPresentationController {
+    
+    @objc func dismissPopUp() {
+        guard let popUp = popUp, let gesture = gesture else { return }
+        popUp.dismissSubviews()
+        self.view.removeGestureRecognizer(gesture)
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
 extension GridViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         guard let popUp = popUp, let view = touch.view else { return false }
@@ -157,25 +170,4 @@ extension GridViewController: UIGestureRecognizerDelegate {
         }
         return true
     }
-}
-
-// MARK: - Card Deck Delegate
-extension GridViewController: DeckManagerDelegate {
-    
-    func masteredDeck() {
-        //        setViewState(.mastered)
-    }
-    
-    func showAnswer(correctAnswer: String? = nil) {
-        //        guard let correctAnswer = correctAnswer else {
-        //            setViewState(.correct)
-        //            return
-        //        }
-        //        setViewState(.incorrect(correctAnswer))
-    }
-    
-    func askQuestion(question: Question, wrongAnswers: [Answer]) {
-        //        setViewState(.asking(question))
-    }
-    
 }
