@@ -112,7 +112,9 @@ class MultipleChoiceViewController: UIViewController, QuizModeController {
     }
     
     @IBAction func settingsAction(_ sender: Any) {
-        popUp = PopUpController(popUpView: DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true))
+        let infoController = DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
+        infoController.delegate = self
+        popUp = PopUpController(popUpView: infoController)
         guard let popUp = popUp else { return }
         popUp.presentPopUp(on: self)
         
@@ -215,5 +217,13 @@ extension MultipleChoiceViewController: UIGestureRecognizerDelegate {
             return false
         }
         return true
+    }
+}
+
+// MARK: - Deck Collection View Delegate
+extension MultipleChoiceViewController: NavigationDelegate {
+    
+    func dismissViewController() {
+        navigationController?.popViewController(animated: true)
     }
 }

@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,7 +21,8 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="So5-QI-PC6">
-                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                        <rect key="frame" x="5" y="5" width="40" height="40"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <state key="normal" title="Button">
                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -31,18 +33,41 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ibg-x0-XQ3">
+                        <rect key="frame" x="25" y="0.0" width="25" height="25"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="Ibg-x0-XQ3" secondAttribute="height" multiplier="1:1" id="Uj1-Ft-iil"/>
+                            <constraint firstAttribute="height" constant="25" id="iAl-Gl-a1d"/>
+                        </constraints>
+                        <color key="tintColor" red="0.0" green="0.62352941179999999" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <state key="normal" backgroundImage="exitIcon"/>
+                        <connections>
+                            <action selector="removeAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="Kcf-68-d9K"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="So5-QI-PC6" secondAttribute="bottom" id="7rz-ej-wjd"/>
-                <constraint firstAttribute="trailing" secondItem="So5-QI-PC6" secondAttribute="trailing" id="lXO-MX-BVt"/>
-                <constraint firstItem="So5-QI-PC6" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="z7f-B0-IsV"/>
-                <constraint firstItem="So5-QI-PC6" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="zf3-Yb-Ira"/>
+                <constraint firstItem="Ibg-x0-XQ3" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="7kL-bY-6Jo"/>
+                <constraint firstAttribute="bottom" secondItem="So5-QI-PC6" secondAttribute="bottom" constant="5" id="7rz-ej-wjd"/>
+                <constraint firstAttribute="trailing" secondItem="Ibg-x0-XQ3" secondAttribute="trailing" id="fdQ-5s-Uds"/>
+                <constraint firstAttribute="trailing" secondItem="So5-QI-PC6" secondAttribute="trailing" constant="5" id="lXO-MX-BVt"/>
+                <constraint firstItem="So5-QI-PC6" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="5" id="z7f-B0-IsV"/>
+                <constraint firstItem="So5-QI-PC6" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="zf3-Yb-Ira"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <connections>
+                <outlet property="bottomConstraint" destination="7rz-ej-wjd" id="F4o-YW-LuI"/>
+                <outlet property="closeButton" destination="Ibg-x0-XQ3" id="yvl-3F-UCJ"/>
+                <outlet property="leadingConstraint" destination="z7f-B0-IsV" id="k7B-8e-BQf"/>
                 <outlet property="titleButton" destination="So5-QI-PC6" id="5ta-S7-JLd"/>
+                <outlet property="topConstraint" destination="zf3-Yb-Ira" id="c9p-B0-9Rd"/>
+                <outlet property="trailingConstraint" destination="lXO-MX-BVt" id="4bs-xO-ITC"/>
             </connections>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="exitIcon" width="25" height="25"/>
+    </resources>
 </document>

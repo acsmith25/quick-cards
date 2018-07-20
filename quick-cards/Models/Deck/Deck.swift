@@ -66,6 +66,31 @@ class Deck: Codable {
         gradeDistribution[grade] = targetGrade
     }
     
+    func removeCard(question: Question) {
+        guard let answer = cards[question] else { return }
+        
+        guard var grade = gradeDistribution[question.grade] else { return }
+        if let index = grade.index(where: { $0 == question }) {
+            grade.remove(at: index)
+        }
+        gradeDistribution[question.grade] = grade
+        
+        cards[question] = nil
+        
+        if let index = questions.index(where: { $0 == question }) {
+            questions.remove(at: index)
+        }
+        
+        if let index = answers.index(where: { $0 == answer }) {
+            answers.remove(at: index)
+        }
+    }
+    
+    func updateQuestion(oldQuestion: Question, newQuestion: String, newAnswer: String) {
+        removeCard(question: oldQuestion)
+        addCard(question: newQuestion, answer: newAnswer, grade: oldQuestion.grade)
+    }
+    
     func updateQuestionGrade(question: Question, grade: Grade) {
         guard var targetGrade = gradeDistribution[grade] else {
             question.grade = grade

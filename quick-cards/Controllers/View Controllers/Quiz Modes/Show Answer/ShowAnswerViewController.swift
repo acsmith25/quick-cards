@@ -94,9 +94,12 @@ class ShowAnswerViewController: UIViewController, QuizModeController {
     }
     
     @IBAction func settingsAction(_ sender: Any) {
-        popUp = PopUpController(popUpView: DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true))
+        let infoController = DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
+        infoController.delegate = self
+        popUp = PopUpController(popUpView: infoController)
         guard let popUp = popUp else { return }
         popUp.presentPopUp(on: self)
+
         
         gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
         gesture?.delegate = self
@@ -183,11 +186,20 @@ extension ShowAnswerViewController: PopUpPresentationController {
 
 // MARK: - UIGestureRecognizerDelegate
 extension ShowAnswerViewController: UIGestureRecognizerDelegate {
+    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         guard let popUp = popUp, let view = touch.view else { return false }
         if view.isDescendant(of: popUp.popUpController.view) {
             return false
         }
         return true
+    }
+}
+
+// MARK: - Deck Collection View Delegate
+extension ShowAnswerViewController: NavigationDelegate {
+    
+    func dismissViewController() {
+        navigationController?.popViewController(animated: true)
     }
 }

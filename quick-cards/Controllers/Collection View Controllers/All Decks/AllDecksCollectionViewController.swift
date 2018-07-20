@@ -88,7 +88,10 @@ extension AllDecksCollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let deck = sections[indexPath.section].1[indexPath.row]
-        popUp = PopUpController(popUpView: DeckInfoViewController(deck: deck, isViewingDeck: false))
+        
+        let infoController = DeckInfoViewController(deck: deck, isViewingDeck: false)
+        infoController.delegate = self
+        popUp = PopUpController(popUpView: infoController)
         guard let popUp = popUp else { return }
         popUp.presentPopUp(on: self)
         

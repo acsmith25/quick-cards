@@ -23,6 +23,8 @@ class DeckInfoViewController: UIViewController {
     var deck: Deck
     var isViewingDeck: Bool
     
+    var delegate: NavigationDelegate?
+    
     init(deck: Deck, isViewingDeck: Bool) {
         self.deck = deck
         self.isViewingDeck = isViewingDeck
@@ -68,6 +70,7 @@ class DeckInfoViewController: UIViewController {
     
     @IBAction func editAction(_ sender: Any) {
         let controller = EditDeckViewController(deck: deck)
+        controller.delegate = self.delegate
         navigationController?.pushViewController(controller, animated: true)
         navigationController?.navigationBar.backgroundColor = .white
     }
