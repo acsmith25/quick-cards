@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CustomPopup
 
 protocol QuizModeController {
     var delegate: NavigationDelegate? { get set }

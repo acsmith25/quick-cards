@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CustomPopup
 
 class GridViewController: UIViewController, QuizModeController {
     

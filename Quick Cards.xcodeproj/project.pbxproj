@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B3B572D178D9CBCCBE4B6F3 /* Pods_quick_cards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E24D7EB4195515D59A362F6B /* Pods_quick_cards.framework */; };
 		490AF5D720E13E1D003C312E /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490AF5D520E13E1D003C312E /* HomeTableViewController.swift */; };
 		490AF5D820E13E1D003C312E /* HomeTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 490AF5D620E13E1D003C312E /* HomeTableViewController.xib */; };
 		490AF5DC20E13F20003C312E /* CollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490AF5DA20E13F20003C312E /* CollectionTableViewCell.swift */; };
@@ -29,7 +30,6 @@
 		49964D6E20EFE75E0041DD15 /* TypeAnswerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49964D6C20EFE75E0041DD15 /* TypeAnswerViewController.xib */; };
 		49AE4F6B20E677F8006AAAD4 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49AE4F6A20E677F8006AAAD4 /* Question.swift */; };
 		49AE4F6D20E67803006AAAD4 /* Answer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49AE4F6C20E67803006AAAD4 /* Answer.swift */; };
-		49C48A5420F7B993002C2E30 /* PopUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C48A5320F7B993002C2E30 /* PopUpController.swift */; };
 		49C48A5D20F7F0DF002C2E30 /* ShowAnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C48A5B20F7F0DF002C2E30 /* ShowAnswerViewController.swift */; };
 		49C48A5E20F7F0DF002C2E30 /* ShowAnswerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C48A5C20F7F0DF002C2E30 /* ShowAnswerViewController.xib */; };
 		49C48A6420F7F167002C2E30 /* MultipleChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C48A6220F7F167002C2E30 /* MultipleChoiceViewController.swift */; };
@@ -60,6 +60,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0DB21B5779670F9A15059592 /* Pods-quick-cards.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quick-cards.debug.xcconfig"; path = "Pods/Target Support Files/Pods-quick-cards/Pods-quick-cards.debug.xcconfig"; sourceTree = "<group>"; };
 		490AF5D520E13E1D003C312E /* HomeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
 		490AF5D620E13E1D003C312E /* HomeTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeTableViewController.xib; sourceTree = "<group>"; };
 		490AF5DA20E13F20003C312E /* CollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionTableViewCell.swift; sourceTree = "<group>"; };
@@ -82,7 +83,6 @@
 		49964D6C20EFE75E0041DD15 /* TypeAnswerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TypeAnswerViewController.xib; sourceTree = "<group>"; };
 		49AE4F6A20E677F8006AAAD4 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		49AE4F6C20E67803006AAAD4 /* Answer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Answer.swift; sourceTree = "<group>"; };
-		49C48A5320F7B993002C2E30 /* PopUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpController.swift; sourceTree = "<group>"; };
 		49C48A5B20F7F0DF002C2E30 /* ShowAnswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowAnswerViewController.swift; sourceTree = "<group>"; };
 		49C48A5C20F7F0DF002C2E30 /* ShowAnswerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowAnswerViewController.xib; sourceTree = "<group>"; };
 		49C48A6220F7F167002C2E30 /* MultipleChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoiceViewController.swift; sourceTree = "<group>"; };
@@ -92,6 +92,7 @@
 		49FF655220E3F6EB00BB0868 /* DeckSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckSaver.swift; sourceTree = "<group>"; };
 		49FF655420E40EF800BB0868 /* EditDeckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDeckViewController.swift; sourceTree = "<group>"; };
 		49FF655520E40EF800BB0868 /* EditDeckViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditDeckViewController.xib; sourceTree = "<group>"; };
+		87CA0F599A361ED95C0959A6 /* Pods-quick-cards.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-quick-cards.release.xcconfig"; path = "Pods/Target Support Files/Pods-quick-cards/Pods-quick-cards.release.xcconfig"; sourceTree = "<group>"; };
 		8C72FC6120DF004800795257 /* quick-cards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "quick-cards.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C72FC6420DF004800795257 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8C72FC7820DF011600795257 /* DefaultDecks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultDecks.swift; sourceTree = "<group>"; };
@@ -111,6 +112,7 @@
 		8C72FCCE20E1B2BE00795257 /* RightImageWithTitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightImageWithTitleTableViewCell.swift; sourceTree = "<group>"; };
 		8C72FCCF20E1B2BE00795257 /* RightImageWithTitleTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RightImageWithTitleTableViewCell.xib; sourceTree = "<group>"; };
 		8C72FCD220E1CD9100795257 /* GenericCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericCell.swift; sourceTree = "<group>"; };
+		E24D7EB4195515D59A362F6B /* Pods_quick_cards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_quick_cards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,12 +120,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B3B572D178D9CBCCBE4B6F3 /* Pods_quick_cards.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2448B0ECD273126FD9A7A73C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E24D7EB4195515D59A362F6B /* Pods_quick_cards.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		410828A61EE5E1C2DBD410CA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0DB21B5779670F9A15059592 /* Pods-quick-cards.debug.xcconfig */,
+				87CA0F599A361ED95C0959A6 /* Pods-quick-cards.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		490AF5D920E13F08003C312E /* Collection */ = {
 			isa = PBXGroup;
 			children = (
@@ -276,14 +296,6 @@
 			path = Answer;
 			sourceTree = "<group>";
 		};
-		49C48A5220F7B97B002C2E30 /* Pop Up Controller */ = {
-			isa = PBXGroup;
-			children = (
-				49C48A5320F7B993002C2E30 /* PopUpController.swift */,
-			);
-			path = "Pop Up Controller";
-			sourceTree = "<group>";
-		};
 		49C48A5520F7CBFF002C2E30 /* Pop Ups */ = {
 			isa = PBXGroup;
 			children = (
@@ -371,6 +383,8 @@
 			children = (
 				8C72FC6320DF004800795257 /* quick-cards */,
 				8C72FC6220DF004800795257 /* Products */,
+				410828A61EE5E1C2DBD410CA /* Pods */,
+				2448B0ECD273126FD9A7A73C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -423,7 +437,6 @@
 		8C72FC9620DF05FB00795257 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				49C48A5220F7B97B002C2E30 /* Pop Up Controller */,
 				49FF655120E3F6A900BB0868 /* Deck Saver */,
 				8C72FC9820DF063600795257 /* Deck Manager */,
 			);
@@ -528,9 +541,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8C72FC7320DF004900795257 /* Build configuration list for PBXNativeTarget "quick-cards" */;
 			buildPhases = (
+				8931336BD7B52842BFA25597 /* [CP] Check Pods Manifest.lock */,
 				8C72FC5D20DF004800795257 /* Sources */,
 				8C72FC5E20DF004800795257 /* Frameworks */,
 				8C72FC5F20DF004800795257 /* Resources */,
+				454F74BA79BC264FA27360D5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -603,6 +618,45 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		454F74BA79BC264FA27360D5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-quick-cards/Pods-quick-cards-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/CustomPopup/CustomPopup.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CustomPopup.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-quick-cards/Pods-quick-cards-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8931336BD7B52842BFA25597 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-quick-cards-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		8C72FC5D20DF004800795257 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -626,7 +680,6 @@
 				4978CF7120E2DB09008E0AA5 /* TableTableViewCell.swift in Sources */,
 				8C72FCC020DF077100795257 /* Card.swift in Sources */,
 				49FF655320E3F6EB00BB0868 /* DeckSaver.swift in Sources */,
-				49C48A5420F7B993002C2E30 /* PopUpController.swift in Sources */,
 				8C72FCA920DF070600795257 /* SingleTitleCollectionViewCell.swift in Sources */,
 				49964D6620EFD74C0041DD15 /* QuizMode.swift in Sources */,
 				8C72FCD320E1CD9100795257 /* GenericCell.swift in Sources */,
@@ -772,6 +825,7 @@
 		};
 		8C72FC7420DF004900795257 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0DB21B5779670F9A15059592 /* Pods-quick-cards.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -789,6 +843,7 @@
 		};
 		8C72FC7520DF004900795257 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 87CA0F599A361ED95C0959A6 /* Pods-quick-cards.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

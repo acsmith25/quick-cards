@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CustomPopup
 
 class MultipleChoiceViewController: UIViewController, QuizModeController {
     @IBOutlet weak var backButton: UIButton!
