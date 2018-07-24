@@ -18,6 +18,7 @@
                 <outlet property="cardView" destination="KI6-hV-Obq" id="yvS-Uc-4qu"/>
                 <outlet property="continueButton" destination="5KK-vY-Oi1" id="lsD-kd-Hak"/>
                 <outlet property="giveUpButton" destination="lig-Fq-oV8" id="4dh-GE-AWe"/>
+                <outlet property="moreButton" destination="yZP-Y7-YPm" id="Ae2-Ki-XoL"/>
                 <outlet property="questionLabel" destination="7Xr-bx-kX3" id="fur-kC-ES8"/>
                 <outlet property="settingsButton" destination="Sqc-Fs-LP1" id="qy7-Cu-Cbn"/>
                 <outlet property="stackView" destination="k3Y-g7-q2D" id="0vh-47-uUa"/>
@@ -64,11 +65,25 @@
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yZP-Y7-YPm">
+                                    <rect key="frame" x="306" y="6" width="25" height="25"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="25" id="J5w-vh-veK"/>
+                                        <constraint firstAttribute="height" constant="25" id="YUl-WG-uBm"/>
+                                    </constraints>
+                                    <color key="tintColor" red="0.76239129790000004" green="0.76782725139999997" blue="0.78413511189999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <state key="normal" backgroundImage="moreIcon"/>
+                                    <connections>
+                                        <action selector="detailsAction:" destination="-1" eventType="touchUpInside" id="ebj-qh-Q5u"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstAttribute="trailing" secondItem="yZP-Y7-YPm" secondAttribute="trailing" constant="12" id="4DZ-Jg-Ptg"/>
                                 <constraint firstItem="7Xr-bx-kX3" firstAttribute="centerY" secondItem="KI6-hV-Obq" secondAttribute="centerY" id="EBC-2Y-vxw"/>
                                 <constraint firstItem="7Xr-bx-kX3" firstAttribute="top" secondItem="KI6-hV-Obq" secondAttribute="top" constant="16" id="JyV-lc-0iX"/>
+                                <constraint firstItem="yZP-Y7-YPm" firstAttribute="top" secondItem="KI6-hV-Obq" secondAttribute="top" constant="6" id="PXj-9D-DXl"/>
                                 <constraint firstAttribute="trailing" secondItem="7Xr-bx-kX3" secondAttribute="trailing" constant="16" id="WVp-YS-wP7"/>
                                 <constraint firstAttribute="height" constant="300" id="aEH-4n-EG7"/>
                                 <constraint firstAttribute="bottom" secondItem="7Xr-bx-kX3" secondAttribute="bottom" constant="16" id="kPw-Ha-aK7"/>
@@ -158,6 +173,7 @@
     </objects>
     <resources>
         <image name="leftArrowIcon" width="21" height="21"/>
+        <image name="moreIcon" width="30" height="30"/>
         <image name="settingsIcon" width="21" height="21"/>
     </resources>
 </document>

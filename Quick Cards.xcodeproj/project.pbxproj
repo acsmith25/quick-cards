@@ -34,6 +34,8 @@
 		49C48A5E20F7F0DF002C2E30 /* ShowAnswerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C48A5C20F7F0DF002C2E30 /* ShowAnswerViewController.xib */; };
 		49C48A6420F7F167002C2E30 /* MultipleChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C48A6220F7F167002C2E30 /* MultipleChoiceViewController.swift */; };
 		49C48A6520F7F167002C2E30 /* MultipleChoiceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C48A6320F7F167002C2E30 /* MultipleChoiceViewController.xib */; };
+		49C9E3D121076CE80004EC44 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C9E3CF21076CE80004EC44 /* DetailsViewController.swift */; };
+		49C9E3D221076CE80004EC44 /* DetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C9E3D021076CE80004EC44 /* DetailsViewController.xib */; };
 		49D83CB620E133DD008084F8 /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D83CB420E133DD008084F8 /* ButtonTableViewCell.swift */; };
 		49D83CB720E133DD008084F8 /* ButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49D83CB520E133DD008084F8 /* ButtonTableViewCell.xib */; };
 		49FF655320E3F6EB00BB0868 /* DeckSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FF655220E3F6EB00BB0868 /* DeckSaver.swift */; };
@@ -87,6 +89,8 @@
 		49C48A5C20F7F0DF002C2E30 /* ShowAnswerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowAnswerViewController.xib; sourceTree = "<group>"; };
 		49C48A6220F7F167002C2E30 /* MultipleChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoiceViewController.swift; sourceTree = "<group>"; };
 		49C48A6320F7F167002C2E30 /* MultipleChoiceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultipleChoiceViewController.xib; sourceTree = "<group>"; };
+		49C9E3CF21076CE80004EC44 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
+		49C9E3D021076CE80004EC44 /* DetailsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailsViewController.xib; sourceTree = "<group>"; };
 		49D83CB420E133DD008084F8 /* ButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTableViewCell.swift; sourceTree = "<group>"; };
 		49D83CB520E133DD008084F8 /* ButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonTableViewCell.xib; sourceTree = "<group>"; };
 		49FF655220E3F6EB00BB0868 /* DeckSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckSaver.swift; sourceTree = "<group>"; };
@@ -299,6 +303,7 @@
 		49C48A5520F7CBFF002C2E30 /* Pop Ups */ = {
 			isa = PBXGroup;
 			children = (
+				49C9E3CE21076CCE0004EC44 /* Deck Details */,
 				490C2D4120F3D41600B2892D /* Info */,
 			);
 			path = "Pop Ups";
@@ -328,6 +333,15 @@
 				49964D6720EFE6F50041DD15 /* Quiz Modes */,
 			);
 			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		49C9E3CE21076CCE0004EC44 /* Deck Details */ = {
+			isa = PBXGroup;
+			children = (
+				49C9E3CF21076CE80004EC44 /* DetailsViewController.swift */,
+				49C9E3D021076CE80004EC44 /* DetailsViewController.xib */,
+			);
+			path = "Deck Details";
 			sourceTree = "<group>";
 		};
 		49D83CAC20E132FA008084F8 /* Home */ = {
@@ -601,6 +615,7 @@
 				8C72FCAA20DF070600795257 /* SingleTitleCollectionViewCell.xib in Resources */,
 				4978CF7220E2DB09008E0AA5 /* TableTableViewCell.xib in Resources */,
 				8C72FCC920DF07D800795257 /* LaunchScreen.storyboard in Resources */,
+				49C9E3D221076CE80004EC44 /* DetailsViewController.xib in Resources */,
 				490AF5D820E13E1D003C312E /* HomeTableViewController.xib in Resources */,
 				8C72FCD120E1B2BE00795257 /* RightImageWithTitleTableViewCell.xib in Resources */,
 				49C48A5E20F7F0DF002C2E30 /* ShowAnswerViewController.xib in Resources */,
@@ -684,6 +699,7 @@
 				49964D6620EFD74C0041DD15 /* QuizMode.swift in Sources */,
 				8C72FCD320E1CD9100795257 /* GenericCell.swift in Sources */,
 				49964D6D20EFE75E0041DD15 /* TypeAnswerViewController.swift in Sources */,
+				49C9E3D121076CE80004EC44 /* DetailsViewController.swift in Sources */,
 				490AF5D720E13E1D003C312E /* HomeTableViewController.swift in Sources */,
 				4939444220FE59AC00964A61 /* GridViewController.swift in Sources */,
 				4978CF7620E2DCE8008E0AA5 /* LeftTitleRightSubtitleTableViewCell.swift in Sources */,

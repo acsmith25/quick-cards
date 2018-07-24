@@ -11,17 +11,17 @@ import Foundation
 extension Array {
     
     func getElementAtRandomIndex() -> Element? {
-        guard let randomIndex = getRandomIndex(self) else {
+        guard let randomIndex = self.getRandomIndex() else {
             return nil
         }
         return self[randomIndex]
     }
     
-    private func getRandomIndex(_ array: Array<Any>) -> Int? {
-        guard !array.isEmpty else {
+    func getRandomIndex() -> Int? {
+        guard !self.isEmpty else {
             return nil
         }
-        return Int(arc4random_uniform(UInt32(array.count)))
+        return Int(arc4random_uniform(UInt32(self.count)))
     }
 }
 

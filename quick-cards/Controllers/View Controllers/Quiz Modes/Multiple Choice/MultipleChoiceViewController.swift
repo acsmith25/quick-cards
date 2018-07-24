@@ -17,6 +17,7 @@ class MultipleChoiceViewController: UIViewController, QuizModeController {
     @IBOutlet weak var choiceButton3: UIButton!
     @IBOutlet weak var choiceButton4: UIButton!
     @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var moreButton: UIButton!
     
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var choicesView: UIView!
@@ -30,6 +31,8 @@ class MultipleChoiceViewController: UIViewController, QuizModeController {
     }
     
     private var viewState: ViewState = .mastered
+    
+    var choiceButtons: [UIButton] = []
     
     // Pop Up protocol properties
     var gesture: UIGestureRecognizer?
@@ -52,6 +55,8 @@ class MultipleChoiceViewController: UIViewController, QuizModeController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        choiceButtons = [choiceButton1, choiceButton2, choiceButton3, choiceButton4]
         
         addGestures()
         
@@ -124,6 +129,22 @@ class MultipleChoiceViewController: UIViewController, QuizModeController {
         guard let gesture = gesture else { return }
         self.view.addGestureRecognizer(gesture)
     }
+    
+    @IBAction func moreAction(_ sender: Any) {
+        guard let question = deckManager.currentQuestion else { return }
+        guard let answer = deckManager.deck.cards[question] else { return }
+        let detailsController = DetailsViewController(question: question, answer: answer) //DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
+        detailsController.delegate = self
+        popUp = PopUpController(popUpView: detailsController)
+        guard let popUp = popUp else { return }
+        popUp.presentPopUp(on: self)
+        
+        gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
+        gesture?.delegate = self
+        guard let gesture = gesture else { return }
+        self.view.addGestureRecognizer(gesture)
+
+    }
 }
 
 // MARK: - View State
@@ -133,17 +154,20 @@ extension MultipleChoiceViewController {
         self.viewState = viewState
         
         switch viewState {
-        case .asking(let question, let randomAnswers):
+        case .asking(let question, var randomAnswers):
             UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: {
                 self.nextButton.setTitle("Give Up", for: .normal)
-                self.choiceButton1.setTitle(randomAnswers[0].answer, for: .normal)
-                self.choiceButton2.setTitle(randomAnswers[1].answer, for: .normal)
-                self.choiceButton3.setTitle(randomAnswers[2].answer, for: .normal)
-                self.choiceButton4.setTitle(self.deckManager.deck.cards[question]?.answer, for: .normal)
+                self.choiceButtons.forEach({ (button) in
+                    guard let index = randomAnswers.getRandomIndex() else { return }
+                    button.setTitle(randomAnswers[index].answer, for: .normal)
+                    randomAnswers.remove(at: index)
+                })
+                
                 self.questionLabel.text = question.question
                 self.cardView.backgroundColor = .white
                 
                 self.choicesView.isHidden = false
+                self.moreButton.isHidden = false
                 self.stackView.layoutIfNeeded()
                 
                 self.choicesView.alpha = 1.0
@@ -154,6 +178,7 @@ extension MultipleChoiceViewController {
                 self.cardView.backgroundColor = isCorrect ? .myGreen : .myRed
                 
                 self.choicesView.isHidden = true
+                self.moreButton.isHidden = true
                 self.stackView.layoutIfNeeded()
                 
                 self.choicesView.alpha = 0.0
@@ -165,6 +190,7 @@ extension MultipleChoiceViewController {
             UIView.animate(withDuration: 0.2) {
                 self.questionLabel.text = "Congratulations!\nYou have mastered this deck."
                 self.cardView.backgroundColor = .white
+                self.moreButton.isHidden = true
             }
         }
     }

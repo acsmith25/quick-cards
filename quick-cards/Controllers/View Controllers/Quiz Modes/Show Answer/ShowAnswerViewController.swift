@@ -17,6 +17,7 @@ class ShowAnswerViewController: UIViewController, QuizModeController {
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var moreButton: UIButton!
     
     private enum ViewState {
         case asking(String?)
@@ -107,6 +108,22 @@ class ShowAnswerViewController: UIViewController, QuizModeController {
         guard let gesture = gesture else { return }
         self.view.addGestureRecognizer(gesture)
     }
+    
+    @IBAction func moreAction(_ sender: Any) {
+        guard let question = deckManager.currentQuestion else { return }
+        guard let answer = deckManager.deck.cards[question] else { return }
+        let detailsController = DetailsViewController(question: question, answer: answer) //DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
+        detailsController.delegate = self
+        popUp = PopUpController(popUpView: detailsController)
+        guard let popUp = popUp else { return }
+        popUp.presentPopUp(on: self)
+        
+        gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
+        gesture?.delegate = self
+        guard let gesture = gesture else { return }
+        self.view.addGestureRecognizer(gesture)
+
+    }
 }
 
 // MARK: - View State
@@ -121,6 +138,7 @@ extension ShowAnswerViewController {
                 self.questionLabel.text = question
                 
                 self.nextButton.isHidden = true
+                self.moreButton.isHidden = false
                 self.stackView.layoutIfNeeded()
                 
                 self.nextButton.alpha = 0.0
@@ -130,6 +148,7 @@ extension ShowAnswerViewController {
                 self.questionLabel.text = answer
                 
                 self.nextButton.isHidden = false
+                self.moreButton.isHidden = true
                 self.stackView.layoutIfNeeded()
                 
                 self.nextButton.alpha = 1.0
@@ -138,6 +157,7 @@ extension ShowAnswerViewController {
             self.questionLabel.text = "Congratulations!\nYou have mastered this deck."
             
             self.nextButton.isHidden = true
+            self.moreButton.isHidden = true
             self.stackView.layoutIfNeeded()
             
             self.nextButton.alpha = 0.0

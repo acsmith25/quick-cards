@@ -22,6 +22,7 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
     @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var moreButton: UIButton!
     
     @IBOutlet weak var continueButtonCenter: NSLayoutConstraint!
     @IBOutlet weak var cardViewCenter: NSLayoutConstraint!
@@ -132,7 +133,21 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
         popUp = PopUpController(popUpView: infoController)
         guard let popUp = popUp else { return }
         popUp.presentPopUp(on: self)
-
+        
+        gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
+        gesture?.delegate = self
+        guard let gesture = gesture else { return }
+        self.view.addGestureRecognizer(gesture)
+    }
+    
+    @IBAction func detailsAction(_ sender: Any) {
+        guard let question = deckManager.currentQuestion else { return }
+        guard let answer = deckManager.deck.cards[question] else { return }
+        let detailsController = DetailsViewController(question: question, answer: answer) //DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
+        detailsController.delegate = self
+        popUp = PopUpController(popUpView: detailsController)
+        guard let popUp = popUp else { return }
+        popUp.presentPopUp(on: self)
         
         gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
         gesture?.delegate = self
@@ -157,6 +172,7 @@ extension TypeAnswerViewController {
                 if self.answerTextField.isHidden == true {
                     self.giveUpButton.isHidden = false
                     self.answerTextField.isHidden = false
+                    self.moreButton.isHidden = false
                     self.stackView.layoutIfNeeded()
                 }
                 self.answerTextField.alpha = 1.0
@@ -170,6 +186,7 @@ extension TypeAnswerViewController {
             
                 self.giveUpButton.isHidden = true
                 self.answerTextField.isHidden = true
+                self.moreButton.isHidden = true
                 self.stackView.layoutIfNeeded()
                 
                 self.answerTextField.alpha = 0.0
@@ -186,6 +203,7 @@ extension TypeAnswerViewController {
                 self.cardView.backgroundColor = .white
 
                 self.giveUpButton.isHidden = true
+                self.moreButton.isHidden = true
                 self.answerTextField.isHidden = true
                 self.stackView.layoutIfNeeded()
                 

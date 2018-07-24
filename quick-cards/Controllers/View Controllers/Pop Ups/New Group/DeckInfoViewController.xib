@@ -145,7 +145,6 @@
                             </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="editAction:" destination="-1" eventType="touchUpInside" id="OwA-Dc-kW0"/>
-                                <action selector="resumeDeckAction:" destination="-1" eventType="touchUpInside" id="rbX-s9-D4W"/>
                             </connections>
                         </button>
                     </subviews>

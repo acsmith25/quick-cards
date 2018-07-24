@@ -61,12 +61,22 @@ class DeckManager {
             currentQuestion = question
         }
         guard let currentQuestion = currentQuestion else { return }
+        currentQuestion.seen += 1
+        
         guard let mcController = delegate as? MultipleChoiceViewController else {
             delegate?.askQuestion(question: currentQuestion, wrongAnswers: [])
             return
         }
-        let randomIndices = [getRandomIndex(deck.answers)!, getRandomIndex(deck.answers)!, getRandomIndex(deck.answers)!]
-        let randomAnswers = [deck.answers[randomIndices[0]], deck.answers[randomIndices[1]], deck.answers[randomIndices[2]]]
+        guard let correctAnswer = deck.cards[currentQuestion] else { return }
+        var randomAnswers = [correctAnswer]
+        while randomAnswers.count < 4 {
+            guard let index = getRandomIndex(deck.answers) else { return }
+            let answer = deck.answers[index]
+            if !randomAnswers.contains(where: { $0 == answer }) {
+                randomAnswers.append(answer)
+            }
+        }
+        
         mcController.askQuestion(question: currentQuestion, wrongAnswers: randomAnswers)
     }
     
@@ -137,13 +147,21 @@ class DeckManager {
         guard let randomIndex = getRandomIndex(defaultGrade) else {
             // First pass complete
             // Update get next card function to use random function
-            deck.hasCompletedFirstPass = true
-            self.getNextQuestion = getRandomQuestion
-            return getRandomQuestion()
+//            deck.hasCompletedFirstPass = true
+//            self.getNextQuestion = getRandomQuestion
+//            return getRandomQuestion()
+            return nil
         }
         // Extract card at random index
         let question = defaultGrade.remove(at: randomIndex)
-        deck.gradeDistribution[.average] = defaultGrade
+        if defaultGrade.isEmpty {
+            deck.gradeDistribution[.average] = nil
+            deck.hasCompletedFirstPass = true
+            self.getNextQuestion = getRandomQuestion
+            return getRandomQuestion()
+        } else {
+            deck.gradeDistribution[.average] = defaultGrade
+        }
         return question
     }
     
@@ -157,7 +175,14 @@ class DeckManager {
         guard let randomIndex = getRandomIndex(cards) else {
             return getRandomQuestion()
         }
-        return cards.remove(at: randomIndex)
+        print(deck.gradeDistribution)
+        let question = cards.remove(at: randomIndex)
+        if cards.isEmpty {
+            deck.gradeDistribution[randomLevel] = nil
+        } else {
+            deck.gradeDistribution[randomLevel] = cards
+        }
+        return question
     }
     
     private func getRandomWeightedGrade() -> Grade? {
@@ -189,14 +214,12 @@ class DeckManager {
         guard newGrade < Grade.allCases.count else {
             // Already at heighest level, insert card back into top level
             let grade = Grade(masteryValue: newGrade - 1)
-            currentQuestion.seen += 1
             currentQuestion.correct += 1
             deck.updateQuestionGrade(question: currentQuestion, grade: grade)
             return
         }
         // Update card's level
         let grade = Grade(masteryValue: newGrade)
-        currentQuestion.seen += 1
         currentQuestion.correct += 1
         deck.updateQuestionGrade(question: currentQuestion, grade: grade)
         currentMastery += 1
@@ -208,15 +231,11 @@ class DeckManager {
         guard newGrade >= 0 else {
             // Already at lowest level, insert card back into bottom level
             let grade = Grade(masteryValue: newGrade + 1)
-            currentQuestion.seen += 1
-            currentQuestion.correct -= 1
             deck.updateQuestionGrade(question: currentQuestion, grade: grade)
             return
         }
         // Update card's level
         let grade = Grade(masteryValue: newGrade)
-        currentQuestion.seen += 1
-        currentQuestion.correct -= 1
         deck.updateQuestionGrade(question: currentQuestion, grade: grade)
         currentMastery -= 1
     }
