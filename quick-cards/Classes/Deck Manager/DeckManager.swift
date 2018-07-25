@@ -63,10 +63,15 @@ class DeckManager {
         guard let currentQuestion = currentQuestion else { return }
         currentQuestion.seen += 1
         
-        guard let mcController = delegate as? MultipleChoiceViewController else {
+        guard let vc = delegate as? MultipleChoiceViewController else {
             delegate?.askQuestion(question: currentQuestion, wrongAnswers: [])
             return
         }
+        askWithRandomAnswers(vc: vc)
+    }
+    
+    func askWithRandomAnswers(vc: MultipleChoiceViewController) {
+        guard let currentQuestion = currentQuestion else { return }
         guard let correctAnswer = deck.cards[currentQuestion] else { return }
         var randomAnswers = [correctAnswer]
         while randomAnswers.count < 4 {
@@ -76,8 +81,7 @@ class DeckManager {
                 randomAnswers.append(answer)
             }
         }
-        
-        mcController.askQuestion(question: currentQuestion, wrongAnswers: randomAnswers)
+        vc.askQuestion(question: currentQuestion, wrongAnswers: randomAnswers)
     }
     
     func exit() {
@@ -163,7 +167,7 @@ class DeckManager {
             deck.gradeDistribution[.average] = defaultGrade
         }
         return question
-    }
+    } 
     
     private func getRandomQuestion() -> Question? {
         guard let randomLevel = getRandomWeightedGrade() else {

@@ -137,7 +137,7 @@ extension HomeTableViewController {
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if sections[section].0 != "" {
             // Section has a title
-            return 40
+            return 50
         } else {
             return 16
         }

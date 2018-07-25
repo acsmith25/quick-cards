@@ -19,6 +19,6 @@ class SectionHeaderCollectionReusableView: UICollectionReusableView {
     }
     
     func configure(with title: String) {
-        self.title.text = title
+        self.title.text = title.uppercased()
     }
 }

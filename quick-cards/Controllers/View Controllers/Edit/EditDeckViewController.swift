@@ -19,6 +19,7 @@ class EditDeckViewController: UIViewController {
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var addCardButton: UIButton!
     @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var cardsHeaderLabel: UILabel!
     
     private enum ViewState {
         case add
@@ -43,9 +44,10 @@ class EditDeckViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        backButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
+//        backButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
         
         registerCells()
+        addGestures()
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -53,10 +55,12 @@ class EditDeckViewController: UIViewController {
         guard let deck = deck else {
             self.deck = Deck(title: "New Deck", cards: [:])
             titleTextField.placeholder = "Your Deck Title"
+            cardsHeaderLabel.isHidden = true
             return
         }
         
         titleTextField.text = deck.title
+        titleTextField.becomeFirstResponder()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -97,12 +101,14 @@ class EditDeckViewController: UIViewController {
             self.currentQuestion = nil
         }
 
+        self.cardsHeaderLabel.isHidden = false
         self.answerTextField.text = ""
         self.questionTextField.text = ""
         self.collectionView.reloadData()
     }
     
     @IBAction func editAction(_ sender: Any) {
+        dismissKeyboard()
         switch viewState {
         case .add:
             setViewState(viewState: .edit)
@@ -147,12 +153,47 @@ class EditDeckViewController: UIViewController {
     @IBAction func backAction(_ sender: Any) {
 //        guard let question = questionTextField.text, let answer = answerTextField.text else { return }
 //        guard deck?.questions.isEmpty else {
-            let alertController = UIAlertController(title: "Are you sure?", message: "Any changes since the last save deck will be lost.", preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Yes", style: .default) { (action) in
+            let alertController = UIAlertController(title: "Do you want to save your changes?", message: nil, preferredStyle: .alert)
+            let saveAction = UIAlertAction(title: "Save", style: .default) { (action) in
+                if let deck = self.deck {
+                    deck.title = self.titleTextField.text ?? self.titleTextField.placeholder ?? ""
+                    
+                    // Update all references to deck
+                    let allDecksIndex = decksInProgress.index { $0 == deck }
+                    if let index = allDecksIndex {
+                        allDecks[index] = deck
+                    } else {
+                        allDecks.append(deck)
+                    }
+                    let inProgressIndex = decksInProgress.index { $0 == deck }
+                    if let index = inProgressIndex {
+                        decksInProgress[index] = deck
+                    }
+                    let defaultDeckIndex = defaultDecks.index { $0 == deck }
+                    if let index = defaultDeckIndex {
+                        defaultDecks[index] = deck
+                    } else {
+                        if let userDeckIndex = userDecks.index(where: { $0 == deck }) {
+                            userDecks[userDeckIndex] = deck
+                        } else {
+                            userDecks.append(deck)
+                        }
+                    }
+                    
+                    // Save decks
+                    DeckSaver.saveAllDecks()
+                }
+                
+                self.delegate?.dismissViewController()
+            }
+            let backAction = UIAlertAction(title: "Discard", style: .default) { (action) in
                 self.delegate?.dismissViewController()
             }
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            alertController.addAction(okAction)
+            alertController.view.tintColor = .myTeal
+        
+            alertController.addAction(saveAction)
+            alertController.addAction(backAction)
             alertController.addAction(cancelAction)
             present(alertController, animated: true, completion: nil)
 //            return
@@ -167,13 +208,33 @@ extension EditDeckViewController {
         self.viewState = viewState
         switch viewState {
         case .add:
-            editButton.setTitle("Edit Deck", for: .normal)
-            addCardButton.setTitle("Add Card", for: .normal)
-            collectionView.reloadData()
+            UIView.animate(withDuration: 0.2, delay: 0, options: [], animations: {
+                self.editButton.setTitle("Edit", for: .normal)
+                self.editButton.setTitleColor(.myTeal, for: .normal)
+                self.editButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+                self.editButton.contentHorizontalAlignment = .right
+                self.editButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+                self.editButton.backgroundColor = .none
+                
+                self.addCardButton.setTitle("Add Card", for: .normal)
+                self.collectionView.reloadData()
+            }) { (_) in
+//                self.collectionView.reloadData()
+            }
         case .edit:
-            editButton.setTitle("Done Editing", for: .normal)
-            addCardButton.setTitle("Update Card", for: .normal)
-            collectionView.reloadData()
+            UIView.animate(withDuration: 0.2, delay: 0, options: [], animations: {
+                self.editButton.setTitle("Done", for: .normal)
+                self.editButton.setTitleColor(.groupTableViewBackground, for: .normal)
+                self.editButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+                self.editButton.contentHorizontalAlignment = .center
+                self.editButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .heavy)
+                self.editButton.backgroundColor = .lightGray
+                
+                self.addCardButton.setTitle("Update Card", for: .normal)
+                self.collectionView.reloadData()
+            }) { (_) in
+//                self.collectionView.reloadData()
+            }
         }
     }
 }
@@ -239,5 +300,20 @@ extension EditDeckViewController: CardDelegate {
             }
         }
         collectionView.reloadData()
+    }
+}
+
+// MARK: - Gestures
+extension EditDeckViewController {
+    
+    func addGestures() {
+        let keyboardGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(keyboardGesture)
+    }
+    
+    @objc func dismissKeyboard() {
+        titleTextField.endEditing(true)
+        answerTextField.endEditing(true)
+        questionTextField.endEditing(true)
     }
 }

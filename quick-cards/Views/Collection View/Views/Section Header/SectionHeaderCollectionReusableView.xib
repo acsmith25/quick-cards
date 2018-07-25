@@ -17,18 +17,20 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pqK-Hz-fbL">
-                    <rect key="frame" x="16" y="0.0" width="288" height="50"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="textColor"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pqK-Hz-fbL">
+                    <rect key="frame" x="10" y="34" width="294" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="5Zp-I3-tuT"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
+                    <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
             <constraints>
                 <constraint firstItem="pqK-Hz-fbL" firstAttribute="trailing" secondItem="U6b-Vx-4bR" secondAttribute="trailingMargin" id="4mS-1g-2aC"/>
-                <constraint firstItem="pqK-Hz-fbL" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leadingMargin" id="Pbi-92-XDe"/>
-                <constraint firstItem="VXr-Tz-HHm" firstAttribute="bottom" secondItem="pqK-Hz-fbL" secondAttribute="bottom" id="R2b-CB-1Sm"/>
-                <constraint firstItem="pqK-Hz-fbL" firstAttribute="top" secondItem="VXr-Tz-HHm" secondAttribute="top" id="YMD-7Z-Fah"/>
+                <constraint firstItem="VXr-Tz-HHm" firstAttribute="bottom" secondItem="pqK-Hz-fbL" secondAttribute="bottom" id="GSs-mD-rQ8"/>
+                <constraint firstItem="pqK-Hz-fbL" firstAttribute="leading" secondItem="VXr-Tz-HHm" secondAttribute="leading" constant="10" id="s35-T3-9Gb"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="VXr-Tz-HHm"/>
             <connections>

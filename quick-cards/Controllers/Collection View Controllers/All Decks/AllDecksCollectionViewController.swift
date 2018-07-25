@@ -22,6 +22,7 @@ class AllDecksCollectionViewController: UICollectionViewController, PopUpPresent
         
         registerCellsAndViews()
         configureSections()
+        addBarButtonItem()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -53,6 +54,18 @@ class AllDecksCollectionViewController: UICollectionViewController, PopUpPresent
             defaultDecks.contains(where: { $0 == deck })
         }
         sections.append(("Default Decks", decks))
+    }
+    
+    func addBarButtonItem() {
+        let barButtonItem = UIBarButtonItem(image: UIImage(named: "addIcon"), style: .plain, target: self, action: #selector(addDeckAction))
+        navigationItem.rightBarButtonItem = barButtonItem
+    }
+    
+    @objc func addDeckAction() {
+        let controller = EditDeckViewController(deck: nil)
+        controller.delegate = self
+        navigationController?.pushViewController(controller, animated: true)
+        navigationController?.navigationBar.backgroundColor = .white
     }
 }
 
