@@ -20,6 +20,9 @@ class EditDeckViewController: UIViewController {
     @IBOutlet weak var addCardButton: UIButton!
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var cardsHeaderLabel: UILabel!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var separatorView: UIView!
+    @IBOutlet weak var separatorHeight: NSLayoutConstraint!
     
     private enum ViewState {
         case add
@@ -44,10 +47,20 @@ class EditDeckViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        backButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
+        // Set separator color to native table view color
+        let tempTableView = UITableView()
+        let separatorColor = tempTableView.separatorColor
+        separatorView.backgroundColor = separatorColor
+        
+        // Set separator to one pixel on any scale
+        separatorHeight.constant = 1.0 / UIScreen.main.nativeScale
         
         registerCells()
         addGestures()
+        
+        titleTextField.delegate = self
+        answerTextField.delegate = self
+        questionTextField.delegate = self
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -198,7 +211,7 @@ class EditDeckViewController: UIViewController {
             present(alertController, animated: true, completion: nil)
 //            return
 //        }
-        self.delegate?.dismissViewController()
+//        self.delegate?.dismissViewController()
     }
 }
 
@@ -303,12 +316,34 @@ extension EditDeckViewController: CardDelegate {
     }
 }
 
+// MARK: - UIGestureRecognizerDelegate
+extension EditDeckViewController: UIGestureRecognizerDelegate {
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        guard let view = scrollView, let touch = touch.view else { return false }
+        if touch.isDescendant(of: view) {
+            return false
+        }
+        return true
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension EditDeckViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
 // MARK: - Gestures
 extension EditDeckViewController {
     
     func addGestures() {
         let keyboardGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        view.addGestureRecognizer(keyboardGesture)
+        keyboardGesture.delegate = self
+        self.view.addGestureRecognizer(keyboardGesture)
     }
     
     @objc func dismissKeyboard() {

@@ -26,8 +26,8 @@ class AllDecksCollectionViewController: UICollectionViewController, PopUpPresent
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.navigationBar.isHidden = false
         dismissPopUp()
+        navigationController?.navigationBar.isHidden = false
     }
     
     override func didReceiveMemoryWarning() {

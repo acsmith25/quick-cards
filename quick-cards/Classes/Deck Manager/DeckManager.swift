@@ -61,7 +61,6 @@ class DeckManager {
             currentQuestion = question
         }
         guard let currentQuestion = currentQuestion else { return }
-        currentQuestion.seen += 1
         
         guard let vc = delegate as? MultipleChoiceViewController else {
             delegate?.askQuestion(question: currentQuestion, wrongAnswers: [])
@@ -214,6 +213,7 @@ class DeckManager {
     
     private func increaseLevel() {
         guard let currentQuestion = currentQuestion else { return }
+        currentQuestion.seen += 1
         let newGrade = currentQuestion.grade.masteryValue + 1
         guard newGrade < Grade.allCases.count else {
             // Already at heighest level, insert card back into top level
@@ -231,6 +231,7 @@ class DeckManager {
     
     private func decreaseLevel() {
         guard let currentQuestion = currentQuestion else { return }
+        currentQuestion.seen += 1
         let newGrade = currentQuestion.grade.masteryValue - 1
         guard newGrade >= 0 else {
             // Already at lowest level, insert card back into bottom level

@@ -75,6 +75,7 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = true
+//        dismissPopUp()
     }
     
     override func didReceiveMemoryWarning() {
@@ -287,6 +288,7 @@ extension TypeAnswerViewController: UITextFieldDelegate {
 extension TypeAnswerViewController: NavigationDelegate {
     
     func dismissViewController() {
+//        navigationController?.popToRootViewController(animated: true)
         navigationController?.popViewController(animated: true)
     }
 }

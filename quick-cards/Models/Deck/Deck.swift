@@ -15,6 +15,7 @@ class Deck: Codable {
     
     var title: String
     var mode: QuizMode
+    var order: Order
     var mastery: Double
     var isInInitialState: Bool {
         get {
@@ -28,10 +29,11 @@ class Deck: Codable {
     var answers: [Answer]
     var gradeDistribution: [Grade: [Question]]
     
-    init(title: String, cards: [Question: Answer], mastery: Double = 50.0) {
+    init(title: String, cards: [Question: Answer], mastery: Double = 50.0, order: Order = .random) {
         self.title = title
         self.mode = .showAnswer
         self.mastery = mastery
+        self.order = order
         
         self.cards = cards
         self.questions = Array(cards.keys)

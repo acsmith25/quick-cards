@@ -181,6 +181,8 @@ extension GridViewController: UIGestureRecognizerDelegate {
 extension GridViewController: NavigationDelegate {
     
     func dismissViewController() {
+        dismissPopUp()
         navigationController?.popViewController(animated: true)
+//        navigationController?.navigationBar.isHidden = true
     }
 }

@@ -15,10 +15,10 @@ class DeckInfoViewController: UIViewController {
     @IBOutlet weak var masteredLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var quizModePickerView: UIPickerView!
-    @IBOutlet weak var resumeButton: UIButton!
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var bigEditButton: UIButton!
+    @IBOutlet weak var startSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var orderSegmentedControl: UISegmentedControl!
     
     var deck: Deck
     var isViewingDeck: Bool
@@ -38,32 +38,17 @@ class DeckInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        titleLabel.text = deck.title
-        
-        if isViewingDeck {
-            editButton.isHidden = true
-            masteredLabel.text = "\(deck.mastery)% Mastered"
-            stackView.removeArrangedSubview(resumeButton)
-            resumeButton.removeFromSuperview()
-        } else {
-            masteredLabel.isHidden = true
-            stackView.removeArrangedSubview(bigEditButton)
-            bigEditButton.removeFromSuperview()
-        }
+        titleLabel.text = "\(deck.title):"
+        masteredLabel.text = "\(deck.mastery)% Mastered"
         
         quizModePickerView.dataSource = self
         quizModePickerView.delegate = self
         
-        // Remove resume button if hasn't been started
+        // Remove resume option if hasn't been started
         if deck.isInInitialState {
-            startButton.setTitle("Start Deck", for: .normal)
-            stackView.removeArrangedSubview(resumeButton)
-            resumeButton.removeFromSuperview()
+            stackView.removeArrangedSubview(startSegmentedControl)
+            startSegmentedControl.removeFromSuperview()
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        navigationController?.navigationBar.isHidden = false
     }
     
     // MARK: - Actions
@@ -80,23 +65,20 @@ class DeckInfoViewController: UIViewController {
         let quizMode = QuizMode.allModes[selectedRow]
         deck.mode = quizMode
         
-        var quizController = quizMode.getController(with: deck, shouldResume: false)
-        quizController.delegate = self
-
-        guard let controller = quizController as? UIViewController else { return }
-        navigationController?.pushViewController(controller, animated: true)
-    }
-    
-    @IBAction func resumeDeckAction(_ sender: Any) {
-        let selectedRow = quizModePickerView.selectedRow(inComponent: 0)
-        let quizMode = QuizMode.allModes[selectedRow]
-        deck.mode = quizMode
-        
-        var quizController = quizMode.getController(with: deck, shouldResume: true)
-        quizController.delegate = self
-        
-        guard let controller = quizController as? UIViewController else { return }
-        navigationController?.pushViewController(controller, animated: true)
+        switch startSegmentedControl.selectedSegmentIndex {
+        case 0:
+            var quizController = quizMode.getController(with: deck, shouldResume: false)
+            quizController.delegate = self
+            
+            guard let controller = quizController as? UIViewController else { return }
+            navigationController?.pushViewController(controller, animated: true)
+        default:
+            var quizController = quizMode.getController(with: deck, shouldResume: true)
+            quizController.delegate = self
+            
+            guard let controller = quizController as? UIViewController else { return }
+            navigationController?.pushViewController(controller, animated: true)
+        }
     }
 
     func resetDeck() {
