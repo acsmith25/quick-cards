@@ -130,12 +130,28 @@ extension GridViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let card = collectionView.cellForItem(at: indexPath) as? SingleTitleCollectionViewCell else { return }
         let question = deckManager.deck.questions[indexPath.row]
+        guard let answer = deckManager.deck.cards[question] else { return }
+        
         if card.isShowingFront {
-            guard let answer = deckManager.deck.cards[question] else { return }
-            UIView.transition(with: card, duration: 0.5, options: .transitionFlipFromRight, animations: {
-                card.configure(with: answer.answer, backgroundColor: .myGreen)
-            }, completion: nil)
-            card.isShowingFront = false
+            let fullScreen = FullScreenCardViewController(question: question, answer: answer, isShowingFront: card.isShowingFront, completion: { (isCorrect) in
+                let color: UIColor = isCorrect ? .myGreen : .myRed
+                if isCorrect { self.deckManager.correct() }
+                else { self.deckManager.incorrect() }
+                guard let answer = self.deckManager.deck.cards[question] else { return }
+                UIView.transition(with: card, duration: 0.5, options: .transitionFlipFromRight, animations: {
+                    card.configure(with: answer.answer, backgroundColor: color)
+                }, completion: nil)
+                card.isShowingFront = false
+                
+            })
+            fullScreen.delegate = self
+            popUp = PopUpController(popUpView: fullScreen)
+            popUp?.presentPopUp(on: self)
+            
+            gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
+            gesture?.delegate = self
+            guard let gesture = gesture else { return }
+            self.view.addGestureRecognizer(gesture)
         } else {
             UIView.transition(with: card, duration: 0.5, options: .transitionFlipFromRight, animations: {
                 card.configure(with: question.question, backgroundColor: .white)

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FullScreenCardViewController" customModule="quick_cards" customModuleProvider="target">
+            <connections>
+                <outlet property="cardView" destination="9XU-gJ-JFI" id="QTc-sG-Os8"/>
+                <outlet property="questionLabel" destination="O93-QD-ze6" id="DBv-KV-bDG"/>
+                <outlet property="rightButton" destination="aHS-fg-gT4" id="Xts-Xj-n43"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="wrongButton" destination="64c-Yf-6JC" id="tBp-Ux-Ee4"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9XU-gJ-JFI">
+                    <rect key="frame" x="16" y="36" width="134.5" height="108"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Question" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O93-QD-ze6">
+                            <rect key="frame" x="16" y="16" width="102.5" height="76"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aHS-fg-gT4">
+                            <rect key="frame" x="16" y="52" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="XMm-Sy-bK8"/>
+                                <constraint firstAttribute="height" constant="40" id="ZJy-Xi-pIA"/>
+                            </constraints>
+                            <color key="tintColor" red="0.22533283042471328" green="0.80244685913705582" blue="0.15682081765883515" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <state key="normal" backgroundImage="checkMarkIcon"/>
+                            <connections>
+                                <action selector="rightAction:" destination="-1" eventType="touchUpInside" id="PgU-09-HcE"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="64c-Yf-6JC">
+                            <rect key="frame" x="78.5" y="52" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="A9o-4T-TRU"/>
+                                <constraint firstAttribute="height" constant="40" id="eqy-fu-Rog"/>
+                            </constraints>
+                            <color key="tintColor" red="0.86681075507614214" green="0.074021348302018231" blue="0.072531460126389613" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <state key="normal" backgroundImage="xMarkIcon"/>
+                            <connections>
+                                <action selector="wrongAction:" destination="-1" eventType="touchUpInside" id="tEM-vn-TJ5"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="O93-QD-ze6" firstAttribute="centerY" secondItem="9XU-gJ-JFI" secondAttribute="centerY" id="3O8-8h-VDO"/>
+                        <constraint firstItem="O93-QD-ze6" firstAttribute="top" secondItem="9XU-gJ-JFI" secondAttribute="top" constant="16" id="7wT-LU-01i"/>
+                        <constraint firstAttribute="height" constant="250" id="Dth-Wh-EB8"/>
+                        <constraint firstAttribute="bottom" secondItem="aHS-fg-gT4" secondAttribute="bottom" constant="16" id="Fkd-Jf-0bG"/>
+                        <constraint firstAttribute="bottom" secondItem="64c-Yf-6JC" secondAttribute="bottom" constant="16" id="HEq-07-3MJ"/>
+                        <constraint firstAttribute="trailing" secondItem="64c-Yf-6JC" secondAttribute="trailing" constant="16" id="cBD-Jw-opa"/>
+                        <constraint firstItem="O93-QD-ze6" firstAttribute="centerX" secondItem="9XU-gJ-JFI" secondAttribute="centerX" id="dYZ-WQ-7iP"/>
+                        <constraint firstAttribute="trailing" secondItem="O93-QD-ze6" secondAttribute="trailing" constant="16" id="frm-yU-4qu"/>
+                        <constraint firstItem="aHS-fg-gT4" firstAttribute="leading" secondItem="9XU-gJ-JFI" secondAttribute="leading" constant="16" id="vmO-uY-crh"/>
+                        <constraint firstAttribute="width" secondItem="9XU-gJ-JFI" secondAttribute="height" multiplier="5:4" id="wmG-sh-hQi"/>
+                        <constraint firstAttribute="bottom" secondItem="O93-QD-ze6" secondAttribute="bottom" constant="16" id="yK1-4Q-VVd"/>
+                        <constraint firstItem="O93-QD-ze6" firstAttribute="leading" secondItem="9XU-gJ-JFI" secondAttribute="leading" constant="16" id="zPK-gi-78u"/>
+                        <constraint firstItem="O93-QD-ze6" firstAttribute="centerX" secondItem="9XU-gJ-JFI" secondAttribute="centerX" id="zdj-DR-VqI"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="10"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="layer.shadowColor">
+                            <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="size" keyPath="layer.shadowOffset">
+                            <size key="value" width="0.0" height="11"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
+                            <real key="value" value="0.14999999999999999"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowRadius">
+                            <integer key="value" value="13"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstItem="9XU-gJ-JFI" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="1X3-Ol-SGY"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="9XU-gJ-JFI" secondAttribute="bottom" constant="16" id="Nxh-3e-Gz5"/>
+                <constraint firstItem="9XU-gJ-JFI" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="YRI-jC-72v"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="9XU-gJ-JFI" secondAttribute="trailing" constant="16" id="dYQ-Vm-O2O"/>
+                <constraint firstItem="9XU-gJ-JFI" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="qrk-GO-aCN"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="checkMarkIcon" width="40" height="40"/>
+        <image name="xMarkIcon" width="40" height="40"/>
+    </resources>
+</document>

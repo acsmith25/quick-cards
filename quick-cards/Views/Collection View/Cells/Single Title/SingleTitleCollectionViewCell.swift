@@ -35,11 +35,16 @@ class SingleTitleCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         titleButton.isUserInteractionEnabled = false
+        titleButton.layer.cornerRadius = 10.0
         closeButton.layer.cornerRadius = closeButton.bounds.size.width / 2.0
     }
 
-    func configure(with title: String, backgroundColor: UIColor = .white, textColor: UIColor = .black, isInDeleteMode: Bool = false) {
-        self.title = title
+    func configure(with title: String? = nil, backgroundColor: UIColor = .white, textColor: UIColor = .black, isInDeleteMode: Bool = false) {
+        if title != nil {
+            self.title = title
+            titleButton.setTitle(title, for: .normal)
+        }
+        
         if isInDeleteMode {
             closeButton.isHidden = false
             topConstraint.constant = 10
@@ -56,6 +61,24 @@ class SingleTitleCollectionViewCell: UICollectionViewCell {
         
         titleButton.backgroundColor = backgroundColor
         titleButton.setTitleColor(textColor, for: .normal)
-        titleButton.setTitle(title, for: .normal)
+    }
+    
+    override func dragStateDidChange(_ dragState: UICollectionViewCellDragState) {
+        switch dragState {
+        case .none:
+            closeButton.isHidden = false
+            topConstraint.constant = 10
+            bottomConstraint.constant = 10
+            leadingConstraint.constant = 10
+            trailingConstraint.constant = 10
+        case .lifting:
+            closeButton.isHidden = true
+            topConstraint.constant = 0
+            bottomConstraint.constant = 0
+            leadingConstraint.constant = 0
+            trailingConstraint.constant = 0
+        default:
+            return
+        }
     }
 }

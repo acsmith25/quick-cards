@@ -46,8 +46,9 @@ class DeckInfoViewController: UIViewController {
         
         // Remove resume option if hasn't been started
         if deck.isInInitialState {
-            stackView.removeArrangedSubview(startSegmentedControl)
-            startSegmentedControl.removeFromSuperview()
+            startSegmentedControl.isHidden = true
+//            stackView.removeArrangedSubview(startSegmentedControl)
+//            startSegmentedControl.removeFromSuperview()
         }
     }
     
@@ -64,6 +65,11 @@ class DeckInfoViewController: UIViewController {
         let selectedRow = quizModePickerView.selectedRow(inComponent: 0)
         let quizMode = QuizMode.allModes[selectedRow]
         deck.mode = quizMode
+        
+        let order = orderSegmentedControl.selectedSegmentIndex
+        deck.updateOrder(order: Order(rawValue: order) ?? .random)
+        
+        if startSegmentedControl.isHidden { startSegmentedControl.selectedSegmentIndex = 1 }
         
         switch startSegmentedControl.selectedSegmentIndex {
         case 0:

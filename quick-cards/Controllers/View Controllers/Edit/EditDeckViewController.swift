@@ -12,7 +12,9 @@ class EditDeckViewController: UIViewController {
     
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var questionTextField: UITextField!
+    @IBOutlet weak var questionTextView: UITextView!
     @IBOutlet weak var answerTextField: UITextField!
+    @IBOutlet weak var answerTextView: UITextView!
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var answerLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -59,11 +61,18 @@ class EditDeckViewController: UIViewController {
         addGestures()
         
         titleTextField.delegate = self
-        answerTextField.delegate = self
-        questionTextField.delegate = self
+        answerTextView.textContainer.heightTracksTextView = true
+        questionTextView.textContainer.heightTracksTextView = true
+//        answerTextView.delegate = self
+//        questionTextView.delegate = self
+//        answerTextField.delegate = self
+//        questionTextField.delegate = self
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.dragDelegate = self
+        collectionView.dropDelegate = self
+        collectionView.reorderingCadence = .fast
         
         guard let deck = deck else {
             self.deck = Deck(title: "New Deck", cards: [:])
@@ -91,10 +100,10 @@ class EditDeckViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func addCardAction(_ sender: Any) {
-        self.answerTextField.resignFirstResponder()
-        self.questionTextField.resignFirstResponder()
+        self.answerTextView.resignFirstResponder()
+        self.questionTextView.resignFirstResponder()
         
-        guard let question = questionTextField.text, let answer = answerTextField.text else { return }
+        guard let question = questionTextView.text, let answer = answerTextView.text else { return }
         
         guard !question.isEmpty, !answer.isEmpty else {
             let alertController = UIAlertController(title: "Error adding card", message: "Please provide a valid question and answer.", preferredStyle: .alert)
@@ -115,8 +124,8 @@ class EditDeckViewController: UIViewController {
         }
 
         self.cardsHeaderLabel.isHidden = false
-        self.answerTextField.text = ""
-        self.questionTextField.text = ""
+        self.answerTextView.text = ""
+        self.questionTextView.text = ""
         self.collectionView.reloadData()
     }
     
@@ -124,8 +133,10 @@ class EditDeckViewController: UIViewController {
         dismissKeyboard()
         switch viewState {
         case .add:
+            collectionView.dragInteractionEnabled = true
             setViewState(viewState: .edit)
         case .edit:
+            collectionView.dragInteractionEnabled = false
             setViewState(viewState: .add)
         }
     }
@@ -298,9 +309,76 @@ extension EditDeckViewController: UICollectionViewDelegate, UICollectionViewData
             }
         case .edit:
             currentQuestion = question
-            questionTextField.text = question.question
-            answerTextField.text = answer.answer
+            questionTextView.text = question.question
+            answerTextView.text = answer.answer
         }
+    }
+}
+
+extension EditDeckViewController: UICollectionViewDragDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        guard let item = deck?.questions[indexPath.row].question else { return [] }
+        let itemProvider = NSItemProvider(object: item as NSString)
+        let dragItem = UIDragItem(itemProvider: itemProvider)
+        dragItem.localObject = item
+        return [dragItem]
+    }
+}
+
+extension EditDeckViewController: UICollectionViewDropDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
+        
+        if session.localDragSession != nil {
+            if collectionView.hasActiveDrag {
+                return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+            }
+        }
+        return UICollectionViewDropProposal(operation: .forbidden)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
+        let destinationIndexPath: IndexPath
+        if let indexPath = coordinator.destinationIndexPath {
+            destinationIndexPath = indexPath
+        } else {
+            // Get last index path of collection view.
+            let section = collectionView.numberOfSections - 1
+            let row = collectionView.numberOfItems(inSection: section)
+            destinationIndexPath = IndexPath(row: row, section: section)
+        }
+        
+        switch coordinator.proposal.operation {
+        case .move:
+            let items = coordinator.items
+            if items.count == 1, let item = items.first, let sourceIndexPath = item.sourceIndexPath {
+                var dIndexPath = destinationIndexPath
+                if dIndexPath.row >= collectionView.numberOfItems(inSection: 0) {
+                    dIndexPath.row = collectionView.numberOfItems(inSection: 0) - 1
+                }
+                collectionView.performBatchUpdates({
+                    guard let question = deck?.questions[sourceIndexPath.row] else { fatalError("Could not get card")}
+                    deck?.moveCard(question: question, from: sourceIndexPath.row, to: dIndexPath.row)
+                    
+                    collectionView.deleteItems(at: [sourceIndexPath])
+                    collectionView.insertItems(at: [dIndexPath])
+                })
+                coordinator.drop(item.dragItem, toItemAt: dIndexPath)
+            }
+            break
+        default:
+            return
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, dragPreviewParametersForItemAt indexPath: IndexPath) -> UIDragPreviewParameters? {
+        let previewParameters = UIDragPreviewParameters()
+//        guard let cell = collectionView.cellForItem(at: indexPath) as? SingleTitleCollectionViewCell else { return nil }
+//        cell.configure(isInDeleteMode: false)
+        
+        previewParameters.visiblePath = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 100, height: 100), byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 10, height: 10))
+        return previewParameters
     }
 }
 
@@ -331,10 +409,11 @@ extension EditDeckViewController: UIGestureRecognizerDelegate {
 // MARK: - UITextFieldDelegate
 extension EditDeckViewController: UITextFieldDelegate {
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
+//    textview
+//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//        textField.resignFirstResponder()
+//        return true
+//    }
 }
 
 // MARK: - Gestures
@@ -348,7 +427,7 @@ extension EditDeckViewController {
     
     @objc func dismissKeyboard() {
         titleTextField.endEditing(true)
-        answerTextField.endEditing(true)
-        questionTextField.endEditing(true)
+        answerTextView.endEditing(true)
+        questionTextView.endEditing(true)
     }
 }

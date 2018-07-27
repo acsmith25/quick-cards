@@ -15,9 +15,10 @@ class ShowAnswerViewController: UIViewController, QuizModeController {
     @IBOutlet weak var settingsButton: UIButton!
     @IBOutlet weak var cardView: UIView!
     @IBOutlet weak var questionLabel: UILabel!
-    @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var moreButton: UIButton!
+    @IBOutlet weak var correctButton: UIButton!
+    @IBOutlet weak var incorrectButton: UIButton!
     
     private enum ViewState {
         case asking(String?)
@@ -65,10 +66,6 @@ class ShowAnswerViewController: UIViewController, QuizModeController {
     }
     
 // MARK: - Actions
-    
-    @IBAction func nextButtonAction(_ sender: Any) {
-        deckManager.next()
-    }
     
     @IBAction func backButtonAction(_ sender: Any) {
         print("Current deck mastery: \(deckManager.deck.mastery)%")
@@ -124,6 +121,15 @@ class ShowAnswerViewController: UIViewController, QuizModeController {
         self.view.addGestureRecognizer(gesture)
 
     }
+    @IBAction func correctAction(_ sender: Any) {
+        deckManager.correct()
+        deckManager.next()
+    }
+    
+    @IBAction func incorrectAction(_ sender: Any) {
+        deckManager.incorrect()
+        deckManager.next()
+    }
 }
 
 // MARK: - View State
@@ -137,30 +143,27 @@ extension ShowAnswerViewController {
             UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: {
                 self.questionLabel.text = question
                 
-                self.nextButton.isHidden = true
                 self.moreButton.isHidden = false
+                self.correctButton.isHidden = true
+                self.incorrectButton.isHidden = true
                 self.stackView.layoutIfNeeded()
-                
-                self.nextButton.alpha = 0.0
             }, completion: nil)
         case .answer(let answer):
             UIView.transition(with: cardView, duration: 0.5, options: .transitionFlipFromRight, animations: {
                 self.questionLabel.text = answer
                 
-                self.nextButton.isHidden = false
                 self.moreButton.isHidden = true
+                self.correctButton.isHidden = false
+                self.incorrectButton.isHidden = false
                 self.stackView.layoutIfNeeded()
-                
-                self.nextButton.alpha = 1.0
             }, completion: nil)
         case .mastered:
             self.questionLabel.text = "Congratulations!\nYou have mastered this deck."
             
-            self.nextButton.isHidden = true
             self.moreButton.isHidden = true
+            self.correctButton.isHidden = true
+            self.incorrectButton.isHidden = true
             self.stackView.layoutIfNeeded()
-            
-            self.nextButton.alpha = 0.0
         }
     }
     
@@ -175,7 +178,9 @@ extension ShowAnswerViewController {
     }
     
     @objc func flipCard() {
-        deckManager.correct()
+        guard let question = deckManager.currentQuestion else { return }
+        guard let answer = deckManager.deck.cards[question] else { return }
+        setViewState(.answer(answer.answer))
     }
 }
 
@@ -187,7 +192,7 @@ extension ShowAnswerViewController: DeckManagerDelegate {
     }
     
     func showAnswer(answer: Answer, isCorrect: Bool) {
-        setViewState(.answer(answer.answer))
+//        setViewState(.answer(answer.answer))
     }
     
     func askQuestion(question: Question, wrongAnswers: [Answer]) {

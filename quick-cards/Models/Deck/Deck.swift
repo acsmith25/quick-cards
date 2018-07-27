@@ -19,7 +19,7 @@ class Deck: Codable {
     var mastery: Double
     var isInInitialState: Bool {
         get {
-            return Array(gradeDistribution.keys) == [.average]
+            return Array(gradeDistribution.keys) == [.average] && mastery == 50.0
         }
     }
     var hasCompletedFirstPass: Bool = false
@@ -36,7 +36,7 @@ class Deck: Codable {
         self.order = order
         
         self.cards = cards
-        self.questions = Array(cards.keys)
+        self.questions = Array(cards.keys).sorted(by: { $0.index < $1.index } )
         self.answers = Array(cards.values)
         self.gradeDistribution = [.average: questions]
     }
@@ -44,15 +44,17 @@ class Deck: Codable {
     func reset() {
         mastery = 50.0
         hasCompletedFirstPass = false
-        questions = questions.map({ (question) -> Question in
+        questions = questions.enumerated().map({ (index, question) -> Question in
             question.grade = .average
+            question.index = index
             return question
         })
+        questions.sort(by: { $0.index < $1.index } )
         gradeDistribution = [.average: questions]
     }
     
     func addCard(question: String, answer: String, grade: Grade = .average) {
-        let question = Question(question)
+        let question = Question(question, questions.count)
         let answer = Answer(answer)
         cards[question] = answer
         questions.append(question)
@@ -88,20 +90,35 @@ class Deck: Codable {
         }
     }
     
+    func moveCard(question: Question, from originalIndex: Int, to newIndex: Int) {
+        questions.remove(at: originalIndex)
+        questions.insert(question, at: newIndex)
+    }
+    
     func updateQuestion(oldQuestion: Question, newQuestion: String, newAnswer: String) {
         removeCard(question: oldQuestion)
         addCard(question: newQuestion, answer: newAnswer, grade: oldQuestion.grade)
     }
     
-    func updateQuestionGrade(question: Question, grade: Grade) {
+    func updateQuestionGrade(question: Question, grade: Grade, shouldInsertAtFront: Bool = false) {
         guard var targetGrade = gradeDistribution[grade] else {
             question.grade = grade
             gradeDistribution[grade] = [question]
             return
         }
         question.grade = grade
-        targetGrade.append(question)
+        if shouldInsertAtFront {
+            targetGrade.insert(question, at: 0)
+        } else {
+            targetGrade.append(question)
+        }
         gradeDistribution[grade] = targetGrade
+    }
+    
+    func updateOrder(order: Order) {
+        if order == self.order { return }
+        if order == .inOrder { reset() }
+        self.order = order
     }
 }
 

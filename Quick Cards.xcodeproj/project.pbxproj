@@ -19,6 +19,8 @@
 		4939444220FE59AC00964A61 /* GridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4939444020FE59AB00964A61 /* GridViewController.swift */; };
 		4939444320FE59AC00964A61 /* GridViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4939444120FE59AB00964A61 /* GridViewController.xib */; };
 		49439F83210A6CC80007BA0B /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49439F82210A6CC80007BA0B /* Order.swift */; };
+		49472BFB210B9D96001BBF9D /* FullScreenCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49472BF9210B9D96001BBF9D /* FullScreenCardViewController.swift */; };
+		49472BFC210B9D96001BBF9D /* FullScreenCardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49472BFA210B9D96001BBF9D /* FullScreenCardViewController.xib */; };
 		4962E0D420F6533B00FAAA2C /* SectionHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4962E0D220F6533B00FAAA2C /* SectionHeaderCollectionReusableView.swift */; };
 		4962E0D520F6533B00FAAA2C /* SectionHeaderCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4962E0D320F6533B00FAAA2C /* SectionHeaderCollectionReusableView.xib */; };
 		4978CF6D20E2DA2D008E0AA5 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4978CF6C20E2DA2D008E0AA5 /* Keys.swift */; };
@@ -75,6 +77,8 @@
 		4939444020FE59AB00964A61 /* GridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridViewController.swift; sourceTree = "<group>"; };
 		4939444120FE59AB00964A61 /* GridViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GridViewController.xib; sourceTree = "<group>"; };
 		49439F82210A6CC80007BA0B /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
+		49472BF9210B9D96001BBF9D /* FullScreenCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCardViewController.swift; sourceTree = "<group>"; };
+		49472BFA210B9D96001BBF9D /* FullScreenCardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FullScreenCardViewController.xib; sourceTree = "<group>"; };
 		4962E0D220F6533B00FAAA2C /* SectionHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		4962E0D320F6533B00FAAA2C /* SectionHeaderCollectionReusableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SectionHeaderCollectionReusableView.xib; sourceTree = "<group>"; };
 		4978CF6C20E2DA2D008E0AA5 /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
@@ -205,6 +209,15 @@
 			path = "Question Answer";
 			sourceTree = "<group>";
 		};
+		49472BF8210B9D7C001BBF9D /* Full Screen */ = {
+			isa = PBXGroup;
+			children = (
+				49472BF9210B9D96001BBF9D /* FullScreenCardViewController.swift */,
+				49472BFA210B9D96001BBF9D /* FullScreenCardViewController.xib */,
+			);
+			path = "Full Screen";
+			sourceTree = "<group>";
+		};
 		4962E0D120F6531B00FAAA2C /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -305,6 +318,7 @@
 		49C48A5520F7CBFF002C2E30 /* Pop Ups */ = {
 			isa = PBXGroup;
 			children = (
+				49472BF8210B9D7C001BBF9D /* Full Screen */,
 				49C9E3CE21076CCE0004EC44 /* Card Details */,
 				490C2D4120F3D41600B2892D /* Info */,
 			);
@@ -616,6 +630,7 @@
 				8C72FCB520DF074400795257 /* AllDecksCollectionViewController.xib in Resources */,
 				492B9E1E20F3D4C40035AC7C /* DeckInfoViewController.xib in Resources */,
 				8C72FCAA20DF070600795257 /* SingleTitleCollectionViewCell.xib in Resources */,
+				49472BFC210B9D96001BBF9D /* FullScreenCardViewController.xib in Resources */,
 				4978CF7220E2DB09008E0AA5 /* TableTableViewCell.xib in Resources */,
 				8C72FCC920DF07D800795257 /* LaunchScreen.storyboard in Resources */,
 				49C9E3D221076CE80004EC44 /* DetailsViewController.xib in Resources */,
@@ -686,6 +701,7 @@
 				4978CF6D20E2DA2D008E0AA5 /* Keys.swift in Sources */,
 				49D83CB620E133DD008084F8 /* ButtonTableViewCell.swift in Sources */,
 				8C72FCB620DF074400795257 /* AllDecksCollectionViewController.swift in Sources */,
+				49472BFB210B9D96001BBF9D /* FullScreenCardViewController.swift in Sources */,
 				490AF5DC20E13F20003C312E /* CollectionTableViewCell.swift in Sources */,
 				4924885E2101203100811A2F /* QuestionAnswerTableViewCell.swift in Sources */,
 				492B9E1D20F3D4C40035AC7C /* DeckInfoViewController.swift in Sources */,
