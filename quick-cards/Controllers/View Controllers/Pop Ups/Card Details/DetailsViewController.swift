@@ -9,19 +9,16 @@
 import UIKit
 
 class DetailsViewController: UIViewController {
-    @IBOutlet weak var questionLabel: UILabel!
-    @IBOutlet weak var answerLabel: UILabel!
     @IBOutlet weak var seenLabel: UILabel!
     @IBOutlet weak var correctLabel: UILabel!
+    @IBOutlet weak var timeLabel: UILabel!
     
     var question: Question
-    var answer: Answer
     
     var delegate: NavigationDelegate?
     
-    init(question: Question, answer: Answer) {
+    init(question: Question) {
         self.question = question
-        self.answer = answer
         super.init(nibName: String(describing: DetailsViewController.self), bundle: nil)
     }
     
@@ -32,10 +29,9 @@ class DetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        questionLabel.text = question.question
-        answerLabel.text = answer.answer
         seenLabel.text = "\(question.seen)"
         correctLabel.text = "\(question.correct)"
+        timeLabel.text = String(format: "%.2f", question.avgTime) + " seconds"
     }
 
     override func viewWillAppear(_ animated: Bool) {

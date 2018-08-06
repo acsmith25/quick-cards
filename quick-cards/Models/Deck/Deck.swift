@@ -16,12 +16,9 @@ class Deck: Codable {
     var title: String
     var mode: QuizMode
     var order: Order
+    var timed: Bool
     var mastery: Double
-    var isInInitialState: Bool {
-        get {
-            return Array(gradeDistribution.keys) == [.average] && mastery == 50.0
-        }
-    }
+    var progressCounter: Int = 0
     var hasCompletedFirstPass: Bool = false
     
     var cards: [Question: Answer]
@@ -29,11 +26,12 @@ class Deck: Codable {
     var answers: [Answer]
     var gradeDistribution: [Grade: [Question]]
     
-    init(title: String, cards: [Question: Answer], mastery: Double = 50.0, order: Order = .random) {
+    init(title: String, cards: [Question: Answer], mastery: Double = 50.0, order: Order = .random, timed: Bool = false) {
         self.title = title
         self.mode = .showAnswer
         self.mastery = mastery
         self.order = order
+        self.timed = timed
         
         self.cards = cards
         self.questions = Array(cards.keys).sorted(by: { $0.index < $1.index } )
@@ -41,15 +39,50 @@ class Deck: Codable {
         self.gradeDistribution = [.average: questions]
     }
     
+    func updateOrder(order: Order) {
+        sort(by: order)
+        self.order = order
+    }
+    
+    func updateTimed(timed: Bool) {
+        self.timed = timed
+    }
+    
+    func updateMode(mode: QuizMode) {
+        self.mode = mode
+    }
+    
     func reset() {
         mastery = 50.0
         hasCompletedFirstPass = false
+        progressCounter = 0
         questions = questions.enumerated().map({ (index, question) -> Question in
             question.grade = .average
             question.index = index
+            question.seen = 0
+            question.correct = 0
             return question
         })
         questions.sort(by: { $0.index < $1.index } )
+        gradeDistribution = [.average: questions]
+    }
+    
+    func sort(by order: Order) {
+        switch order {
+        case .difficulty:
+            questions.sort(by: {
+                if $0.seen == 0 || $1.seen == 0 { return $0.seen < $1.seen }
+                if $0.correct == 0 && $1.correct == 0 { return $0.seen > $1.seen }
+                var first = 0.0
+                var second = 0.0
+                if $0.seen > 0 && $0.correct > 0 { first = Double($0.correct) / Double($0.seen)  }
+                if $1.seen > 0 && $1.correct > 0 { second = Double($1.correct) / Double($1.seen)  }
+                return first < second
+            })
+        default:
+            questions.sort(by: { $0.index < $1.index } )
+        }
+        progressCounter = 0 
         gradeDistribution = [.average: questions]
     }
     
@@ -95,6 +128,13 @@ class Deck: Codable {
         questions.insert(question, at: newIndex)
     }
     
+    func setOrder() {
+        questions = questions.enumerated().map { (index, question) -> Question in
+            question.index = index
+            return question
+        }
+    }
+    
     func updateQuestion(oldQuestion: Question, newQuestion: String, newAnswer: String) {
         removeCard(question: oldQuestion)
         addCard(question: newQuestion, answer: newAnswer, grade: oldQuestion.grade)
@@ -113,12 +153,6 @@ class Deck: Codable {
             targetGrade.append(question)
         }
         gradeDistribution[grade] = targetGrade
-    }
-    
-    func updateOrder(order: Order) {
-        if order == self.order { return }
-        if order == .inOrder { reset() }
-        self.order = order
     }
 }
 

@@ -19,6 +19,7 @@ class Question: Codable, Hashable {
     var grade: Grade
     var seen: Int
     var correct: Int
+    var avgTime: Double
 
     init(_ question: String, grade: Grade = .average, _ index: Int) {
         self.question = question
@@ -26,5 +27,14 @@ class Question: Codable, Hashable {
         self.index = index
         self.seen = 0
         self.correct = 0
+        self.avgTime = 0
+    }
+    
+    func updateTime(newTime: Double) {
+        if avgTime == 0.0 {
+            avgTime = newTime
+            return
+        }
+        avgTime = ( ( avgTime * Double(seen) ) + newTime ) / 2
     }
 }

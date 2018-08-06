@@ -98,7 +98,6 @@ class ShowAnswerViewController: UIViewController, QuizModeController {
         popUp = PopUpController(popUpView: infoController)
         guard let popUp = popUp else { return }
         popUp.presentPopUp(on: self)
-
         
         gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
         gesture?.delegate = self
@@ -108,8 +107,7 @@ class ShowAnswerViewController: UIViewController, QuizModeController {
     
     @IBAction func moreAction(_ sender: Any) {
         guard let question = deckManager.currentQuestion else { return }
-        guard let answer = deckManager.deck.cards[question] else { return }
-        let detailsController = DetailsViewController(question: question, answer: answer) //DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
+        let detailsController = DetailsViewController(question: question) //DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
         detailsController.delegate = self
         popUp = PopUpController(popUpView: detailsController)
         guard let popUp = popUp else { return }
@@ -178,9 +176,14 @@ extension ShowAnswerViewController {
     }
     
     @objc func flipCard() {
-        guard let question = deckManager.currentQuestion else { return }
-        guard let answer = deckManager.deck.cards[question] else { return }
-        setViewState(.answer(answer.answer))
+        switch viewState {
+        case .answer(_):
+            return 
+        default:
+            guard let question = deckManager.currentQuestion else { return }
+            guard let answer = deckManager.deck.cards[question] else { return }
+            setViewState(.answer(answer.answer))
+        }
     }
 }
 

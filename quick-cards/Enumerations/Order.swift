@@ -11,4 +11,5 @@ import Foundation
 enum Order: Int, Codable {
     case random = 0
     case inOrder = 1
+    case difficulty = 2
 }

@@ -6,10 +6,6 @@
 //  Copyright © 2018 Abby Smith. All rights reserved.
 //
 
-// TODO:
-// save decks to defaults in json
-// show mastery level on home page
-
 import UIKit
 
 @UIApplicationMain

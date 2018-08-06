@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CustomPopup
 
 class EditDeckViewController: UIViewController {
     
@@ -32,6 +33,10 @@ class EditDeckViewController: UIViewController {
     }
     
     private var viewState: ViewState = .add
+    
+    // Pop Up protocol properties
+    var gesture: UIGestureRecognizer?
+    var popUp: PopUpController?
     
     var deck: Deck?
     var currentQuestion: Question?
@@ -63,10 +68,6 @@ class EditDeckViewController: UIViewController {
         titleTextField.delegate = self
         answerTextView.textContainer.heightTracksTextView = true
         questionTextView.textContainer.heightTracksTextView = true
-//        answerTextView.delegate = self
-//        questionTextView.delegate = self
-//        answerTextField.delegate = self
-//        questionTextField.delegate = self
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -175,12 +176,11 @@ class EditDeckViewController: UIViewController {
     }
     
     @IBAction func backAction(_ sender: Any) {
-//        guard let question = questionTextField.text, let answer = answerTextField.text else { return }
-//        guard deck?.questions.isEmpty else {
             let alertController = UIAlertController(title: "Do you want to save your changes?", message: nil, preferredStyle: .alert)
             let saveAction = UIAlertAction(title: "Save", style: .default) { (action) in
                 if let deck = self.deck {
                     deck.title = self.titleTextField.text ?? self.titleTextField.placeholder ?? ""
+                    deck.setOrder()
                     
                     // Update all references to deck
                     let allDecksIndex = decksInProgress.index { $0 == deck }
@@ -211,6 +211,7 @@ class EditDeckViewController: UIViewController {
                 self.delegate?.dismissViewController()
             }
             let backAction = UIAlertAction(title: "Discard", style: .default) { (action) in
+                self.deck?.sort(by: .inOrder)
                 self.delegate?.dismissViewController()
             }
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -220,9 +221,6 @@ class EditDeckViewController: UIViewController {
             alertController.addAction(backAction)
             alertController.addAction(cancelAction)
             present(alertController, animated: true, completion: nil)
-//            return
-//        }
-//        self.delegate?.dismissViewController()
     }
 }
 
@@ -283,7 +281,7 @@ extension EditDeckViewController: UICollectionViewDelegate, UICollectionViewData
         
         guard let deck = deck else { fatalError() }
         let question = deck.questions[indexPath.row]
-        cell.configure(with: question.question, isInDeleteMode: viewState == .edit)
+        cell.configure(with: question.question, showCardDetails: viewState != .edit, isInDeleteMode: viewState == .edit)
         cell.delegate = self
         
         return cell
@@ -303,7 +301,7 @@ extension EditDeckViewController: UICollectionViewDelegate, UICollectionViewData
                 card.isShowingFront = false
             } else {
                 UIView.transition(with: card, duration: 0.5, options: .transitionFlipFromRight, animations: {
-                    card.configure(with: question.question, backgroundColor: .white)
+                    card.configure(with: question.question, backgroundColor: .white, showCardDetails: self.viewState != .edit)
                 }, completion: nil)
                 card.isShowingFront = true
             }
@@ -374,8 +372,6 @@ extension EditDeckViewController: UICollectionViewDropDelegate {
     
     func collectionView(_ collectionView: UICollectionView, dragPreviewParametersForItemAt indexPath: IndexPath) -> UIDragPreviewParameters? {
         let previewParameters = UIDragPreviewParameters()
-//        guard let cell = collectionView.cellForItem(at: indexPath) as? SingleTitleCollectionViewCell else { return nil }
-//        cell.configure(isInDeleteMode: false)
         
         previewParameters.visiblePath = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 100, height: 100), byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 10, height: 10))
         return previewParameters
@@ -392,7 +388,36 @@ extension EditDeckViewController: CardDelegate {
         }
         collectionView.reloadData()
     }
+    
+    func cardDetails(question: String?) {
+        guard let index = deck?.questions.index(where: { $0.question == question }) else { return }
+        guard let question = deck?.questions[index] else { return }
+        
+        let detailsController = DetailsViewController(question: question) //DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
+        detailsController.delegate = self
+        popUp = PopUpController(popUpView: detailsController)
+        guard let popUp = popUp else { return }
+        popUp.presentPopUp(on: self)
+        
+        gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
+        gesture?.delegate = self
+        guard let gesture = gesture else { return }
+        self.view.addGestureRecognizer(gesture)
+
+    }
 }
+
+// MARK: - PopUpPresentationController
+extension EditDeckViewController: PopUpPresentationController {
+    
+    @objc func dismissPopUp() {
+        guard let popUp = popUp, let gesture = gesture else { return }
+        popUp.dismissSubviews()
+        self.view.removeGestureRecognizer(gesture)
+    }
+}
+
+extension EditDeckViewController: UITextFieldDelegate { }
 
 // MARK: - UIGestureRecognizerDelegate
 extension EditDeckViewController: UIGestureRecognizerDelegate {
@@ -404,16 +429,6 @@ extension EditDeckViewController: UIGestureRecognizerDelegate {
         }
         return true
     }
-}
-
-// MARK: - UITextFieldDelegate
-extension EditDeckViewController: UITextFieldDelegate {
-    
-//    textview
-//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//        textField.resignFirstResponder()
-//        return true
-//    }
 }
 
 // MARK: - Gestures
@@ -429,5 +444,14 @@ extension EditDeckViewController {
         titleTextField.endEditing(true)
         answerTextView.endEditing(true)
         questionTextView.endEditing(true)
+    }
+}
+
+// MARK: - Deck Collection View Delegate
+extension EditDeckViewController: NavigationDelegate {
+    
+    func dismissViewController() {
+        //        navigationController?.popToRootViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 }

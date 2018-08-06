@@ -11,8 +11,8 @@ import UIKit
 enum QuizMode: Int, Codable {
     case showAnswer = 0
     case typeAnswer = 1
-    case multipleChoice = 2
-    case grid = 3
+    case multipleChoice = 3
+    case grid = 2
     
     static let allModes: [QuizMode] = [.showAnswer, .typeAnswer, .multipleChoice, .grid]
     

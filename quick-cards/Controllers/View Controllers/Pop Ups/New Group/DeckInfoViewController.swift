@@ -10,23 +10,36 @@ import UIKit
 
 class DeckInfoViewController: UIViewController {
 
-    @IBOutlet weak var editButton: UIButton!
-    @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var masteredLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var quizModePickerView: UIPickerView!
-    @IBOutlet weak var startButton: UIButton!
-    @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var startSegmentedControl: UISegmentedControl!
-    @IBOutlet weak var orderSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var randomButton: UIButton!
+    @IBOutlet weak var inOrderButton: UIButton!
+    @IBOutlet weak var difficultyButton: UIButton!
+    @IBOutlet weak var timedButton: UIButton!
+    @IBOutlet weak var notTimedButton: UIButton!
+    @IBOutlet weak var flipButton: UIButton!
+    @IBOutlet weak var typeButton: UIButton!
+    @IBOutlet weak var freeformButton: UIButton!
+    @IBOutlet weak var multipleChoiceButton: UIButton!
     
     var deck: Deck
     var isViewingDeck: Bool
     
     var delegate: NavigationDelegate?
+    var orderButtons: [UIButton] = []
+    var modeButtons: [UIButton] = []
+    var timedButtons: [UIButton] = []
+    
+    var newMode: QuizMode
+    var newOrder: Order
+    var newTime: Bool
     
     init(deck: Deck, isViewingDeck: Bool) {
         self.deck = deck
+        self.newTime = deck.timed
+        self.newMode = deck.mode
+        self.newOrder = deck.order
         self.isViewingDeck = isViewingDeck
         super.init(nibName: String(describing: DeckInfoViewController.self), bundle: nil)
     }
@@ -41,18 +54,83 @@ class DeckInfoViewController: UIViewController {
         titleLabel.text = "\(deck.title):"
         masteredLabel.text = "\(deck.mastery)% Mastered"
         
-        quizModePickerView.dataSource = self
-        quizModePickerView.delegate = self
+        orderButtons = [randomButton, inOrderButton, difficultyButton]
+        orderButtons.forEach { (button) in
+            button.layer.borderWidth = 1.0
+            button.layer.borderColor = UIColor.myTeal.cgColor
+            button.layer.cornerRadius = 5.0
+            if button.tag == deck.order.rawValue {
+                button.layer.backgroundColor = UIColor.myTeal.cgColor
+            } else {
+                button.layer.backgroundColor = UIColor.white.cgColor
+            }
+        }
+        
+        modeButtons = [flipButton, typeButton, freeformButton, multipleChoiceButton]
+        modeButtons.forEach { (button) in
+            button.layer.borderWidth = 1.0
+            button.layer.borderColor = UIColor.myTeal.cgColor
+            button.layer.cornerRadius = 5.0
+            if button.tag == deck.mode.rawValue {
+                button.layer.backgroundColor = UIColor.myTeal.cgColor
+            } else {
+                button.layer.backgroundColor = UIColor.white.cgColor
+            }
+        }
+        
+        timedButtons = [notTimedButton, timedButton]
+        let value = deck.timed ? 1 : 0
+        timedButtons.forEach { (button) in
+            button.layer.borderWidth = 1.0
+            button.layer.borderColor = UIColor.myTeal.cgColor
+            button.layer.cornerRadius = 5.0
+            if button.tag == value {
+                button.layer.backgroundColor = UIColor.myTeal.cgColor
+            } else {
+                button.layer.backgroundColor = UIColor.white.cgColor
+            }
+        }
         
         // Remove resume option if hasn't been started
-        if deck.isInInitialState {
+        if deck.progressCounter == 0 {
             startSegmentedControl.isHidden = true
-//            stackView.removeArrangedSubview(startSegmentedControl)
-//            startSegmentedControl.removeFromSuperview()
         }
     }
     
     // MARK: - Actions
+    
+    @IBAction func modeButtonAction(_ sender: UIButton) {
+        modeButtons.forEach { (button) in
+            if button.tag == sender.tag {
+                button.layer.backgroundColor = UIColor.myTeal.cgColor
+            } else {
+                button.layer.backgroundColor = UIColor.white.cgColor
+            }
+        }
+        newMode = QuizMode(rawValue: sender.tag) ?? .showAnswer
+    }
+    
+    @IBAction func timedAction(_ sender: UIButton) {
+        timedButtons.forEach { (button) in
+            if button.tag == sender.tag {
+                button.layer.backgroundColor = UIColor.myTeal.cgColor
+            } else {
+                button.layer.backgroundColor = UIColor.white.cgColor
+            }
+        }
+        newTime = sender.tag == 1 ? true : false
+    }
+    
+    @IBAction func orderButtonAction(_ sender: UIButton) {
+        orderButtons.forEach { (button) in
+            if button.tag == sender.tag {
+                button.layer.backgroundColor = UIColor.myTeal.cgColor
+            } else {
+                button.layer.backgroundColor = UIColor.white.cgColor
+            }
+        }
+        newOrder = Order(rawValue: sender.tag) ?? .random
+    }
     
     @IBAction func editAction(_ sender: Any) {
         let controller = EditDeckViewController(deck: deck)
@@ -62,24 +140,34 @@ class DeckInfoViewController: UIViewController {
     }
     
     @IBAction func startDeckAction(_ sender: Any) {
-        let selectedRow = quizModePickerView.selectedRow(inComponent: 0)
-        let quizMode = QuizMode.allModes[selectedRow]
-        deck.mode = quizMode
-        
-        let order = orderSegmentedControl.selectedSegmentIndex
-        deck.updateOrder(order: Order(rawValue: order) ?? .random)
-        
         if startSegmentedControl.isHidden { startSegmentedControl.selectedSegmentIndex = 1 }
         
         switch startSegmentedControl.selectedSegmentIndex {
         case 0:
-            var quizController = quizMode.getController(with: deck, shouldResume: false)
+//            if newMode == deck.mode && newOrder == deck.order && newTime == deck.timed {
+//                delegate?.dismissViewController()
+//                return
+//            }
+            deck.updateMode(mode: newMode)
+            deck.updateTimed(timed: newTime)
+            deck.updateOrder(order: newOrder)
+            var quizController = deck.mode.getController(with: deck, shouldResume: true)
             quizController.delegate = self
             
             guard let controller = quizController as? UIViewController else { return }
             navigationController?.pushViewController(controller, animated: true)
         default:
-            var quizController = quizMode.getController(with: deck, shouldResume: true)
+            deck.reset()
+//            if !startSegmentedControl.isHidden {
+//                if newMode == deck.mode && newOrder == deck.order && newTime == deck.timed {
+//                    delegate?.dismissViewController()
+//                    return
+//                }
+//            }
+            deck.updateMode(mode: newMode)
+            deck.updateTimed(timed: newTime)
+            deck.updateOrder(order: newOrder)
+            var quizController = deck.mode.getController(with: deck, shouldResume: false)
             quizController.delegate = self
             
             guard let controller = quizController as? UIViewController else { return }
@@ -102,20 +190,6 @@ class DeckInfoViewController: UIViewController {
 
 extension DeckInfoViewController: NavigationDelegate {
     func dismissViewController() {
-        navigationController?.popToRootViewController(animated: true)
-    }
-}
-
-extension DeckInfoViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return QuizMode.allModes.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return QuizMode.allModes[row].title
+            navigationController?.popToRootViewController(animated: true)
     }
 }

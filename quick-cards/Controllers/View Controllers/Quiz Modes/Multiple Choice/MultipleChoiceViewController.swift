@@ -132,8 +132,7 @@ class MultipleChoiceViewController: UIViewController, QuizModeController {
     
     @IBAction func moreAction(_ sender: Any) {
         guard let question = deckManager.currentQuestion else { return }
-        guard let answer = deckManager.deck.cards[question] else { return }
-        let detailsController = DetailsViewController(question: question, answer: answer) //DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
+        let detailsController = DetailsViewController(question: question) //DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
         detailsController.delegate = self
         popUp = PopUpController(popUpView: detailsController)
         guard let popUp = popUp else { return }
