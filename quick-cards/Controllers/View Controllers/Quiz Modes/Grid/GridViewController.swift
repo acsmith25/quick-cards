@@ -165,9 +165,9 @@ extension GridViewController: UICollectionViewDelegate, UICollectionViewDataSour
 // MARK: - Card Deck Delegate
 extension GridViewController: DeckManagerDelegate {
     
-    func masteredDeck() { return }
+    func showComplete() { return }
     func showAnswer(answer: Answer, isCorrect: Bool) { return }
-    func askQuestion(question: Question, wrongAnswers: [Answer]) { return }
+    func showQuestion(question: Question, randomAnswers: [Answer]) { return }
     
 }
 

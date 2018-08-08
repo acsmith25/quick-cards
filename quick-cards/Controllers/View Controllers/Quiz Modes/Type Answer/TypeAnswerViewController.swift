@@ -69,8 +69,8 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
         addGestures()
 
         deckManager.delegate = self
-        if shouldResume { deckManager.startDeck() }
-        else { deckManager.startFromBeginning() }
+        if !shouldResume { deckManager.deck.reset() }
+        deckManager.startDeck()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -143,7 +143,7 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
     
     @IBAction func detailsAction(_ sender: Any) {
         guard let question = deckManager.currentQuestion else { return }
-        let detailsController = DetailsViewController(question: question) //DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
+        let detailsController = DetailsViewController(question: question, isTimed: deckManager.deck.isTimed) //DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
         detailsController.delegate = self
         popUp = PopUpController(popUpView: detailsController)
         guard let popUp = popUp else { return }
@@ -238,7 +238,7 @@ extension TypeAnswerViewController {
 // MARK: - DeckManagerDelegate
 extension TypeAnswerViewController: DeckManagerDelegate {
     
-    func masteredDeck() {
+    func showComplete() {
         setViewState(.mastered)
     }
     
@@ -246,7 +246,7 @@ extension TypeAnswerViewController: DeckManagerDelegate {
         setViewState(.answer(answer.answer, isCorrect))
     }
     
-    func askQuestion(question: Question, wrongAnswers: [Answer]) {
+    func showQuestion(question: Question, randomAnswers: [Answer]) {
         setViewState(.asking(question.question))
     }
 }

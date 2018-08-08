@@ -180,7 +180,7 @@ class EditDeckViewController: UIViewController {
             let saveAction = UIAlertAction(title: "Save", style: .default) { (action) in
                 if let deck = self.deck {
                     deck.title = self.titleTextField.text ?? self.titleTextField.placeholder ?? ""
-                    deck.setOrder()
+                    deck.updateIndices()
                     
                     // Update all references to deck
                     let allDecksIndex = decksInProgress.index { $0 == deck }
@@ -211,7 +211,7 @@ class EditDeckViewController: UIViewController {
                 self.delegate?.dismissViewController()
             }
             let backAction = UIAlertAction(title: "Discard", style: .default) { (action) in
-                self.deck?.sort(by: .inOrder)
+                self.deck?.sortQuestions(by: .inOrder)
                 self.delegate?.dismissViewController()
             }
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -393,7 +393,7 @@ extension EditDeckViewController: CardDelegate {
         guard let index = deck?.questions.index(where: { $0.question == question }) else { return }
         guard let question = deck?.questions[index] else { return }
         
-        let detailsController = DetailsViewController(question: question) //DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
+        let detailsController = DetailsViewController(question: question, isTimed: deck?.isTimed ?? false) //DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
         detailsController.delegate = self
         popUp = PopUpController(popUpView: detailsController)
         guard let popUp = popUp else { return }

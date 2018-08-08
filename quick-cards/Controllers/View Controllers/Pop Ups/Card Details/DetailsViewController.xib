@@ -15,6 +15,7 @@
                 <outlet property="correctLabel" destination="uEC-Rq-EVp" id="TMh-wh-Uyc"/>
                 <outlet property="seenLabel" destination="s5c-rt-06L" id="SQz-eX-clQ"/>
                 <outlet property="timeLabel" destination="jWL-LN-qTJ" id="JST-O1-un4"/>
+                <outlet property="timeView" destination="d0v-N1-LWk" id="WpD-ip-SL1"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

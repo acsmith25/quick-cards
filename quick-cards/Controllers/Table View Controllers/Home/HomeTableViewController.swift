@@ -116,7 +116,7 @@ extension HomeTableViewController {
         switch section {
         case .quickResume:
             let deck = decksInProgress[indexPath.row]
-            var controller = deck.mode.getController(with: deck, shouldResume: true)
+            var controller = deck.quizMode.getController(with: deck, shouldResume: true)
             controller.delegate = self
             guard let vc = controller as? UIViewController else { return }
             self.navigationController?.pushViewController(vc, animated: true)

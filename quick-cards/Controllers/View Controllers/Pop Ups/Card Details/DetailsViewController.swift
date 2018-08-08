@@ -12,13 +12,16 @@ class DetailsViewController: UIViewController {
     @IBOutlet weak var seenLabel: UILabel!
     @IBOutlet weak var correctLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var timeView: UIView!
     
     var question: Question
+    var isTimed: Bool
     
     var delegate: NavigationDelegate?
     
-    init(question: Question) {
+    init(question: Question, isTimed: Bool) {
         self.question = question
+        self.isTimed = isTimed
         super.init(nibName: String(describing: DetailsViewController.self), bundle: nil)
     }
     
@@ -31,7 +34,12 @@ class DetailsViewController: UIViewController {
 
         seenLabel.text = "\(question.seen)"
         correctLabel.text = "\(question.correct)"
-        timeLabel.text = String(format: "%.2f", question.avgTime) + " seconds"
+        
+        if isTimed {
+            timeLabel.text = String(format: "%.2f", question.avgTime) + " seconds"
+        } else {
+            timeView.isHidden = true
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

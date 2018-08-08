@@ -9,34 +9,32 @@
 import Foundation
 
 protocol DeckManagerDelegate {
-    func askQuestion(question: Question, wrongAnswers: [Answer])
+    func showQuestion(question: Question, randomAnswers: [Answer])
     func showAnswer(answer: Answer, isCorrect: Bool)
-    func masteredDeck()
+    func showComplete()
 }
 
 class DeckManager {
     
-    // MARK: - Public
+    var delegate: DeckManagerDelegate?
+    var deck: Deck
     
-    public var delegate: DeckManagerDelegate?
-    public var deck: Deck
-    public var currentQuestion: Question?
+    var currentQuestion: Question?
+    
+    private var currentMastery: Int = 0
+    private var totalMastery: Int = 0
+    private var startTime: Date = Date()
     
     private var getNextQuestion: (() -> Question?)?
     
-    var startTime: Date = Date()
+    // MARK: - Public
     
     init(deck: Deck) {
         self.deck = deck
     }
     
-    func startFromBeginning() {
-        getNextQuestion = getLevelQuestion
-        deck.reset()
-        startDeck()
-    }
-    
     func startDeck() {
+        // Calculate the current mastery of the deck
         deck.gradeDistribution.forEach { (grade, questions) in
             currentMastery += grade.masteryValue * questions.count
         }
@@ -44,90 +42,55 @@ class DeckManager {
         // The sum for when all grades are mastered
         totalMastery = deck.cards.count * Grade.mastered.masteryValue
         
-        // Initiailize next card function to use first pass function
-        if deck.order != .random {
-            getNextQuestion = getLevelQuestion
+        if deck.order == .random {
+            getNextQuestion = deck.hasCompletedFirstPass ? getRandomQuestion : getAverageQuestion
         } else {
-            getNextQuestion = deck.hasCompletedFirstPass ? getRandomQuestion : getLevelQuestion
+            getNextQuestion = getAverageQuestion
         }
         
-        // Get first card
         next()
-    }
-    
-    func next() {
-        if let getNextQuestion = getNextQuestion {
-            guard let question = getNextQuestion() else {
-                // Deck is empty
-                return
-            }
-            currentQuestion = question
-        }
-        guard let currentQuestion = currentQuestion else { return }
-        
-        startTime = Date()
-        guard let vc = delegate as? MultipleChoiceViewController else {
-            delegate?.askQuestion(question: currentQuestion, wrongAnswers: [])
-            return
-        }
-        askWithRandomAnswers(vc: vc)
-    }
-    
-    func askWithRandomAnswers(vc: MultipleChoiceViewController) {
-        guard let currentQuestion = currentQuestion else { return }
-        guard let correctAnswer = deck.cards[currentQuestion] else { return }
-        var randomAnswers = [correctAnswer]
-        while randomAnswers.count < 4 {
-            guard let index = getRandomIndex(deck.answers) else { return }
-            let answer = deck.answers[index]
-            if !randomAnswers.contains(where: { $0 == answer }) {
-                randomAnswers.append(answer)
-            }
-        }
-        vc.askQuestion(question: currentQuestion, wrongAnswers: randomAnswers)
     }
     
     func exit() {
         guard let currentQuestion = currentQuestion else { return }
-        deck.updateQuestionGrade(question: currentQuestion, grade: currentQuestion.grade)
+        deck.updateQuestionGrade(question: currentQuestion, newGrade: currentQuestion.grade)
     }
     
-    func incorrect() {
-        let elapsed = Date().timeIntervalSince(startTime)
-        guard let currentQuestion = currentQuestion else { return }
-        currentQuestion.updateTime(newTime: elapsed)
-        guard let correctAnswer = deck.cards[currentQuestion] else {
-            fatalError("Question does not exist.")
+    func next() {
+        // Completed pass through deck, sort and restart
+        if deck.cards.count == deck.progressCounter {
+            deck.sortQuestions(by: deck.order)
         }
-
-        decreaseLevel()
-        delegate?.showAnswer(answer: correctAnswer, isCorrect: false)
         
-        saveMastery()
-        self.currentQuestion = nil
-        print("Current mastery: \(deck.mastery)")
+        guard let getNextQuestion = getNextQuestion else { return }
+        guard let question = getNextQuestion() else {
+            // Deck is empty
+            return
+        }
+        self.currentQuestion = question
+        
+        // Start time and update progress when question is displayed
+        startTime = Date()
+        deck.progressCounter += 1
+        
+        if deck.quizMode == .multipleChoice {
+            // Only ask with random answers if multiple choice
+            askWithRandomAnswers()
+            return
+        }
+        delegate?.showQuestion(question: currentQuestion!, randomAnswers: []) // Question is safely unwrapped
     }
     
     func correct() {
-        let elapsed = Date().timeIntervalSince(startTime)
         guard let currentQuestion = currentQuestion else { return }
-        currentQuestion.updateTime(newTime: elapsed)
         guard let correctAnswer = deck.cards[currentQuestion] else {
             fatalError("Question does not exist.")
         }
-        
-        increaseLevel()
-        if currentMastery == totalMastery {
-            // Deck is mastered
-            delegate?.masteredDeck()
-        } else {
-            // Continue
-            delegate?.showAnswer(answer: correctAnswer, isCorrect: true)
-        }
-        
-        saveMastery()
-        self.currentQuestion = nil
-        print("Current mastery: \(deck.mastery)")
+        validate(userAnswer: correctAnswer.answer)
+    }
+    
+    func incorrect() {
+        validate(userAnswer: nil)
     }
     
     func validate(userAnswer: String?) {
@@ -135,75 +98,104 @@ class DeckManager {
         guard let correctAnswer = deck.cards[currentQuestion] else {
             fatalError("Question does not exist.")
         }
+        
+        let elapsed = Date().timeIntervalSince(startTime)
+        currentQuestion.updateTime(newTime: elapsed)
+        
+        // Validate
         let didAnswerCorrectly = userAnswer == correctAnswer.answer ? true : false
-        if didAnswerCorrectly {
-            correct()
+        
+        updateDeck(didAnswerCorrectly: didAnswerCorrectly)
+        deck.updateMastery(newMastery: round(Double(currentMastery) / Double(totalMastery) * 10000) / 100)
+        self.currentQuestion = nil
+        
+        if currentMastery == totalMastery {
+            // Deck is mastered
+            delegate?.showComplete()
         } else {
-            incorrect()
+            delegate?.showAnswer(answer: correctAnswer, isCorrect: didAnswerCorrectly)
         }
-    }
-    
-    func saveMastery() {
-        deck.mastery = round(Double(currentMastery) / Double(totalMastery) * 10000) / 100
     }
     
     // MARK: - Private
     
-//    private var gradeWeightsSum: Int = 0
-    private var totalMastery: Int = 0
-    private var currentMastery: Int = 0
-    
-    private func getLevelQuestion() -> Question? {
-        guard var defaultGrade = deck.gradeDistribution[.average] else { return nil }
-        deck.progressCounter += 1
+    private func askWithRandomAnswers() {
+        guard let currentQuestion = currentQuestion else { return }
+        guard let correctAnswer = deck.cards[currentQuestion] else { return }
         
-        if deck.order != .random {
-            if deck.progressCounter == deck.cards.count {
-//                let alertController = UIAlertController(title: "Again", preferredStyle: .alert)
-//                let okAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-//                    deck.sort(by: deck.order)
-//                })
-//                alertController.addAction(okAction)
-//                present(alertController, animated: true, completion: nil)
-                deck.sort(by: deck.order)
-            }
-            let question = defaultGrade.remove(at: 0)
-            deck.gradeDistribution[.average] = defaultGrade
-            return question
-        } else {
-            guard let randomIndex = getRandomIndex(defaultGrade) else { return nil }
+        var randomAnswers = [correctAnswer]
+        while randomAnswers.count < 4 {
+            guard let index = getRandomIndex(deck.answers) else { return }
+            let answer = deck.answers[index]
             
-            // Extract card at random index
-            let question = defaultGrade.remove(at: randomIndex)
-            if defaultGrade.isEmpty {
-                deck.gradeDistribution[.average] = nil
-                deck.hasCompletedFirstPass = true
-                self.getNextQuestion = getRandomQuestion
-                return getRandomQuestion()
-            } else {
-                deck.gradeDistribution[.average] = defaultGrade
+            // Excludes duplicates
+            if !randomAnswers.contains(where: { $0 == answer }) {
+                randomAnswers.append(answer)
             }
-            return question
         }
+        delegate?.showQuestion(question: currentQuestion, randomAnswers: randomAnswers)
+    }
+    
+    private func updateDeck(didAnswerCorrectly: Bool) {
+        guard let currentQuestion = currentQuestion else { return }
+        var newGrade = Grade.average
+        
+        // Update distribution if random
+        if deck.order == .random {
+            let newGradeValue = didAnswerCorrectly ? currentQuestion.grade.masteryValue + 1 : currentQuestion.grade.masteryValue - 1
+            if didAnswerCorrectly {
+                if newGradeValue >= Grade.allCases.count {
+                    // Already at heighest level, insert card back into top level
+                    newGrade = Grade(masteryValue: newGradeValue - 1)
+                }
+            } else {
+                if newGradeValue < 0 {
+                    // Already at lowest level, insert card back into bottom level
+                    newGrade = Grade(masteryValue: newGradeValue + 1)
+                }
+            }
+            newGrade = Grade(masteryValue: newGradeValue)
+        }
+        
+        deck.updateQuestionGrade(question: currentQuestion, newGrade: newGrade)
+        currentQuestion.seen += 1
+        if didAnswerCorrectly {
+            currentQuestion.correct += 1
+            currentMastery += 1
+        } else {
+            currentMastery -= 1
+        }
+    }
+    
+    private func getAverageQuestion() -> Question? {
+        guard var targetGrade = deck.gradeDistribution[.average], let randomIndex = getRandomIndex(targetGrade) else {
+            deck.hasCompletedFirstPass = true
+            getNextQuestion = getRandomQuestion
+            return getRandomQuestion()
+        }
+        
+        // Get card from front of level unless random
+        var index = 0
+        if deck.order == .random {
+            index = randomIndex
+        }
+        
+        let question = targetGrade[index]
+        deck.removeQuestionFromGrade(question: question)
+        return question
     } 
     
     private func getRandomQuestion() -> Question? {
-        guard let randomLevel = getRandomWeightedGrade() else {
+        guard let randomGrade = getRandomWeightedGrade() else {
             fatalError("Error getting random level.")
         }
-        guard var cards = deck.gradeDistribution[randomLevel] else {
-            fatalError("Error getting random level.")
-        }
-        guard let randomIndex = getRandomIndex(cards) else {
+        guard var targetGrade = deck.gradeDistribution[randomGrade], let randomIndex = getRandomIndex(targetGrade) else {
+            // Target grade is empty
             return getRandomQuestion()
         }
-        print(deck.gradeDistribution)
-        let question = cards.remove(at: randomIndex)
-        if cards.isEmpty {
-            deck.gradeDistribution[randomLevel] = nil
-        } else {
-            deck.gradeDistribution[randomLevel] = cards
-        }
+        
+        let question = targetGrade[randomIndex]
+        deck.removeQuestionFromGrade(question: question)
         return question
     }
     
@@ -229,50 +221,5 @@ class DeckManager {
         }
         return Int(arc4random_uniform(UInt32(array.count)))
     }
-    
-    private func increaseLevel() {
-        guard let currentQuestion = currentQuestion else { return }
-        currentQuestion.seen += 1
-        
-        if deck.order != .random {
-            deck.updateQuestionGrade(question: currentQuestion, grade: .average)
-            currentQuestion.correct += 1
-        } else {
-            let newGrade = currentQuestion.grade.masteryValue + 1
-            guard newGrade < Grade.allCases.count else {
-                // Already at heighest level, insert card back into top level
-                let grade = Grade(masteryValue: newGrade - 1)
-                currentQuestion.correct += 1
-                deck.updateQuestionGrade(question: currentQuestion, grade: grade)
-                return
-            }
-            // Update card's level
-            let grade = Grade(masteryValue: newGrade)
-            currentQuestion.correct += 1
-            deck.updateQuestionGrade(question: currentQuestion, grade: grade)
-        }
-        currentMastery += 1
-    }
-    
-    private func decreaseLevel() {        guard let currentQuestion = currentQuestion else { return }
-        currentQuestion.seen += 1
-        
-        if deck.order != .random {
-            deck.updateQuestionGrade(question: currentQuestion, grade: .average)
-        } else {
-            let newGrade = currentQuestion.grade.masteryValue - 1
-            guard newGrade >= 0 else {
-                // Already at lowest level, insert card back into bottom level
-                let grade = Grade(masteryValue: newGrade + 1)
-                deck.updateQuestionGrade(question: currentQuestion, grade: grade)
-                return
-            }
-            // Update card's level
-            let grade = Grade(masteryValue: newGrade)
-            deck.updateQuestionGrade(question: currentQuestion, grade: grade)
-        }
-        currentMastery -= 1
-    }
-
 }
 

@@ -30,6 +30,14 @@ class Question: Codable, Hashable {
         self.avgTime = 0
     }
     
+    func reset(index: Int) {
+        self.index = index
+        self.grade = .average
+        self.seen = 0
+        self.correct = 0
+        self.avgTime = 0.0
+    }
+    
     func updateTime(newTime: Double) {
         if avgTime == 0.0 {
             avgTime = newTime

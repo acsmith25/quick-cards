@@ -14,10 +14,10 @@ class Deck: Codable {
     }
     
     var title: String
-    var mode: QuizMode
-    var order: Order
-    var timed: Bool
     var mastery: Double
+    var isTimed: Bool
+    var order: QuestionOrder
+    var quizMode: QuizMode = .showAnswer
     var progressCounter: Int = 0
     var hasCompletedFirstPass: Bool = false
     
@@ -26,12 +26,11 @@ class Deck: Codable {
     var answers: [Answer]
     var gradeDistribution: [Grade: [Question]]
     
-    init(title: String, cards: [Question: Answer], mastery: Double = 50.0, order: Order = .random, timed: Bool = false) {
+    init(title: String, cards: [Question: Answer], mastery: Double = 50.0, order: QuestionOrder = .random, timed: Bool = false) {
         self.title = title
-        self.mode = .showAnswer
         self.mastery = mastery
         self.order = order
-        self.timed = timed
+        self.isTimed = timed
         
         self.cards = cards
         self.questions = Array(cards.keys).sorted(by: { $0.index < $1.index } )
@@ -39,88 +38,128 @@ class Deck: Codable {
         self.gradeDistribution = [.average: questions]
     }
     
-    func updateOrder(order: Order) {
-        sort(by: order)
-        self.order = order
-    }
-    
-    func updateTimed(timed: Bool) {
-        self.timed = timed
-    }
-    
-    func updateMode(mode: QuizMode) {
-        self.mode = mode
-    }
-    
     func reset() {
         mastery = 50.0
         hasCompletedFirstPass = false
         progressCounter = 0
         questions = questions.enumerated().map({ (index, question) -> Question in
-            question.grade = .average
-            question.index = index
-            question.seen = 0
-            question.correct = 0
+            question.reset(index: index)
             return question
         })
-        questions.sort(by: { $0.index < $1.index } )
+        sortQuestions(by: .inOrder)
         gradeDistribution = [.average: questions]
     }
     
-    func sort(by order: Order) {
+    func sortQuestions(by order: QuestionOrder) {
+        /** Resets progress **/
+        progressCounter = 0
+        
         switch order {
+        case .inOrder:
+            questions.sort(by: { $0.index < $1.index } )
+        case .random:
+            break
         case .difficulty:
             questions.sort(by: {
+                // Return which ever hasn't been seen
                 if $0.seen == 0 || $1.seen == 0 { return $0.seen < $1.seen }
+                
+                // If neither have been correct, return which has been seen more times
                 if $0.correct == 0 && $1.correct == 0 { return $0.seen > $1.seen }
+                
+                // Use ratios of correct to seen
                 var first = 0.0
                 var second = 0.0
                 if $0.seen > 0 && $0.correct > 0 { first = Double($0.correct) / Double($0.seen)  }
                 if $1.seen > 0 && $1.correct > 0 { second = Double($1.correct) / Double($1.seen)  }
                 return first < second
             })
-        default:
-            questions.sort(by: { $0.index < $1.index } )
         }
-        progressCounter = 0 
         gradeDistribution = [.average: questions]
     }
+    
+    // MARK: - Modifiers
+    
+    func updateQuestion(oldQuestion: Question, newQuestion: String, newAnswer: String) {
+        removeCard(question: oldQuestion)
+        addCard(question: newQuestion, answer: newAnswer, grade: oldQuestion.grade)
+    }
+    
+    func updateIndices() {
+        self.questions = questions.enumerated().map { (index, question) -> Question in
+            question.index = index
+            return question
+        }
+    }
+    
+    func updateOrder(order: QuestionOrder) {
+        self.order = order
+        sortQuestions(by: order)
+    }
+    
+    func updateTimed(isTimed: Bool) {
+        self.isTimed = isTimed
+    }
+    
+    func updateMode(quizMode: QuizMode) {
+        self.quizMode = quizMode
+    }
+    
+    func updateMastery(newMastery: Double) {
+        self.mastery = newMastery
+    }
+    
+    func updateQuestionGrade(question: Question, newGrade: Grade) {
+        removeQuestionFromGrade(question: question)
+        
+        question.grade = newGrade
+        guard var targetGrade = gradeDistribution[newGrade] else {
+            // Target grade does not exist in grade distribution
+            gradeDistribution[newGrade] = [question]
+            return
+        }
+        targetGrade.append(question)
+        gradeDistribution[newGrade] = targetGrade
+    }
+    
+    func removeQuestionFromGrade(question: Question) {
+        let grade = question.grade
+        guard var targetGrade = gradeDistribution[grade] else { return }
+        if let index = targetGrade.index(where: { $0 == question }) {
+            targetGrade.remove(at: index)
+        }
+        if targetGrade.isEmpty {
+            gradeDistribution[grade] = nil
+        } else {
+            gradeDistribution[grade] = targetGrade
+        }
+    }
+    
+    // MARK: - Card Functions
     
     func addCard(question: String, answer: String, grade: Grade = .average) {
         let question = Question(question, questions.count)
         let answer = Answer(answer)
+        
         cards[question] = answer
         questions.append(question)
         answers.append(answer)
         
-        guard var targetGrade = gradeDistribution[grade] else {
-            question.grade = grade
-            gradeDistribution[grade] = [question]
-            return
-        }
-        question.grade = grade
-        targetGrade.append(question)
-        gradeDistribution[grade] = targetGrade
+        updateQuestionGrade(question: question, newGrade: grade)
     }
-    
+
     func removeCard(question: Question) {
         guard let answer = cards[question] else { return }
-        
-        guard var grade = gradeDistribution[question.grade] else { return }
-        if let index = grade.index(where: { $0 == question }) {
-            grade.remove(at: index)
-        }
-        gradeDistribution[question.grade] = grade
-        
-        cards[question] = nil
         
         if let index = questions.index(where: { $0 == question }) {
             questions.remove(at: index)
         }
-        
         if let index = answers.index(where: { $0 == answer }) {
             answers.remove(at: index)
         }
+        
+        removeQuestionFromGrade(question: question)
+        cards[question] = nil
     }
     
     func moveCard(question: Question, from originalIndex: Int, to newIndex: Int) {
@@ -128,31 +167,5 @@ class Deck: Codable {
         questions.insert(question, at: newIndex)
     }
     
-    func setOrder() {
-        questions = questions.enumerated().map { (index, question) -> Question in
-            question.index = index
-            return question
-        }
-    }
-    
-    func updateQuestion(oldQuestion: Question, newQuestion: String, newAnswer: String) {
-        removeCard(question: oldQuestion)
-        addCard(question: newQuestion, answer: newAnswer, grade: oldQuestion.grade)
-    }
-    
-    func updateQuestionGrade(question: Question, grade: Grade, shouldInsertAtFront: Bool = false) {
-        guard var targetGrade = gradeDistribution[grade] else {
-            question.grade = grade
-            gradeDistribution[grade] = [question]
-            return
-        }
-        question.grade = grade
-        if shouldInsertAtFront {
-            targetGrade.insert(question, at: 0)
-        } else {
-            targetGrade.append(question)
-        }
-        gradeDistribution[grade] = targetGrade
-    }
 }
 

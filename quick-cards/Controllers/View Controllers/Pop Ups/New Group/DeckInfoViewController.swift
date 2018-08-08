@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CustomPopup
 
 class DeckInfoViewController: UIViewController {
 
@@ -32,13 +33,13 @@ class DeckInfoViewController: UIViewController {
     var timedButtons: [UIButton] = []
     
     var newMode: QuizMode
-    var newOrder: Order
+    var newOrder: QuestionOrder
     var newTime: Bool
     
     init(deck: Deck, isViewingDeck: Bool) {
         self.deck = deck
-        self.newTime = deck.timed
-        self.newMode = deck.mode
+        self.newTime = deck.isTimed
+        self.newMode = deck.quizMode
         self.newOrder = deck.order
         self.isViewingDeck = isViewingDeck
         super.init(nibName: String(describing: DeckInfoViewController.self), bundle: nil)
@@ -71,7 +72,7 @@ class DeckInfoViewController: UIViewController {
             button.layer.borderWidth = 1.0
             button.layer.borderColor = UIColor.myTeal.cgColor
             button.layer.cornerRadius = 5.0
-            if button.tag == deck.mode.rawValue {
+            if button.tag == deck.quizMode.rawValue {
                 button.layer.backgroundColor = UIColor.myTeal.cgColor
             } else {
                 button.layer.backgroundColor = UIColor.white.cgColor
@@ -79,7 +80,7 @@ class DeckInfoViewController: UIViewController {
         }
         
         timedButtons = [notTimedButton, timedButton]
-        let value = deck.timed ? 1 : 0
+        let value = deck.isTimed ? 1 : 0
         timedButtons.forEach { (button) in
             button.layer.borderWidth = 1.0
             button.layer.borderColor = UIColor.myTeal.cgColor
@@ -129,7 +130,7 @@ class DeckInfoViewController: UIViewController {
                 button.layer.backgroundColor = UIColor.white.cgColor
             }
         }
-        newOrder = Order(rawValue: sender.tag) ?? .random
+        newOrder = QuestionOrder(rawValue: sender.tag) ?? .random
     }
     
     @IBAction func editAction(_ sender: Any) {
@@ -144,19 +145,36 @@ class DeckInfoViewController: UIViewController {
         
         switch startSegmentedControl.selectedSegmentIndex {
         case 0:
-//            if newMode == deck.mode && newOrder == deck.order && newTime == deck.timed {
-//                delegate?.dismissViewController()
-//                return
-//            }
-            deck.updateMode(mode: newMode)
-            deck.updateTimed(timed: newTime)
+            // Resume
+            if isViewingDeck {
+                guard let parent = parent as? PopUpPresentationController else { return }
+                if newMode == deck.quizMode && newOrder == deck.order && newTime == deck.isTimed {
+//                    delegate?.dismissViewController()
+                    parent.dismissPopUp()
+                    return
+                }
+                
+                if newMode == deck.quizMode {
+                    deck.updateTimed(isTimed: newTime)
+                    deck.updateOrder(order: newOrder)
+                    parent.dismissPopUp()
+//                    delegate?.dismissViewController()
+                    return
+                }
+            }
+
+            deck.updateMode(quizMode: newMode)
+            deck.updateTimed(isTimed: newTime)
             deck.updateOrder(order: newOrder)
-            var quizController = deck.mode.getController(with: deck, shouldResume: true)
+            
+            var quizController = deck.quizMode.getController(with: deck, shouldResume: true)
             quizController.delegate = self
             
             guard let controller = quizController as? UIViewController else { return }
             navigationController?.pushViewController(controller, animated: true)
+            return
         default:
+            // Restart
             deck.reset()
 //            if !startSegmentedControl.isHidden {
 //                if newMode == deck.mode && newOrder == deck.order && newTime == deck.timed {
@@ -164,10 +182,10 @@ class DeckInfoViewController: UIViewController {
 //                    return
 //                }
 //            }
-            deck.updateMode(mode: newMode)
-            deck.updateTimed(timed: newTime)
+            deck.updateMode(quizMode: newMode)
+            deck.updateTimed(isTimed: newTime)
             deck.updateOrder(order: newOrder)
-            var quizController = deck.mode.getController(with: deck, shouldResume: false)
+            var quizController = deck.quizMode.getController(with: deck, shouldResume: false)
             quizController.delegate = self
             
             guard let controller = quizController as? UIViewController else { return }

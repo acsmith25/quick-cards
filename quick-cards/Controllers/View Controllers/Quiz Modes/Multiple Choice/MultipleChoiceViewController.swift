@@ -61,8 +61,8 @@ class MultipleChoiceViewController: UIViewController, QuizModeController {
         addGestures()
         
         deckManager.delegate = self
-        if shouldResume { deckManager.startDeck() }
-        else { deckManager.startFromBeginning() }
+        if !shouldResume { deckManager.deck.reset() }
+        deckManager.startDeck()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -132,7 +132,7 @@ class MultipleChoiceViewController: UIViewController, QuizModeController {
     
     @IBAction func moreAction(_ sender: Any) {
         guard let question = deckManager.currentQuestion else { return }
-        let detailsController = DetailsViewController(question: question) //DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
+        let detailsController = DetailsViewController(question: question, isTimed: deckManager.deck.isTimed) //DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
         detailsController.delegate = self
         popUp = PopUpController(popUpView: detailsController)
         guard let popUp = popUp else { return }
@@ -211,7 +211,7 @@ extension MultipleChoiceViewController {
 // MARK: - Card Deck Delegate
 extension MultipleChoiceViewController: DeckManagerDelegate {
     
-    func masteredDeck() {
+    func showComplete() {
         setViewState(.mastered)
     }
     
@@ -219,8 +219,8 @@ extension MultipleChoiceViewController: DeckManagerDelegate {
         setViewState(.answer(answer.answer, isCorrect))
     }
     
-    func askQuestion(question: Question, wrongAnswers: [Answer]) {
-        setViewState(.asking(question, wrongAnswers))
+    func showQuestion(question: Question, randomAnswers: [Answer]) {
+        setViewState(.asking(question, randomAnswers))
     }
 }
 
