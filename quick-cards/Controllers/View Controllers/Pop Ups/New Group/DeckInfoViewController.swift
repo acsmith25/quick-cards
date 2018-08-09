@@ -11,7 +11,7 @@ import CustomPopup
 
 class DeckInfoViewController: UIViewController {
 
-    @IBOutlet weak var masteredLabel: UILabel!
+    @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var startSegmentedControl: UISegmentedControl!
     @IBOutlet weak var randomButton: UIButton!
@@ -23,6 +23,17 @@ class DeckInfoViewController: UIViewController {
     @IBOutlet weak var typeButton: UIButton!
     @IBOutlet weak var freeformButton: UIButton!
     @IBOutlet weak var multipleChoiceButton: UIButton!
+    @IBOutlet weak var resumeButton: UIButton!
+    @IBOutlet weak var startButton: UIButton!
+    
+    @IBOutlet weak var separatorView1: UIView!
+    @IBOutlet weak var separatorView2: UIView!
+    @IBOutlet weak var separatorView3: UIView!
+    @IBOutlet weak var separatorView4: UIView!
+    @IBOutlet weak var separatorHeight1: NSLayoutConstraint!
+    @IBOutlet weak var separatorHeight2: NSLayoutConstraint!
+    @IBOutlet weak var separatorHeight3: NSLayoutConstraint!
+    @IBOutlet weak var separatorHeight4: NSLayoutConstraint!
     
     var deck: Deck
     var isViewingDeck: Bool
@@ -52,14 +63,32 @@ class DeckInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        titleLabel.text = "\(deck.title):"
-        masteredLabel.text = "\(deck.mastery)% Mastered"
+        titleLabel.text = "\(deck.title)"
+        
+        if #available(iOS 10.0, *) {
+            // Blur background if available
+            view.backgroundColor = UIColor(white: 1, alpha: 0.85)
+            let blurEffect = UIBlurEffect(style: .regular)
+            let blurEffectView = UIVisualEffectView(effect: blurEffect)
+            blurEffectView.frame = view.bounds
+            blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            view.insertSubview(blurEffectView, at: 0)
+        }
         
         configureButtons()
+        configureSeparators()
         
         // Remove resume option if hasn't been started
         if deck.progressCounter == 0 {
-            startSegmentedControl.isHidden = true
+            stackView.removeArrangedSubview(resumeButton)
+            resumeButton.removeFromSuperview()
+            resumeButton.isHidden = true
+            
+            stackView.removeArrangedSubview(separatorView1)
+            separatorView1.removeFromSuperview()
+            separatorView1.isHidden = true
+            
+            startButton.setTitle("Start", for: .normal)
         }
     }
     
@@ -72,7 +101,7 @@ class DeckInfoViewController: UIViewController {
             if button.tag == deck.order.rawValue {
                 button.layer.backgroundColor = UIColor.myTeal.cgColor
             } else {
-                button.layer.backgroundColor = UIColor.white.cgColor
+                button.layer.backgroundColor = UIColor.clear.cgColor
             }
         }
         
@@ -84,7 +113,7 @@ class DeckInfoViewController: UIViewController {
             if button.tag == deck.quizMode.rawValue {
                 button.layer.backgroundColor = UIColor.myTeal.cgColor
             } else {
-                button.layer.backgroundColor = UIColor.white.cgColor
+                button.layer.backgroundColor = UIColor.clear.cgColor
             }
         }
         
@@ -97,9 +126,24 @@ class DeckInfoViewController: UIViewController {
             if button.tag == value {
                 button.layer.backgroundColor = UIColor.myTeal.cgColor
             } else {
-                button.layer.backgroundColor = UIColor.white.cgColor
+                button.layer.backgroundColor = UIColor.clear.cgColor
             }
         }
+    }
+    
+    func configureSeparators() {
+        // Set separator color to native table view color
+        let tempTableView = UITableView()
+        let separatorColor = tempTableView.separatorColor
+        
+        separatorView1.backgroundColor = separatorColor
+        separatorHeight1.constant = 1.0 / UIScreen.main.nativeScale
+        separatorView2.backgroundColor = separatorColor
+        separatorHeight2.constant = 1.0 / UIScreen.main.nativeScale
+        separatorView3.backgroundColor = separatorColor
+        separatorHeight3.constant = 1.0 / UIScreen.main.nativeScale
+        separatorView4.backgroundColor = separatorColor
+        separatorHeight4.constant = 1.0 / UIScreen.main.nativeScale
     }
     
     // MARK: - Actions
@@ -109,7 +153,7 @@ class DeckInfoViewController: UIViewController {
             if button.tag == sender.tag {
                 button.layer.backgroundColor = UIColor.myTeal.cgColor
             } else {
-                button.layer.backgroundColor = UIColor.white.cgColor
+                button.layer.backgroundColor = UIColor.clear.cgColor
             }
         }
         newMode = QuizMode(rawValue: sender.tag) ?? .showAnswer
@@ -120,7 +164,7 @@ class DeckInfoViewController: UIViewController {
             if button.tag == sender.tag {
                 button.layer.backgroundColor = UIColor.myTeal.cgColor
             } else {
-                button.layer.backgroundColor = UIColor.white.cgColor
+                button.layer.backgroundColor = UIColor.clear.cgColor
             }
         }
         newTime = sender.tag == 1 ? true : false
@@ -131,7 +175,7 @@ class DeckInfoViewController: UIViewController {
             if button.tag == sender.tag {
                 button.layer.backgroundColor = UIColor.myTeal.cgColor
             } else {
-                button.layer.backgroundColor = UIColor.white.cgColor
+                button.layer.backgroundColor = UIColor.clear.cgColor
             }
         }
         newOrder = QuestionOrder(rawValue: sender.tag) ?? .random

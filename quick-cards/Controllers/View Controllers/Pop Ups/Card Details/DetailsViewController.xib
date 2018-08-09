@@ -43,7 +43,6 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="jWL-LN-qTJ" secondAttribute="bottom" id="Ja6-gx-Y41"/>
                                 <constraint firstItem="2cF-W6-kZm" firstAttribute="leading" secondItem="d0v-N1-LWk" secondAttribute="leading" id="Kmg-QA-JcM"/>
@@ -70,7 +69,6 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="yOM-fc-i7f" secondAttribute="trailing" id="2yK-rd-diV"/>
                                 <constraint firstItem="s5c-rt-06L" firstAttribute="top" secondItem="yOM-fc-i7f" secondAttribute="bottom" id="6YG-ti-51R"/>
@@ -97,7 +95,6 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="zJ2-yX-Yid" secondAttribute="trailing" id="3za-wW-sDJ"/>
                                 <constraint firstAttribute="bottom" secondItem="uEC-Rq-EVp" secondAttribute="bottom" id="8je-8J-nQ9"/>
