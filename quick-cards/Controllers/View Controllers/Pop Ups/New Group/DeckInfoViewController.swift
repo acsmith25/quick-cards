@@ -55,6 +55,15 @@ class DeckInfoViewController: UIViewController {
         titleLabel.text = "\(deck.title):"
         masteredLabel.text = "\(deck.mastery)% Mastered"
         
+        configureButtons()
+        
+        // Remove resume option if hasn't been started
+        if deck.progressCounter == 0 {
+            startSegmentedControl.isHidden = true
+        }
+    }
+    
+    func configureButtons() {
         orderButtons = [randomButton, inOrderButton, difficultyButton]
         orderButtons.forEach { (button) in
             button.layer.borderWidth = 1.0
@@ -90,11 +99,6 @@ class DeckInfoViewController: UIViewController {
             } else {
                 button.layer.backgroundColor = UIColor.white.cgColor
             }
-        }
-        
-        // Remove resume option if hasn't been started
-        if deck.progressCounter == 0 {
-            startSegmentedControl.isHidden = true
         }
     }
     
@@ -149,54 +153,35 @@ class DeckInfoViewController: UIViewController {
             if isViewingDeck {
                 guard let parent = parent as? PopUpPresentationController else { return }
                 if newMode == deck.quizMode && newOrder == deck.order && newTime == deck.isTimed {
-//                    delegate?.dismissViewController()
                     parent.dismissPopUp()
                     return
                 }
-                
                 if newMode == deck.quizMode {
                     deck.updateTimed(isTimed: newTime)
                     deck.updateOrder(order: newOrder)
                     parent.dismissPopUp()
-//                    delegate?.dismissViewController()
                     return
                 }
             }
-
-            deck.updateMode(quizMode: newMode)
-            deck.updateTimed(isTimed: newTime)
-            deck.updateOrder(order: newOrder)
-            
-            var quizController = deck.quizMode.getController(with: deck, shouldResume: true)
-            quizController.delegate = self
-            
-            guard let controller = quizController as? UIViewController else { return }
-            navigationController?.pushViewController(controller, animated: true)
-            return
         default:
             // Restart
             deck.reset()
-//            if !startSegmentedControl.isHidden {
-//                if newMode == deck.mode && newOrder == deck.order && newTime == deck.timed {
-//                    delegate?.dismissViewController()
-//                    return
-//                }
-//            }
-            deck.updateMode(quizMode: newMode)
-            deck.updateTimed(isTimed: newTime)
-            deck.updateOrder(order: newOrder)
-            var quizController = deck.quizMode.getController(with: deck, shouldResume: false)
-            quizController.delegate = self
-            
-            guard let controller = quizController as? UIViewController else { return }
-            navigationController?.pushViewController(controller, animated: true)
         }
+        
+        deck.updateMode(quizMode: newMode)
+        deck.updateTimed(isTimed: newTime)
+        deck.updateOrder(order: newOrder)
+        var quizController = deck.quizMode.getController(with: deck)
+        quizController.delegate = self
+        
+        guard let controller = quizController as? UIViewController else { return }
+        navigationController?.pushViewController(controller, animated: true)
     }
 
     func resetDeck() {
         let alertController = UIAlertController(title: "Confirm Start Over", message: "Are you sure you want to start this deck over? All progress will be lost.", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Okay", style: .default) { (action) in
-//            self.deckManager.startFromBeginning()
+            
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alertController.addAction(okAction)
@@ -206,6 +191,7 @@ class DeckInfoViewController: UIViewController {
 
 }
 
+// MARK: - Navigation Delegate
 extension DeckInfoViewController: NavigationDelegate {
     func dismissViewController() {
             navigationController?.popToRootViewController(animated: true)

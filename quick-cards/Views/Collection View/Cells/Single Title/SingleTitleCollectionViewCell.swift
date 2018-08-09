@@ -46,10 +46,12 @@ class SingleTitleCollectionViewCell: UICollectionViewCell {
     }
 
     func configure(with title: String? = nil, backgroundColor: UIColor = .white, textColor: UIColor = .black, showCardDetails: Bool = false, isInDeleteMode: Bool = false) {
-        if title != nil {
+        if let _ = title {
             self.title = title
             titleButton.setTitle(title, for: .normal)
         }
+        titleButton.backgroundColor = backgroundColor
+        titleButton.setTitleColor(textColor, for: .normal)
         
         if isInDeleteMode {
             moreButton.isHidden = true
@@ -70,9 +72,6 @@ class SingleTitleCollectionViewCell: UICollectionViewCell {
             leadingConstraint.constant = 0
             trailingConstraint.constant = 0
         }
-        
-        titleButton.backgroundColor = backgroundColor
-        titleButton.setTitleColor(textColor, for: .normal)
     }
     
     override func dragStateDidChange(_ dragState: UICollectionViewCellDragState) {

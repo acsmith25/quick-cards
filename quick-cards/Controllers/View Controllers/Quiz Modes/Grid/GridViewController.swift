@@ -21,13 +21,10 @@ class GridViewController: UIViewController, QuizModeController {
     var popUp: PopUpController?
     
     var delegate: NavigationDelegate?
-    
     var deckManager: DeckManager
-    var shouldResume: Bool
     
-    init(deck: Deck, shouldResume: Bool) {
+    init(deck: Deck) {
         self.deckManager = DeckManager(deck: deck)
-        self.shouldResume = shouldResume
         super.init(nibName: String(describing: GridViewController.self), bundle: nil)
     }
     
@@ -89,13 +86,14 @@ class GridViewController: UIViewController, QuizModeController {
     }
     
     @IBAction func settingsButtonAction(_ sender: Any) {
+        // Pop up presentation
         let infoController = DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
         infoController.delegate = self
         popUp = PopUpController(popUpView: infoController)
         guard let popUp = popUp else { return }
         popUp.presentPopUp(on: self)
 
-        
+        // Add dismiss pop up gesture
         gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
         gesture?.delegate = self
         guard let gesture = gesture else { return }
@@ -107,13 +105,10 @@ class GridViewController: UIViewController, QuizModeController {
 extension GridViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
-
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
         return deckManager.deck.cards.count
     }
 
@@ -133,21 +128,22 @@ extension GridViewController: UICollectionViewDelegate, UICollectionViewDataSour
         guard let answer = deckManager.deck.cards[question] else { return }
         
         if card.isShowingFront {
-            let fullScreen = FullScreenCardViewController(question: question, answer: answer, isShowingFront: card.isShowingFront, completion: { (isCorrect) in
+            // Pop up presentation
+            let fullScreen = FullScreenCardViewController(question: question, answer: answer, isShowingFront: card.isShowingFront, flipCardAction: { (isCorrect) in
                 let color: UIColor = isCorrect ? .myGreen : .myRed
                 if isCorrect { self.deckManager.correct() }
                 else { self.deckManager.incorrect() }
-                guard let answer = self.deckManager.deck.cards[question] else { return }
+                
                 UIView.transition(with: card, duration: 0.5, options: .transitionFlipFromRight, animations: {
                     card.configure(with: answer.answer, backgroundColor: color)
                 }, completion: nil)
                 card.isShowingFront = false
-                
             })
             fullScreen.delegate = self
             popUp = PopUpController(popUpView: fullScreen)
             popUp?.presentPopUp(on: self)
             
+            // Add dismiss pop up gesture
             gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
             gesture?.delegate = self
             guard let gesture = gesture else { return }
@@ -159,21 +155,17 @@ extension GridViewController: UICollectionViewDelegate, UICollectionViewDataSour
             card.isShowingFront = true
         }
     }
-
 }
 
 // MARK: - Card Deck Delegate
 extension GridViewController: DeckManagerDelegate {
-    
     func showComplete() { return }
     func showAnswer(answer: Answer, isCorrect: Bool) { return }
     func showQuestion(question: Question, randomAnswers: [Answer]) { return }
-    
 }
 
-// MARK: - PopUpPresentationController
+// MARK: - Pop Up
 extension GridViewController: PopUpPresentationController {
-    
     @objc func dismissPopUp() {
         guard let popUp = popUp, let gesture = gesture else { return }
         popUp.dismissSubviews()
@@ -181,10 +173,10 @@ extension GridViewController: PopUpPresentationController {
     }
 }
 
-// MARK: - UIGestureRecognizerDelegate
+// MARK: - Gesture Recognizer Delegate
 extension GridViewController: UIGestureRecognizerDelegate {
-    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        // Dismiss pop up on tap outside of pop up view
         guard let popUp = popUp, let view = touch.view else { return false }
         if view.isDescendant(of: popUp.popUpController.view) {
             return false
@@ -193,12 +185,10 @@ extension GridViewController: UIGestureRecognizerDelegate {
     }
 }
 
-// MARK: - Deck Collection View Delegate
+// MARK: - Navigation Delegate
 extension GridViewController: NavigationDelegate {
-    
     func dismissViewController() {
         dismissPopUp()
         navigationController?.popViewController(animated: true)
-//        navigationController?.navigationBar.isHidden = true
     }
 }

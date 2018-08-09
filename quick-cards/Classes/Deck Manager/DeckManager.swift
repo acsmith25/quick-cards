@@ -16,6 +16,8 @@ protocol DeckManagerDelegate {
 
 class DeckManager {
     
+    // MARK: - Properties
+    
     var delegate: DeckManagerDelegate?
     var deck: Deck
     
@@ -27,7 +29,7 @@ class DeckManager {
     
     private var getNextQuestion: (() -> Question?)?
     
-    // MARK: - Public
+    // MARK: - Public Methods
     
     init(deck: Deck) {
         self.deck = deck
@@ -117,7 +119,7 @@ class DeckManager {
         }
     }
     
-    // MARK: - Private
+    // MARK: - Private Methods
     
     private func askWithRandomAnswers() {
         guard let currentQuestion = currentQuestion else { return }

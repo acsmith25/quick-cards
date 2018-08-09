@@ -33,7 +33,6 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
         case answer(String, Bool)
         case mastered
     }
-    
     private var viewState: ViewState = .asking(nil)
     
     // Pop Up protocol properties
@@ -41,13 +40,10 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
     var popUp: PopUpController?
     
     var delegate: NavigationDelegate?
-    
     var deckManager: DeckManager
-    var shouldResume: Bool
     
-    init(deck: Deck, shouldResume: Bool) {
+    init(deck: Deck) {
         self.deckManager = DeckManager(deck: deck)
-        self.shouldResume = shouldResume
         super.init(nibName: String(describing: TypeAnswerViewController.self), bundle: nil)
     }
     
@@ -57,29 +53,18 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-//        cardView.layer.cornerRadius = 10
-//        cardView.layer.shadowOffset = CGSize(width: 0, height: 11)
-//        cardView.layer.shadowOpacity = 0.15
-//        cardView.layer.shadowRadius = 13
+        
+        addGestures()
         
         answerTextField.delegate = self
         answerTextField.autocorrectionType = .no
-        
-        addGestures()
 
         deckManager.delegate = self
-        if !shouldResume { deckManager.deck.reset() }
         deckManager.startDeck()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = true
-//        dismissPopUp()
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
     
 // MARK: - Actions
@@ -156,6 +141,27 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
     }
 }
 
+// MARK: - Gestures
+extension TypeAnswerViewController {
+    
+    func addGestures() {
+        let cardGesture = UITapGestureRecognizer(target: self, action: #selector(flipCard))
+        cardView.addGestureRecognizer(cardGesture)
+        
+        let keyboardGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(keyboardGesture)
+    }
+    
+    @objc func flipCard() {
+        dismissKeyboard()
+        deckManager.incorrect()
+    }
+    
+    @objc func dismissKeyboard() {
+        answerTextField.endEditing(true)
+    }
+}
+
 // MARK: - View State
 extension TypeAnswerViewController {
     
@@ -214,28 +220,7 @@ extension TypeAnswerViewController {
     }
 }
 
-// MARK: - Gestures
-extension TypeAnswerViewController {
-    
-    func addGestures() {
-        let cardGesture = UITapGestureRecognizer(target: self, action: #selector(flipCard))
-        cardView.addGestureRecognizer(cardGesture)
-        
-        let keyboardGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        view.addGestureRecognizer(keyboardGesture)
-    }
-    
-    @objc func flipCard() {
-        dismissKeyboard()
-        deckManager.incorrect()
-    }
-    
-    @objc func dismissKeyboard() {
-        answerTextField.endEditing(true)
-    }
-}
-
-// MARK: - DeckManagerDelegate
+// MARK: - Card Deck Delegate
 extension TypeAnswerViewController: DeckManagerDelegate {
     
     func showComplete() {
@@ -251,9 +236,8 @@ extension TypeAnswerViewController: DeckManagerDelegate {
     }
 }
 
-// MARK: - PopUpPresentationController
+// MARK: - Pop Up
 extension TypeAnswerViewController: PopUpPresentationController {
-    
     @objc func dismissPopUp() {
         guard let popUp = popUp, let gesture = gesture else { return }
         popUp.dismissSubviews()
@@ -261,9 +245,8 @@ extension TypeAnswerViewController: PopUpPresentationController {
     }
 }
 
-// MARK: - UIGestureRecognizerDelegate
+// MARK: - Gesture Recognizer Delegate
 extension TypeAnswerViewController: UIGestureRecognizerDelegate {
-    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         guard let popUp = popUp, let view = touch.view else { return false }
         if view.isDescendant(of: popUp.popUpController.view) {
@@ -273,9 +256,8 @@ extension TypeAnswerViewController: UIGestureRecognizerDelegate {
     }
 }
 
-// MARK: - UITextFieldDelegate
+// MARK: - Text Field Delegate
 extension TypeAnswerViewController: UITextFieldDelegate {
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         deckManager.validate(userAnswer: answerTextField.text)
@@ -283,11 +265,9 @@ extension TypeAnswerViewController: UITextFieldDelegate {
     }
 }
 
-// MARK: - Deck Collection View Delegate
+// MARK: - Navigation Delegate
 extension TypeAnswerViewController: NavigationDelegate {
-    
     func dismissViewController() {
-//        navigationController?.popToRootViewController(animated: true)
         navigationController?.popViewController(animated: true)
     }
 }

@@ -29,16 +29,16 @@ enum QuizMode: Int, Codable {
         }
     }
     
-    func getController(with deck: Deck, shouldResume: Bool) -> QuizModeController {
+    func getController(with deck: Deck) -> QuizModeController {
         switch self {
         case .showAnswer:
-            return ShowAnswerViewController(deck: deck, shouldResume: shouldResume)
+            return ShowAnswerViewController(deck: deck)
         case .typeAnswer:
-            return TypeAnswerViewController(deck: deck, shouldResume: shouldResume)
+            return TypeAnswerViewController(deck: deck)
         case .multipleChoice:
-            return MultipleChoiceViewController(deck: deck, shouldResume: shouldResume)
+            return MultipleChoiceViewController(deck: deck)
         case .grid:
-            return GridViewController(deck: deck, shouldResume: shouldResume)
+            return GridViewController(deck: deck)
         }
     }
 }

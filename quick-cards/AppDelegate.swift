@@ -12,6 +12,10 @@ import UIKit
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    // TODO: Edit deck no cards
+    // Look over drag delegate stuff
+    // Deck info reset deck
+    
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {

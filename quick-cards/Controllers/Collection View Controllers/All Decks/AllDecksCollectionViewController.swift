@@ -9,9 +9,13 @@
 import UIKit
 import CustomPopup
 
-class AllDecksCollectionViewController: UICollectionViewController, PopUpPresentationController {
+class AllDecksCollectionViewController: UICollectionViewController {
     
+    // Each section represented as a tuple
+    // ("Section title", Section content)
     var sections: [(String, [Deck])] = []
+    
+    // Pop up protocol properties
     var popUp: PopUpController?
     var gesture: UIGestureRecognizer?
     
@@ -30,10 +34,6 @@ class AllDecksCollectionViewController: UICollectionViewController, PopUpPresent
         navigationController?.navigationBar.isHidden = false
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
     func registerCellsAndViews() {
         // Cell classes
         guard let collectionView = collectionView else { return }
@@ -44,6 +44,7 @@ class AllDecksCollectionViewController: UICollectionViewController, PopUpPresent
     }
     
     func configureSections() {
+        // Only include sections that have decks
         if !decksInProgress.isEmpty {
             sections.append(("Decks in Progress", decksInProgress))
         }
@@ -57,11 +58,11 @@ class AllDecksCollectionViewController: UICollectionViewController, PopUpPresent
     }
     
     func addBarButtonItem() {
-        let barButtonItem = UIBarButtonItem(image: UIImage(named: "addIcon"), style: .plain, target: self, action: #selector(addDeckAction))
+        let barButtonItem = UIBarButtonItem(image: UIImage(named: "addIcon"), style: .plain, target: self, action: #selector(newDeckAction))
         navigationItem.rightBarButtonItem = barButtonItem
     }
     
-    @objc func addDeckAction() {
+    @objc func newDeckAction() {
         let controller = EditDeckViewController(deck: nil)
         controller.delegate = self
         navigationController?.pushViewController(controller, animated: true)
@@ -103,18 +104,23 @@ extension AllDecksCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let deck = sections[indexPath.section].1[indexPath.row]
         
+        // Pop up presentation
         let infoController = DeckInfoViewController(deck: deck, isViewingDeck: false)
         infoController.delegate = self
         popUp = PopUpController(popUpView: infoController)
         guard let popUp = popUp else { return }
         popUp.presentPopUp(on: self)
         
+        // Add dismiss pop up gesture
         gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
         gesture?.delegate = self
         guard let gesture = gesture else { return }
         self.view.addGestureRecognizer(gesture)
     }
-    
+}
+
+// MARK: - Pop Up
+extension AllDecksCollectionViewController: PopUpPresentationController {
     @objc func dismissPopUp() {
         guard let popUp = popUp, let gesture = gesture else { return }
         popUp.dismissSubviews()
@@ -122,8 +128,10 @@ extension AllDecksCollectionViewController {
     }
 }
 
+// MARK: - Gesture Recognizer Delegate
 extension AllDecksCollectionViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        // Dismiss pop up on tap outside of pop up view
         guard let popUp = popUp, let view = touch.view else { return false }
         if view.isDescendant(of: popUp.popUpController.view) {
             return false
@@ -132,9 +140,8 @@ extension AllDecksCollectionViewController: UIGestureRecognizerDelegate {
     }
 }
 
-// MARK: - Deck Collection View Delegate
+// MARK: - Navigation Delegate
 extension AllDecksCollectionViewController: NavigationDelegate {
-    
     func dismissViewController() {
         navigationController?.popViewController(animated: true)
         collectionView?.reloadData()

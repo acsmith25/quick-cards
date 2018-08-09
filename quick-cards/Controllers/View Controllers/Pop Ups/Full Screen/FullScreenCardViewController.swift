@@ -18,15 +18,15 @@ class FullScreenCardViewController: UIViewController {
     var question: Question
     var answer: Answer
     var isShowingFront: Bool
-    var completion: (Bool) -> Void
+    var flipCardAction: (Bool) -> Void
     
     var delegate: PopUpPresentationController?
     
-    init(question: Question, answer: Answer, isShowingFront: Bool = true, completion: @escaping (Bool) -> Void) {
+    init(question: Question, answer: Answer, isShowingFront: Bool = true, flipCardAction: @escaping (Bool) -> Void) {
         self.question = question
         self.answer = answer
         self.isShowingFront = isShowingFront
-        self.completion = completion
+        self.flipCardAction = flipCardAction
         super.init(nibName: String(describing: FullScreenCardViewController.self), bundle: nil)
     }
     
@@ -75,11 +75,11 @@ class FullScreenCardViewController: UIViewController {
     
     @IBAction func rightAction(_ sender: Any) {
         delegate?.dismissPopUp()
-        completion(true)
+        flipCardAction(true)
     }
     
     @IBAction func wrongAction(_ sender: Any) {
         delegate?.dismissPopUp()
-        completion(false)
+        flipCardAction(false)
     }
 }

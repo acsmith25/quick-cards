@@ -40,27 +40,21 @@ class HomeTableViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
     func registerCells() {
         tableView.register(UINib(nibName: String(describing: RightImageWithTitleTableViewCell.self), bundle: nil), forCellReuseIdentifier: RightImageWithTitleTableViewCell.identifier)
-        tableView.register(UINib(nibName: String(describing: ButtonTableViewCell.self), bundle: nil), forCellReuseIdentifier: ButtonTableViewCell.identifier)
-        tableView.register(UINib(nibName: String(describing: CollectionTableViewCell.self), bundle: nil), forCellReuseIdentifier: CollectionTableViewCell.identifier)
-        tableView.register(UINib(nibName: String(describing: TableTableViewCell.self), bundle: nil), forCellReuseIdentifier: TableTableViewCell.identifier)
         tableView.register(UINib(nibName: String(describing: LeftTitleRightSubtitleTableViewCell.self), bundle: nil), forCellReuseIdentifier: LeftTitleRightSubtitleTableViewCell.identifier)
+    }
+    
+    func configureSections() {
+        // Only add resume section if there are decks in progress
+        if !decksInProgress.isEmpty && sections.last?.1 != .quickResume {
+            sections.append(("Quick Resume", .quickResume))
+        }
     }
     
     func addBarButtonItem() {
         let barButtonItem = UIBarButtonItem(image: UIImage(named: "profileIcon"), style: .plain, target: self, action: nil)
         navigationItem.rightBarButtonItem = barButtonItem
-    }
-    
-    func configureSections() {
-        if !decksInProgress.isEmpty && sections.last?.1 != .quickResume {
-            sections.append(("Quick Resume", .quickResume))
-        }
     }
 }
 
@@ -84,6 +78,7 @@ extension HomeTableViewController {
             }
             cell.selectionStyle = .none
             cell.configure(with: section.rawValue, image: section.icon, color: section.color) {
+                // Button action
                 let controller = EditDeckViewController(deck: nil)
                 controller.delegate = self
                 self.navigationController?.pushViewController(controller, animated: true)
@@ -95,6 +90,7 @@ extension HomeTableViewController {
             }
             cell.selectionStyle = .none
             cell.configure(with: section.rawValue, image: section.icon, color: section.color) {
+                // Button action
                 let controller = AllDecksCollectionViewController(nibName: String(describing: AllDecksCollectionViewController.self), bundle: nil)
                 self.navigationController?.pushViewController(controller, animated: true)
             }
@@ -116,7 +112,7 @@ extension HomeTableViewController {
         switch section {
         case .quickResume:
             let deck = decksInProgress[indexPath.row]
-            var controller = deck.quizMode.getController(with: deck, shouldResume: true)
+            var controller = deck.quizMode.getController(with: deck)
             controller.delegate = self
             guard let vc = controller as? UIViewController else { return }
             self.navigationController?.pushViewController(vc, animated: true)
@@ -148,7 +144,7 @@ extension HomeTableViewController {
     }
 }
 
-// MARK: - View Deck Controller Delegate
+// MARK: - Navigation Delegate
 extension HomeTableViewController: NavigationDelegate {
     func dismissViewController() {
         navigationController?.popViewController(animated: true)

@@ -31,7 +31,6 @@ class EditDeckViewController: UIViewController {
         case add
         case edit
     }
-    
     private var viewState: ViewState = .add
     
     // Pop Up protocol properties
@@ -54,6 +53,9 @@ class EditDeckViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        registerCells()
+        addGestures()
+        
         // Set separator color to native table view color
         let tempTableView = UITableView()
         let separatorColor = tempTableView.separatorColor
@@ -61,19 +63,6 @@ class EditDeckViewController: UIViewController {
         
         // Set separator to one pixel on any scale
         separatorHeight.constant = 1.0 / UIScreen.main.nativeScale
-        
-        registerCells()
-        addGestures()
-        
-        titleTextField.delegate = self
-        answerTextView.textContainer.heightTracksTextView = true
-        questionTextView.textContainer.heightTracksTextView = true
-        
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.dragDelegate = self
-        collectionView.dropDelegate = self
-        collectionView.reorderingCadence = .fast
         
         guard let deck = deck else {
             self.deck = Deck(title: "New Deck", cards: [:])
@@ -84,14 +73,20 @@ class EditDeckViewController: UIViewController {
         
         titleTextField.text = deck.title
         titleTextField.becomeFirstResponder()
+        
+        titleTextField.delegate = self
+        answerTextView.textContainer.heightTracksTextView = true
+        questionTextView.textContainer.heightTracksTextView = true
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.dragDelegate = self
+        collectionView.dropDelegate = self
+        collectionView.reorderingCadence = .fast
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = true
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
     
     func registerCells() {
@@ -106,6 +101,7 @@ class EditDeckViewController: UIViewController {
         
         guard let question = questionTextView.text, let answer = answerTextView.text else { return }
         
+        // Alert if either question or answer is empty
         guard !question.isEmpty, !answer.isEmpty else {
             let alertController = UIAlertController(title: "Error adding card", message: "Please provide a valid question and answer.", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Okay", style: .default, handler: nil)
@@ -113,6 +109,7 @@ class EditDeckViewController: UIViewController {
             present(alertController, animated: true, completion: nil)
             return
         }
+        
         guard let deck = deck else { return }
         
         switch viewState {
@@ -134,10 +131,8 @@ class EditDeckViewController: UIViewController {
         dismissKeyboard()
         switch viewState {
         case .add:
-            collectionView.dragInteractionEnabled = true
             setViewState(viewState: .edit)
         case .edit:
-            collectionView.dragInteractionEnabled = false
             setViewState(viewState: .add)
         }
     }
@@ -178,37 +173,7 @@ class EditDeckViewController: UIViewController {
     @IBAction func backAction(_ sender: Any) {
             let alertController = UIAlertController(title: "Do you want to save your changes?", message: nil, preferredStyle: .alert)
             let saveAction = UIAlertAction(title: "Save", style: .default) { (action) in
-                if let deck = self.deck {
-                    deck.title = self.titleTextField.text ?? self.titleTextField.placeholder ?? ""
-                    deck.updateIndices()
-                    
-                    // Update all references to deck
-                    let allDecksIndex = decksInProgress.index { $0 == deck }
-                    if let index = allDecksIndex {
-                        allDecks[index] = deck
-                    } else {
-                        allDecks.append(deck)
-                    }
-                    let inProgressIndex = decksInProgress.index { $0 == deck }
-                    if let index = inProgressIndex {
-                        decksInProgress[index] = deck
-                    }
-                    let defaultDeckIndex = defaultDecks.index { $0 == deck }
-                    if let index = defaultDeckIndex {
-                        defaultDecks[index] = deck
-                    } else {
-                        if let userDeckIndex = userDecks.index(where: { $0 == deck }) {
-                            userDecks[userDeckIndex] = deck
-                        } else {
-                            userDecks.append(deck)
-                        }
-                    }
-                    
-                    // Save decks
-                    DeckSaver.saveAllDecks()
-                }
-                
-                self.delegate?.dismissViewController()
+                self.saveAction(sender)
             }
             let backAction = UIAlertAction(title: "Discard", style: .default) { (action) in
                 self.deck?.sortQuestions(by: .inOrder)
@@ -224,12 +189,31 @@ class EditDeckViewController: UIViewController {
     }
 }
 
+// MARK: - Gestures
+extension EditDeckViewController {
+    
+    func addGestures() {
+        let keyboardGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        keyboardGesture.delegate = self
+        self.view.addGestureRecognizer(keyboardGesture)
+    }
+    
+    @objc func dismissKeyboard() {
+        titleTextField.endEditing(true)
+        answerTextView.endEditing(true)
+        questionTextView.endEditing(true)
+    }
+}
+
+// MARK: - View State
+
 extension EditDeckViewController {
     
     private func setViewState(viewState: ViewState) {
         self.viewState = viewState
         switch viewState {
         case .add:
+            collectionView.dragInteractionEnabled = true
             UIView.animate(withDuration: 0.2, delay: 0, options: [], animations: {
                 self.editButton.setTitle("Edit", for: .normal)
                 self.editButton.setTitleColor(.myTeal, for: .normal)
@@ -240,10 +224,9 @@ extension EditDeckViewController {
                 
                 self.addCardButton.setTitle("Add Card", for: .normal)
                 self.collectionView.reloadData()
-            }) { (_) in
-//                self.collectionView.reloadData()
-            }
+            })
         case .edit:
+            collectionView.dragInteractionEnabled = false
             UIView.animate(withDuration: 0.2, delay: 0, options: [], animations: {
                 self.editButton.setTitle("Done", for: .normal)
                 self.editButton.setTitleColor(.groupTableViewBackground, for: .normal)
@@ -254,12 +237,12 @@ extension EditDeckViewController {
                 
                 self.addCardButton.setTitle("Update Card", for: .normal)
                 self.collectionView.reloadData()
-            }) { (_) in
-//                self.collectionView.reloadData()
-            }
+            })
         }
     }
 }
+
+// MARK: - Collection View
 
 extension EditDeckViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -276,10 +259,12 @@ extension EditDeckViewController: UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SingleTitleCollectionViewCell.identifier, for: indexPath) as? SingleTitleCollectionViewCell else {
-            fatalError("Could not qeueue cell")
+            fatalError("Could not dequeue cell")
+        }
+        guard let deck = deck else {
+            fatalError("Could not retrieve deck")
         }
         
-        guard let deck = deck else { fatalError() }
         let question = deck.questions[indexPath.row]
         cell.configure(with: question.question, showCardDetails: viewState != .edit, isInDeleteMode: viewState == .edit)
         cell.delegate = self
@@ -378,6 +363,7 @@ extension EditDeckViewController: UICollectionViewDropDelegate {
     }
 }
 
+// MARK: - Card Delegate
 extension EditDeckViewController: CardDelegate {
     
     func removeCard(question: String?) {
@@ -393,12 +379,14 @@ extension EditDeckViewController: CardDelegate {
         guard let index = deck?.questions.index(where: { $0.question == question }) else { return }
         guard let question = deck?.questions[index] else { return }
         
-        let detailsController = DetailsViewController(question: question, isTimed: deck?.isTimed ?? false) //DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
+        // Pop up presentation
+        let detailsController = DetailsViewController(question: question, isTimed: deck?.isTimed ?? false)
         detailsController.delegate = self
         popUp = PopUpController(popUpView: detailsController)
         guard let popUp = popUp else { return }
         popUp.presentPopUp(on: self)
         
+        // Add dismiss pop up gesture
         gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
         gesture?.delegate = self
         guard let gesture = gesture else { return }
@@ -407,9 +395,8 @@ extension EditDeckViewController: CardDelegate {
     }
 }
 
-// MARK: - PopUpPresentationController
+// MARK: - Pop Up
 extension EditDeckViewController: PopUpPresentationController {
-    
     @objc func dismissPopUp() {
         guard let popUp = popUp, let gesture = gesture else { return }
         popUp.dismissSubviews()
@@ -417,12 +404,13 @@ extension EditDeckViewController: PopUpPresentationController {
     }
 }
 
+// MARK: - Text Field Delegate
 extension EditDeckViewController: UITextFieldDelegate { }
 
-// MARK: - UIGestureRecognizerDelegate
+// MARK: - Gesture Recognizer Delegate
 extension EditDeckViewController: UIGestureRecognizerDelegate {
-
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        // Dismiss pop up on tap outside of pop up view
         guard let view = scrollView, let touch = touch.view else { return false }
         if touch.isDescendant(of: view) {
             return false
@@ -431,27 +419,9 @@ extension EditDeckViewController: UIGestureRecognizerDelegate {
     }
 }
 
-// MARK: - Gestures
-extension EditDeckViewController {
-    
-    func addGestures() {
-        let keyboardGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        keyboardGesture.delegate = self
-        self.view.addGestureRecognizer(keyboardGesture)
-    }
-    
-    @objc func dismissKeyboard() {
-        titleTextField.endEditing(true)
-        answerTextView.endEditing(true)
-        questionTextView.endEditing(true)
-    }
-}
-
-// MARK: - Deck Collection View Delegate
+// MARK: - Navigation Delegate
 extension EditDeckViewController: NavigationDelegate {
-    
     func dismissViewController() {
-        //        navigationController?.popToRootViewController(animated: true)
         navigationController?.popViewController(animated: true)
     }
 }

@@ -13,6 +13,8 @@ class Deck: Codable {
         return lhs.title == rhs.title
     }
     
+    // MARK: - Properties
+    
     var title: String
     var mastery: Double
     var isTimed: Bool
@@ -25,6 +27,8 @@ class Deck: Codable {
     var questions: [Question]
     var answers: [Answer]
     var gradeDistribution: [Grade: [Question]]
+    
+    // MARK: - Deck Methods
     
     init(title: String, cards: [Question: Answer], mastery: Double = 50.0, order: QuestionOrder = .random, timed: Bool = false) {
         self.title = title
@@ -76,6 +80,38 @@ class Deck: Codable {
             })
         }
         gradeDistribution = [.average: questions]
+    }
+    
+    // MARK: - Card Methods
+    
+    func addCard(question: String, answer: String, grade: Grade = .average) {
+        let question = Question(question, questions.count)
+        let answer = Answer(answer)
+        
+        cards[question] = answer
+        questions.append(question)
+        answers.append(answer)
+        
+        updateQuestionGrade(question: question, newGrade: grade)
+    }
+    
+    func removeCard(question: Question) {
+        guard let answer = cards[question] else { return }
+        
+        if let index = questions.index(where: { $0 == question }) {
+            questions.remove(at: index)
+        }
+        if let index = answers.index(where: { $0 == answer }) {
+            answers.remove(at: index)
+        }
+        
+        removeQuestionFromGrade(question: question)
+        cards[question] = nil
+    }
+    
+    func moveCard(question: Question, from originalIndex: Int, to newIndex: Int) {
+        questions.remove(at: originalIndex)
+        questions.insert(question, at: newIndex)
     }
     
     // MARK: - Modifiers
@@ -135,37 +171,4 @@ class Deck: Codable {
         }
     }
     
-    // MARK: - Card Functions
-    
-    func addCard(question: String, answer: String, grade: Grade = .average) {
-        let question = Question(question, questions.count)
-        let answer = Answer(answer)
-        
-        cards[question] = answer
-        questions.append(question)
-        answers.append(answer)
-        
-        updateQuestionGrade(question: question, newGrade: grade)
-    }
-
-    func removeCard(question: Question) {
-        guard let answer = cards[question] else { return }
-        
-        if let index = questions.index(where: { $0 == question }) {
-            questions.remove(at: index)
-        }
-        if let index = answers.index(where: { $0 == answer }) {
-            answers.remove(at: index)
-        }
-        
-        removeQuestionFromGrade(question: question)
-        cards[question] = nil
-    }
-    
-    func moveCard(question: Question, from originalIndex: Int, to newIndex: Int) {
-        questions.remove(at: originalIndex)
-        questions.insert(question, at: newIndex)
-    }
-    
 }
-

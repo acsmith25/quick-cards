@@ -29,7 +29,6 @@ class MultipleChoiceViewController: UIViewController, QuizModeController {
         case answer(String, Bool)
         case mastered
     }
-    
     private var viewState: ViewState = .mastered
     
     var choiceButtons: [UIButton] = []
@@ -39,13 +38,10 @@ class MultipleChoiceViewController: UIViewController, QuizModeController {
     var popUp: PopUpController?
     
     var delegate: NavigationDelegate?
-    
     var deckManager: DeckManager
-    var shouldResume: Bool
     
-    init(deck: Deck, shouldResume: Bool) {
+    init(deck: Deck) {
         self.deckManager = DeckManager(deck: deck)
-        self.shouldResume = shouldResume
         super.init(nibName: String(describing: MultipleChoiceViewController.self), bundle: nil)
     }
     
@@ -61,7 +57,6 @@ class MultipleChoiceViewController: UIViewController, QuizModeController {
         addGestures()
         
         deckManager.delegate = self
-        if !shouldResume { deckManager.deck.reset() }
         deckManager.startDeck()
     }
     
@@ -118,12 +113,14 @@ class MultipleChoiceViewController: UIViewController, QuizModeController {
     }
     
     @IBAction func settingsAction(_ sender: Any) {
+        // Pop up presentation
         let infoController = DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
         infoController.delegate = self
         popUp = PopUpController(popUpView: infoController)
         guard let popUp = popUp else { return }
         popUp.presentPopUp(on: self)
         
+        // Add dismiss pop up gesture
         gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
         gesture?.delegate = self
         guard let gesture = gesture else { return }
@@ -132,17 +129,33 @@ class MultipleChoiceViewController: UIViewController, QuizModeController {
     
     @IBAction func moreAction(_ sender: Any) {
         guard let question = deckManager.currentQuestion else { return }
-        let detailsController = DetailsViewController(question: question, isTimed: deckManager.deck.isTimed) //DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
+        
+        // Pop up presentation
+        let detailsController = DetailsViewController(question: question, isTimed: deckManager.deck.isTimed)
         detailsController.delegate = self
         popUp = PopUpController(popUpView: detailsController)
         guard let popUp = popUp else { return }
         popUp.presentPopUp(on: self)
         
+        // Add dismiss pop up gesture
         gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
         gesture?.delegate = self
         guard let gesture = gesture else { return }
         self.view.addGestureRecognizer(gesture)
 
+    }
+}
+
+// MARK: - Gestures
+extension MultipleChoiceViewController {
+    
+    func addGestures() {
+        let cardGesture = UITapGestureRecognizer(target: self, action: #selector(flipCard))
+        cardView.addGestureRecognizer(cardGesture)
+    }
+    
+    @objc func flipCard() {
+        deckManager.incorrect()
     }
 }
 
@@ -195,19 +208,6 @@ extension MultipleChoiceViewController {
     }
 }
 
-// MARK: - Gestures
-extension MultipleChoiceViewController {
-    
-    func addGestures() {
-        let cardGesture = UITapGestureRecognizer(target: self, action: #selector(flipCard))
-        cardView.addGestureRecognizer(cardGesture)
-    }
-    
-    @objc func flipCard() {
-        deckManager.incorrect()
-    }
-}
-
 // MARK: - Card Deck Delegate
 extension MultipleChoiceViewController: DeckManagerDelegate {
     
@@ -224,9 +224,8 @@ extension MultipleChoiceViewController: DeckManagerDelegate {
     }
 }
 
-// MARK: - PopUpPresentationController
+// MARK: - Pop Up
 extension MultipleChoiceViewController: PopUpPresentationController {
-    
     @objc func dismissPopUp() {
         guard let popUp = popUp, let gesture = gesture else { return }
         popUp.dismissSubviews()
@@ -234,10 +233,10 @@ extension MultipleChoiceViewController: PopUpPresentationController {
     }
 }
 
-// MARK: - UIGestureRecognizerDelegate
+// MARK: - Gesture Recognizer Delegate
 extension MultipleChoiceViewController: UIGestureRecognizerDelegate {
-    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        // Dismiss pop up on tap outside of pop up view
         guard let popUp = popUp, let view = touch.view else { return false }
         if view.isDescendant(of: popUp.popUpController.view) {
             return false
@@ -246,9 +245,8 @@ extension MultipleChoiceViewController: UIGestureRecognizerDelegate {
     }
 }
 
-// MARK: - Deck Collection View Delegate
+// MARK: - Navigation Delegate
 extension MultipleChoiceViewController: NavigationDelegate {
-    
     func dismissViewController() {
         navigationController?.popViewController(animated: true)
     }
