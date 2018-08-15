@@ -31,6 +31,7 @@ class AllDecksCollectionViewController: UICollectionViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         dismissPopUp()
+        collectionView?.reloadData()
         navigationController?.navigationBar.isHidden = false
     }
     
@@ -121,6 +122,12 @@ extension AllDecksCollectionViewController {
 
 // MARK: - Pop Up
 extension AllDecksCollectionViewController: PopUpPresentationController {
+    var origin: CGPoint? {
+        return nil
+    }
+    
+    func addConstraints() { return }
+    
     @objc func dismissPopUp() {
         guard let popUp = popUp, let gesture = gesture else { return }
         popUp.dismissSubviews()

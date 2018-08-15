@@ -59,7 +59,7 @@
                     </connections>
                 </button>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="H7S-AU-3t0">
-                    <rect key="frame" x="16" y="82" width="343" height="503.5"/>
+                    <rect key="frame" x="16" y="92" width="343" height="483.5"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9bA-b0-cgQ">
                             <rect key="frame" x="0.0" y="0.0" width="343" height="293.5"/>
@@ -208,13 +208,12 @@
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ckb-EO-odQ">
-                            <rect key="frame" x="0.0" y="453.5" width="343" height="50"/>
-                            <color key="backgroundColor" red="0.0" green="0.62352941179999999" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <rect key="frame" x="0.0" y="453.5" width="343" height="30"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="50" id="fja-D4-d21"/>
+                                <constraint firstAttribute="height" constant="30" id="fja-D4-d21"/>
                             </constraints>
                             <state key="normal" title="Give Up">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="titleColor" red="0.0" green="0.62352941179999999" blue="0.71764705880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">

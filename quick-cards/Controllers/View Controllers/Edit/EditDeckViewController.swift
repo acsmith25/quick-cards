@@ -26,6 +26,7 @@ class EditDeckViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var separatorHeight: NSLayoutConstraint!
+    @IBOutlet weak var deleteButton: UIButton!
     
     private enum ViewState {
         case add
@@ -83,6 +84,8 @@ class EditDeckViewController: UIViewController {
         collectionView.dragDelegate = self
         collectionView.dropDelegate = self
         collectionView.reorderingCadence = .fast
+        
+        setViewState(viewState: .add)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -138,39 +141,39 @@ class EditDeckViewController: UIViewController {
     }
     
     @IBAction func saveAction(_ sender: Any) {
-        if let deck = deck {
-            deck.title = titleTextField.text ?? titleTextField.placeholder ?? ""
-            
-            // Update all references to deck
-            let allDecksIndex = decksInProgress.index { $0 == deck }
-            if let index = allDecksIndex {
-                allDecks[index] = deck
+        guard let deck = deck else { return }
+        deck.title = titleTextField.text ?? titleTextField.placeholder ?? ""
+        
+        // Update all references to deck
+        let allDecksIndex = decksInProgress.index { $0 == deck }
+        if let index = allDecksIndex {
+            allDecks[index] = deck
+        } else {
+            allDecks.append(deck)
+        }
+        let inProgressIndex = decksInProgress.index { $0 == deck }
+        if let index = inProgressIndex {
+            decksInProgress[index] = deck
+        }
+        let defaultDeckIndex = defaultDecks.index { $0 == deck }
+        if let index = defaultDeckIndex {
+            defaultDecks[index] = deck
+        } else {
+            if let userDeckIndex = userDecks.index(where: { $0 == deck }) {
+                userDecks[userDeckIndex] = deck
             } else {
-                allDecks.append(deck)
+                userDecks.append(deck)
             }
-            let inProgressIndex = decksInProgress.index { $0 == deck }
-            if let index = inProgressIndex {
-                decksInProgress[index] = deck
-            }
-            let defaultDeckIndex = defaultDecks.index { $0 == deck }
-            if let index = defaultDeckIndex {
-                defaultDecks[index] = deck
-            } else {
-                if let userDeckIndex = userDecks.index(where: { $0 == deck }) {
-                    userDecks[userDeckIndex] = deck
-                } else {
-                    userDecks.append(deck)
-                }
-            }
-            
-            // Save decks
-            DeckSaver.saveAllDecks()
         }
         
+        // Save decks
+        DeckSaver.saveAllDecks()
         delegate?.dismissViewController()
     }
     
     @IBAction func backAction(_ sender: Any) {
+        guard let deck = deck else { return }
+        if !deck.cards.isEmpty {
             let alertController = UIAlertController(title: "Do you want to save your changes?", message: nil, preferredStyle: .alert)
             let saveAction = UIAlertAction(title: "Save", style: .default) { (action) in
                 self.saveAction(sender)
@@ -186,6 +189,35 @@ class EditDeckViewController: UIViewController {
             alertController.addAction(backAction)
             alertController.addAction(cancelAction)
             present(alertController, animated: true, completion: nil)
+        } else {
+            self.delegate?.dismissViewController()
+        }
+    }
+    
+    @IBAction func deleteDeckAction(_ sender: Any) {
+        guard let deck = deck else { return }
+        
+        // Update all references to deck
+        let allDecksIndex = decksInProgress.index { $0 == deck }
+        if let index = allDecksIndex {
+            allDecks.remove(at: index)
+        }
+        let inProgressIndex = decksInProgress.index { $0 == deck }
+        if let index = inProgressIndex {
+            decksInProgress.remove(at: index)
+        }
+        let defaultDeckIndex = defaultDecks.index { $0 == deck }
+        if let index = defaultDeckIndex {
+            defaultDecks.remove(at: index)
+        } else {
+            if let userDeckIndex = userDecks.index(where: { $0 == deck }) {
+                userDecks.remove(at: userDeckIndex)
+            }
+        }
+        
+        // Save decks
+        DeckSaver.saveAllDecks()
+        delegate?.dismissViewController()
     }
 }
 
@@ -215,6 +247,7 @@ extension EditDeckViewController {
         case .add:
             collectionView.dragInteractionEnabled = true
             UIView.animate(withDuration: 0.2, delay: 0, options: [], animations: {
+                self.deleteButton.isHidden = true
                 self.editButton.setTitle("Edit", for: .normal)
                 self.editButton.setTitleColor(.myTeal, for: .normal)
                 self.editButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
@@ -228,6 +261,7 @@ extension EditDeckViewController {
         case .edit:
             collectionView.dragInteractionEnabled = false
             UIView.animate(withDuration: 0.2, delay: 0, options: [], animations: {
+                self.deleteButton.isHidden = false
                 self.editButton.setTitle("Done", for: .normal)
                 self.editButton.setTitleColor(.groupTableViewBackground, for: .normal)
                 self.editButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
@@ -397,6 +431,10 @@ extension EditDeckViewController: CardDelegate {
 
 // MARK: - Pop Up
 extension EditDeckViewController: PopUpPresentationController {
+    var origin: CGPoint? {
+        return nil
+    }
+    
     @objc func dismissPopUp() {
         guard let popUp = popUp, let gesture = gesture else { return }
         popUp.dismissSubviews()

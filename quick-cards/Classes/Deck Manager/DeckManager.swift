@@ -10,7 +10,7 @@ import Foundation
 
 protocol DeckManagerDelegate {
     func showQuestion(question: Question, randomAnswers: [Answer])
-    func showAnswer(answer: Answer, isCorrect: Bool)
+    func showAnswer(answer: Answer, isCorrect: Bool?)
     func showComplete()
 }
 
@@ -55,7 +55,7 @@ class DeckManager {
     
     func exit() {
         guard let currentQuestion = currentQuestion else { return }
-        deck.updateQuestionGrade(question: currentQuestion, newGrade: currentQuestion.grade)
+        deck.updateQuestionGrade(question: currentQuestion, newGrade: currentQuestion.grade, didAnswerQuestion: false)
     }
     
     func next() {
@@ -83,16 +83,40 @@ class DeckManager {
         delegate?.showQuestion(question: currentQuestion!, randomAnswers: []) // Question is safely unwrapped
     }
     
-    func correct() {
+    func showAnswer(isCorrect: Bool? = nil) {
         guard let currentQuestion = currentQuestion else { return }
         guard let correctAnswer = deck.cards[currentQuestion] else {
             fatalError("Question does not exist.")
         }
-        validate(userAnswer: correctAnswer.answer)
+        
+        if currentMastery == totalMastery {
+            // Deck is mastered
+            delegate?.showComplete()
+        } else {
+            delegate?.showAnswer(answer: correctAnswer, isCorrect: isCorrect)
+        }
+    }
+    
+    func giveUp() {
+        guard let currentQuestion = currentQuestion else { return }
+        guard let correctAnswer = deck.cards[currentQuestion] else {
+            fatalError("Question does not exist.")
+        }
+        
+        incorrect()
+        delegate?.showAnswer(answer: correctAnswer, isCorrect: false)
+    }
+    
+    func correct() {
+        updateDeck(didAnswerCorrectly: true)
+        updateMastery()
+        self.currentQuestion = nil
     }
     
     func incorrect() {
-        validate(userAnswer: nil)
+        updateDeck(didAnswerCorrectly: false)
+        updateMastery()
+        self.currentQuestion = nil
     }
     
     func validate(userAnswer: String?) {
@@ -101,22 +125,22 @@ class DeckManager {
             fatalError("Question does not exist.")
         }
         
-        let elapsed = Date().timeIntervalSince(startTime)
-        currentQuestion.updateTime(newTime: elapsed)
-        
         // Validate
         let didAnswerCorrectly = userAnswer == correctAnswer.answer ? true : false
         
         updateDeck(didAnswerCorrectly: didAnswerCorrectly)
-        deck.updateMastery(newMastery: round(Double(currentMastery) / Double(totalMastery) * 10000) / 100)
-        self.currentQuestion = nil
+        updateMastery()
+        showAnswer(isCorrect: didAnswerCorrectly)
         
-        if currentMastery == totalMastery {
-            // Deck is mastered
-            delegate?.showComplete()
-        } else {
-            delegate?.showAnswer(answer: correctAnswer, isCorrect: didAnswerCorrectly)
-        }
+        self.currentQuestion = nil
+    }
+    
+
+    
+    func updateTime() {
+        guard let currentQuestion = currentQuestion else { return }
+        let elapsed = Date().timeIntervalSince(startTime)
+        currentQuestion.updateTime(newTime: elapsed)
     }
     
     // MARK: - Private Methods
@@ -167,6 +191,10 @@ class DeckManager {
         } else {
             currentMastery -= 1
         }
+    }
+    
+    private func updateMastery() {
+        deck.updateMastery(newMastery: round(Double(currentMastery) / Double(totalMastery) * 10000) / 100)
     }
     
     private func getAverageQuestion() -> Question? {

@@ -117,7 +117,8 @@ extension GridViewController: UICollectionViewDelegate, UICollectionViewDataSour
             fatalError("Could not dequeue cell.")
         }
         let question = deckManager.deck.questions[indexPath.row]
-        cell.configure(with: question.question)
+        cell.configure(with: question.question, showCardDetails: true)
+        cell.delegate = self
 
         return cell
     }
@@ -135,7 +136,7 @@ extension GridViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 else { self.deckManager.incorrect() }
                 
                 UIView.transition(with: card, duration: 0.5, options: .transitionFlipFromRight, animations: {
-                    card.configure(with: answer.answer, backgroundColor: color)
+                    card.configure(with: answer.answer, backgroundColor: color, showCardDetails: false)
                 }, completion: nil)
                 card.isShowingFront = false
             })
@@ -150,22 +151,52 @@ extension GridViewController: UICollectionViewDelegate, UICollectionViewDataSour
             self.view.addGestureRecognizer(gesture)
         } else {
             UIView.transition(with: card, duration: 0.5, options: .transitionFlipFromRight, animations: {
-                card.configure(with: question.question, backgroundColor: .white)
+                card.configure(with: question.question, backgroundColor: .white, showCardDetails: true)
             }, completion: nil)
             card.isShowingFront = true
         }
     }
 }
 
+// MARK: - Card Delegate
+extension GridViewController: CardDelegate {
+    func removeCard(question: String?) { return }
+    
+    func cardDetails(question: String?) {
+        let deck = deckManager.deck
+        guard let index = deck.questions.index(where: { $0.question == question }) else { return }
+        let question = deck.questions[index]
+        
+        // Pop up presentation
+        let detailsController = DetailsViewController(question: question, isTimed: deck.isTimed)
+        detailsController.delegate = self
+        popUp = PopUpController(popUpView: detailsController)
+        guard let popUp = popUp else { return }
+        popUp.presentPopUp(on: self)
+        
+        // Add dismiss pop up gesture
+        gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
+        gesture?.delegate = self
+        guard let gesture = gesture else { return }
+        self.view.addGestureRecognizer(gesture)
+        
+    }
+
+}
+
 // MARK: - Card Deck Delegate
 extension GridViewController: DeckManagerDelegate {
     func showComplete() { return }
-    func showAnswer(answer: Answer, isCorrect: Bool) { return }
+    func showAnswer(answer: Answer, isCorrect: Bool?) { return }
     func showQuestion(question: Question, randomAnswers: [Answer]) { return }
 }
 
 // MARK: - Pop Up
 extension GridViewController: PopUpPresentationController {
+    var origin: CGPoint? {
+        return nil
+    }
+    
     @objc func dismissPopUp() {
         guard let popUp = popUp, let gesture = gesture else { return }
         popUp.dismissSubviews()

@@ -143,9 +143,8 @@ extension ShowAnswerViewController {
         case .answer(_):
             return
         default:
-            guard let question = deckManager.currentQuestion else { return }
-            guard let answer = deckManager.deck.cards[question] else { return }
-            setViewState(.answer(answer.answer))
+            deckManager.showAnswer()
+            deckManager.updateTime()
         }
     }
 }
@@ -194,8 +193,8 @@ extension ShowAnswerViewController: DeckManagerDelegate {
         setViewState(.mastered)
     }
     
-    func showAnswer(answer: Answer, isCorrect: Bool) {
-//        setViewState(.answer(answer.answer))
+    func showAnswer(answer: Answer, isCorrect: Bool?) {
+        setViewState(.answer(answer.answer))
     }
     
     func showQuestion(question: Question, randomAnswers: [Answer]) {
@@ -205,6 +204,15 @@ extension ShowAnswerViewController: DeckManagerDelegate {
 
 // MARK: - Pop Up
 extension ShowAnswerViewController: PopUpPresentationController {
+    var origin: CGPoint? {
+        guard let _ = popUp?.popUpController as? DetailsViewController else { return nil }
+        guard let popUpView = popUp?.popUpController.view else { return nil }
+        guard let position = moreButton.superview?.convert(moreButton.frame.origin, to: nil) else { return nil}
+        let x = position.x - popUpView.bounds.width + moreButton.bounds.width
+        let y = position.y
+        return CGPoint(x: x, y: y)
+
+    }
     
     @objc func dismissPopUp() {
         guard let popUp = popUp, let gesture = gesture else { return }

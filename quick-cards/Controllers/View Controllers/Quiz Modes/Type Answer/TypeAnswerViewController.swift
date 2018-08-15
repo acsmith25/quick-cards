@@ -85,7 +85,7 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
     }
     
     @IBAction func giveUpAction(_ sender: Any) {
-        deckManager.incorrect()
+        deckManager.giveUp()
     }
     
     @IBAction func backButtonAction(_ sender: Any) {
@@ -128,16 +128,22 @@ class TypeAnswerViewController: UIViewController, QuizModeController {
     
     @IBAction func detailsAction(_ sender: Any) {
         guard let question = deckManager.currentQuestion else { return }
-        let detailsController = DetailsViewController(question: question, isTimed: deckManager.deck.isTimed) //DeckInfoViewController(deck: deckManager.deck, isViewingDeck: true)
+        let detailsController = DetailsViewController(question: question, isTimed: deckManager.deck.isTimed)
         detailsController.delegate = self
         popUp = PopUpController(popUpView: detailsController)
         guard let popUp = popUp else { return }
         popUp.presentPopUp(on: self)
-        
+
         gesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopUp))
         gesture?.delegate = self
         guard let gesture = gesture else { return }
         self.view.addGestureRecognizer(gesture)
+        
+//        detailsController.view.bounds.size = detailsController.view.systemLayoutSizeFitting(CGSize(width: 50, height: 50))
+//        self.view.addSubview(detailsController.view)
+//
+//        detailsController.view.topAnchor.constraint(equalTo: moreButton.topAnchor).isActive = true
+//        detailsController.view.trailingAnchor.constraint(equalTo: moreButton.trailingAnchor).isActive = true
     }
 }
 
@@ -154,7 +160,7 @@ extension TypeAnswerViewController {
     
     @objc func flipCard() {
         dismissKeyboard()
-        deckManager.incorrect()
+        deckManager.giveUp()
     }
     
     @objc func dismissKeyboard() {
@@ -227,7 +233,8 @@ extension TypeAnswerViewController: DeckManagerDelegate {
         setViewState(.mastered)
     }
     
-    func showAnswer(answer: Answer, isCorrect: Bool) {
+    func showAnswer(answer: Answer, isCorrect: Bool?) {
+        guard let isCorrect = isCorrect else { return }
         setViewState(.answer(answer.answer, isCorrect))
     }
     
@@ -238,6 +245,16 @@ extension TypeAnswerViewController: DeckManagerDelegate {
 
 // MARK: - Pop Up
 extension TypeAnswerViewController: PopUpPresentationController {
+    
+    var origin: CGPoint? {
+        guard let _ = popUp?.popUpController as? DetailsViewController else { return nil }
+        guard let popUpView = popUp?.popUpController.view else { return nil }
+        guard let position = moreButton.superview?.convert(moreButton.frame.origin, to: nil) else { return nil}
+        let x = position.x - popUpView.bounds.width + moreButton.bounds.width
+        let y = position.y
+        return CGPoint(x: x, y: y)
+    }
+    
     @objc func dismissPopUp() {
         guard let popUp = popUp, let gesture = gesture else { return }
         popUp.dismissSubviews()

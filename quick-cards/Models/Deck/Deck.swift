@@ -145,7 +145,7 @@ class Deck: Codable {
         self.mastery = newMastery
     }
     
-    func updateQuestionGrade(question: Question, newGrade: Grade) {
+    func updateQuestionGrade(question: Question, newGrade: Grade, didAnswerQuestion: Bool = true) {
         removeQuestionFromGrade(question: question)
         
         question.grade = newGrade
@@ -154,7 +154,12 @@ class Deck: Codable {
             gradeDistribution[newGrade] = [question]
             return
         }
-        targetGrade.append(question)
+        
+        if didAnswerQuestion {
+            targetGrade.append(question)
+        } else {
+            targetGrade.insert(question, at: 0)
+        }
         gradeDistribution[newGrade] = targetGrade
     }
     

@@ -80,7 +80,7 @@ class MultipleChoiceViewController: UIViewController, QuizModeController {
         switch viewState {
         case .asking(_):
             // Give up
-            deckManager.incorrect()
+            deckManager.giveUp()
         default:
             // Go to next card
             deckManager.next()
@@ -155,7 +155,12 @@ extension MultipleChoiceViewController {
     }
     
     @objc func flipCard() {
-        deckManager.incorrect()
+        switch viewState {
+        case .answer(_, _):
+            deckManager.next()
+        default:
+            deckManager.giveUp()
+        }
     }
 }
 
@@ -215,7 +220,8 @@ extension MultipleChoiceViewController: DeckManagerDelegate {
         setViewState(.mastered)
     }
     
-    func showAnswer(answer: Answer, isCorrect: Bool) {
+    func showAnswer(answer: Answer, isCorrect: Bool?) {
+        guard let isCorrect = isCorrect else { return }
         setViewState(.answer(answer.answer, isCorrect))
     }
     
@@ -226,6 +232,16 @@ extension MultipleChoiceViewController: DeckManagerDelegate {
 
 // MARK: - Pop Up
 extension MultipleChoiceViewController: PopUpPresentationController {
+    var origin: CGPoint? {
+        guard let _ = popUp?.popUpController as? DetailsViewController else { return nil }
+        guard let popUpView = popUp?.popUpController.view else { return nil }
+        guard let position = moreButton.superview?.convert(moreButton.frame.origin, to: nil) else { return nil}
+        let x = position.x - popUpView.bounds.width + moreButton.bounds.width
+        let y = position.y
+        return CGPoint(x: x, y: y)
+
+    }
+    
     @objc func dismissPopUp() {
         guard let popUp = popUp, let gesture = gesture else { return }
         popUp.dismissSubviews()
