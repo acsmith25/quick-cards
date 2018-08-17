@@ -15,11 +15,11 @@ class DetailsViewController: UIViewController {
     @IBOutlet weak var timeView: UIView!
     
     var question: Question
-    var isTimed: Bool
+    var isTimed: Bool?
     
     var delegate: NavigationDelegate?
     
-    init(question: Question, isTimed: Bool) {
+    init(question: Question, isTimed: Bool?) {
         self.question = question
         self.isTimed = isTimed
         super.init(nibName: String(describing: DetailsViewController.self), bundle: nil)
@@ -35,7 +35,7 @@ class DetailsViewController: UIViewController {
         seenLabel.text = "\(question.seen)"
         correctLabel.text = "\(question.correct)"
         
-        if isTimed {
+        if isTimed == true {
             timeLabel.text = String(format: "%.2f", question.avgTime) + " seconds"
         } else {
             timeView.isHidden = true

@@ -34,16 +34,31 @@ enum Grade: Int, Codable {
         }
     }
     
+    var title: String {
+        switch self {
+        case .failed:
+            return "Failed"
+        case .belowAverage:
+            return "Below Average"
+        case .average:
+            return "Average"
+        case .aboveAverage:
+            return "Above Average"
+        case .mastered:
+            return "Mastered"
+        }
+    }
+    
     var distributionWeight: Int {
         switch self {
         case .failed:
-            return 5
+            return 8
         case .belowAverage:
-            return 4
+            return 7
         case .average:
-            return 3
+            return 6
         case .aboveAverage:
-            return 2
+            return 5
         case .mastered:
             return 1
         }

@@ -208,6 +208,7 @@ extension MultipleChoiceViewController {
                 self.questionLabel.text = "Congratulations!\nYou have mastered this deck."
                 self.cardView.backgroundColor = .white
                 self.moreButton.isHidden = true
+                self.choicesView.alpha = 0.0
             }
         }
     }

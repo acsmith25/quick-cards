@@ -19,7 +19,16 @@ class Deck: Codable {
     var mastery: Double
     var isTimed: Bool
     var order: QuestionOrder
-    var quizMode: QuizMode = .showAnswer
+    var quizMode: QuizMode = .showAnswer {
+        didSet {
+            switch quizMode {
+            case .showAnswer, .grid:
+                isTimed = false
+            default:
+                return
+            }
+        }
+    }
     var progressCounter: Int = 0
     var hasCompletedFirstPass: Bool = false
     
@@ -149,7 +158,9 @@ class Deck: Codable {
         removeQuestionFromGrade(question: question)
         
         question.grade = newGrade
-        guard var targetGrade = gradeDistribution[newGrade] else {
+        
+        let grade = order == .random ? newGrade : .average
+        guard var targetGrade = gradeDistribution[grade] else {
             // Target grade does not exist in grade distribution
             gradeDistribution[newGrade] = [question]
             return
@@ -160,11 +171,11 @@ class Deck: Codable {
         } else {
             targetGrade.insert(question, at: 0)
         }
-        gradeDistribution[newGrade] = targetGrade
+        gradeDistribution[grade] = targetGrade
     }
     
     func removeQuestionFromGrade(question: Question) {
-        let grade = question.grade
+        let grade = order == .random ? question.grade : .average
         guard var targetGrade = gradeDistribution[grade] else { return }
         if let index = targetGrade.index(where: { $0 == question }) {
             targetGrade.remove(at: index)

@@ -13,7 +13,6 @@ class DeckInfoViewController: UIViewController {
 
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var startSegmentedControl: UISegmentedControl!
     @IBOutlet weak var randomButton: UIButton!
     @IBOutlet weak var inOrderButton: UIButton!
     @IBOutlet weak var difficultyButton: UIButton!
@@ -25,6 +24,7 @@ class DeckInfoViewController: UIViewController {
     @IBOutlet weak var multipleChoiceButton: UIButton!
     @IBOutlet weak var resumeButton: UIButton!
     @IBOutlet weak var startButton: UIButton!
+    @IBOutlet weak var timedView: UIView!
     
     @IBOutlet weak var separatorView1: UIView!
     @IBOutlet weak var separatorView2: UIView!
@@ -118,15 +118,30 @@ class DeckInfoViewController: UIViewController {
         }
         
         timedButtons = [notTimedButton, timedButton]
-        let value = deck.isTimed ? 1 : 0
-        timedButtons.forEach { (button) in
-            button.layer.borderWidth = 1.0
-            button.layer.borderColor = UIColor.myTeal.cgColor
-            button.layer.cornerRadius = 5.0
-            if button.tag == value {
-                button.layer.backgroundColor = UIColor.myTeal.cgColor
-            } else {
-                button.layer.backgroundColor = UIColor.clear.cgColor
+        configureTimedButtons(isActive: newTime)
+    }
+    
+    func configureTimedButtons(isActive: Bool) {
+        if isActive {
+            let value = deck.isTimed ? 0 : 1
+            timedButtons.forEach { (button) in
+                button.layer.borderWidth = 1.0
+                button.layer.borderColor = UIColor.myTeal.cgColor
+                button.layer.cornerRadius = 5.0
+                if button.tag == value {
+                    button.layer.backgroundColor = UIColor.myTeal.cgColor
+                } else {
+                    button.layer.backgroundColor = UIColor.clear.cgColor
+                }
+                button.isEnabled = true
+            }
+        } else {
+            timedButtons.enumerated().forEach { (index, button) in
+                button.layer.borderWidth = 1.0
+                button.layer.borderColor = UIColor.lightGray.cgColor
+                button.layer.cornerRadius = 5.0
+                button.layer.backgroundColor = index == 0 ? UIColor.lightGray.cgColor : UIColor.clear.cgColor
+                button.isEnabled = false
             }
         }
     }
@@ -157,6 +172,12 @@ class DeckInfoViewController: UIViewController {
             }
         }
         newMode = QuizMode(rawValue: sender.tag) ?? .showAnswer
+        switch newMode {
+        case .showAnswer, .grid:
+            configureTimedButtons(isActive: false)
+        default:
+            configureTimedButtons(isActive: true)
+        }
     }
     
     @IBAction func timedAction(_ sender: UIButton) {
@@ -189,28 +210,7 @@ class DeckInfoViewController: UIViewController {
     }
     
     @IBAction func startDeckAction(_ sender: Any) {
-        if startSegmentedControl.isHidden { startSegmentedControl.selectedSegmentIndex = 1 }
-        
-        switch startSegmentedControl.selectedSegmentIndex {
-        case 0:
-            // Resume
-            if isViewingDeck {
-                guard let parent = parent as? PopUpPresentationController else { return }
-                if newMode == deck.quizMode && newOrder == deck.order && newTime == deck.isTimed {
-                    parent.dismissPopUp()
-                    return
-                }
-                if newMode == deck.quizMode {
-                    deck.updateTimed(isTimed: newTime)
-                    deck.updateOrder(order: newOrder)
-                    parent.dismissPopUp()
-                    return
-                }
-            }
-        default:
-            // Restart
-            deck.reset()
-        }
+        deck.reset()
         
         deck.updateMode(quizMode: newMode)
         deck.updateTimed(isTimed: newTime)
@@ -222,6 +222,35 @@ class DeckInfoViewController: UIViewController {
         navigationController?.pushViewController(controller, animated: true)
     }
 
+    @IBAction func resumeAction(_ sender: Any) {
+        if isViewingDeck {
+            guard let parent = parent as? PopUpPresentationController else { return }
+            if newMode == deck.quizMode && newOrder == deck.order && newTime == deck.isTimed {
+                parent.dismissPopUp()
+                return
+            }
+            if newMode == deck.quizMode {
+                deck.updateTimed(isTimed: newTime)
+                deck.updateOrder(order: newOrder)
+                parent.dismissPopUp()
+                return
+            }
+        }
+        
+        deck.updateMode(quizMode: newMode)
+        deck.updateTimed(isTimed: newTime)
+        deck.updateOrder(order: newOrder)
+        var quizController = deck.quizMode.getController(with: deck)
+        quizController.delegate = self
+        
+        guard let controller = quizController as? UIViewController else { return }
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    @IBAction func cancelAction(_ sender: Any) {
+        
+    }
+    
     func resetDeck() {
         let alertController = UIAlertController(title: "Confirm Start Over", message: "Are you sure you want to start this deck over? All progress will be lost.", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Okay", style: .default) { (action) in

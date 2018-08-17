@@ -59,8 +59,14 @@ class DeckManager {
     }
     
     func next() {
+        // Deck is mastered
+        if currentMastery == totalMastery {
+            delegate?.showComplete()
+            return
+        }
+        
         // Completed pass through deck, sort and restart
-        if deck.cards.count == deck.progressCounter {
+        if deck.cards.count == deck.progressCounter && deck.order != .random {
             deck.sortQuestions(by: deck.order)
         }
         
@@ -89,12 +95,7 @@ class DeckManager {
             fatalError("Question does not exist.")
         }
         
-        if currentMastery == totalMastery {
-            // Deck is mastered
-            delegate?.showComplete()
-        } else {
-            delegate?.showAnswer(answer: correctAnswer, isCorrect: isCorrect)
-        }
+        delegate?.showAnswer(answer: correctAnswer, isCorrect: isCorrect)
     }
     
     func giveUp() {
@@ -130,6 +131,7 @@ class DeckManager {
         
         updateDeck(didAnswerCorrectly: didAnswerCorrectly)
         updateMastery()
+        
         showAnswer(isCorrect: didAnswerCorrectly)
         
         self.currentQuestion = nil
@@ -167,34 +169,55 @@ class DeckManager {
         var newGrade = Grade.average
         
         // Update distribution if random
-        if deck.order == .random {
-            let newGradeValue = didAnswerCorrectly ? currentQuestion.grade.masteryValue + 1 : currentQuestion.grade.masteryValue - 1
-            if didAnswerCorrectly {
-                if newGradeValue >= Grade.allCases.count {
-                    // Already at heighest level, insert card back into top level
-                    newGrade = Grade(masteryValue: newGradeValue - 1)
-                }
+//        if deck.order == .random {
+        
+        let newGradeValue = didAnswerCorrectly ? currentQuestion.grade.masteryValue + 1 : currentQuestion.grade.masteryValue - 1
+        if didAnswerCorrectly {
+            if newGradeValue >= Grade.allCases.count {
+                // Already at heighest level, insert card back into top level
+                newGrade = Grade(masteryValue: newGradeValue - 1)
             } else {
-                if newGradeValue < 0 {
-                    // Already at lowest level, insert card back into bottom level
-                    newGrade = Grade(masteryValue: newGradeValue + 1)
-                }
+                newGrade = Grade(masteryValue: newGradeValue)
+                currentMastery += 1
             }
-            newGrade = Grade(masteryValue: newGradeValue)
+            currentQuestion.correct += 1
+        } else {
+            if newGradeValue < 0 {
+                // Already at lowest level, insert card back into bottom level
+                newGrade = Grade(masteryValue: newGradeValue + 1)
+            } else {
+                newGrade = Grade(masteryValue: newGradeValue)
+                currentMastery -= 1
+            }
         }
+        
+//        }
         
         deck.updateQuestionGrade(question: currentQuestion, newGrade: newGrade)
         currentQuestion.seen += 1
-        if didAnswerCorrectly {
-            currentQuestion.correct += 1
-            currentMastery += 1
-        } else {
-            currentMastery -= 1
+//        if didAnswerCorrectly {
+//            currentQuestion.correct += 1
+//            if deck.order != .random { currentMastery += 1 }
+//        } else {
+//            if deck.order != .random { currentMastery -= 1 }
+//        }
+    }
+    
+    func printDeck() {
+        print(deck.title)
+        deck.gradeDistribution.forEach { (grade, questions) in
+            print("\(grade.title): ")
+            deck.gradeDistribution[grade]?.forEach({ (question) in
+                print("\(question.question) \(question.grade.title)")
+            })
+            print("\n")
         }
     }
     
     private func updateMastery() {
         deck.updateMastery(newMastery: round(Double(currentMastery) / Double(totalMastery) * 10000) / 100)
+        printDeck()
+        print("Mastery: \(deck.mastery)")
     }
     
     private func getAverageQuestion() -> Question? {
@@ -212,6 +235,7 @@ class DeckManager {
         
         let question = targetGrade[index]
         deck.removeQuestionFromGrade(question: question)
+        printDeck()
         return question
     } 
     
@@ -230,16 +254,16 @@ class DeckManager {
     }
     
     private func getRandomWeightedGrade() -> Grade? {
-        // Get random weight from the summ of all level weights
+        // Get random weight from the sum of all level weights
         var gradeWeightsSum = 0
-        deck.gradeDistribution.keys.forEach { gradeWeightsSum += $0.distributionWeight }
+        deck.gradeDistribution.keys.forEach { gradeWeightsSum += $0.distributionWeight * deck.gradeDistribution[$0]!.count } // Safely unwrapped because key must exists in for each
         var randomWeight = Int(arc4random_uniform(UInt32(gradeWeightsSum + 1)))
         
         // Get level of random weight by subtracting weight of current level until <= 0
-        for level in deck.gradeDistribution.keys.reversed() {
-            randomWeight = randomWeight - level.distributionWeight
+        for grade in deck.gradeDistribution.keys.reversed() {
+            randomWeight = randomWeight - (grade.distributionWeight * deck.gradeDistribution[grade]!.count)
             if randomWeight <= 0 {
-                return level
+                return grade
             }
         }
         return nil
